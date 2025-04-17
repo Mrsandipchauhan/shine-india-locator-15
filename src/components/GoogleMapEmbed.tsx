@@ -16,18 +16,15 @@ const GoogleMapEmbed = ({
   width = "100%",
   zoom = 14
 }: GoogleMapEmbedProps) => {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  
   // Create a sanitized query for the Google Maps embed
-  const query = encodeURIComponent(`${address}, ${city}, India`);
+  const location = encodeURIComponent(`${address ? address + ', ' : ''}${city}, India`);
   
-  // Construct the Google Maps embed URL
-  const mapUrl = `https://www.google.com/maps/embed/v1/place?key=AIzaSyBgylnQzeB3R-qxij4A2uAbnD1_UMLkU5Q&q=${query}&zoom=${zoom}`;
+  // Construct a free Google Maps embed URL that doesn't require API key
+  const mapUrl = `https://maps.google.com/maps?q=${location}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed`;
   
   return (
     <div className="w-full rounded-lg overflow-hidden border border-border">
       <iframe
-        ref={iframeRef}
         title={`Map of ${address} in ${city}`}
         width={width}
         height={height}

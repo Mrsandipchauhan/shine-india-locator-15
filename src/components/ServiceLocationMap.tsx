@@ -12,8 +12,8 @@ const ServiceLocationMap = ({ cityName, mapLocation }: ServiceLocationMapProps) 
     <div className="mt-8">
       <h2 className="text-2xl font-bold mb-4">Car Detailing Locations in {cityName}</h2>
       <GoogleMapEmbed 
-        address="" 
-        city={mapLocation} 
+        address=""
+        city={mapLocation || cityName} 
         height="400px"
         zoom={12}
       />
