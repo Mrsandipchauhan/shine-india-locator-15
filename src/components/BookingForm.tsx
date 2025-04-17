@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ import { Calendar, Phone, Car, User, Mail, Clock } from "lucide-react";
 
 interface BookingFormProps {
   selectedCity?: string;
+  selectedService?: string;
 }
 
 const serviceTypes = [
@@ -21,13 +21,13 @@ const serviceTypes = [
   { id: "protection", name: "Paint Protection Film" }
 ];
 
-const BookingForm = ({ selectedCity = "" }: BookingFormProps) => {
+const BookingForm = ({ selectedCity = "", selectedService = "" }: BookingFormProps) => {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
     carType: "",
-    serviceType: "",
+    serviceType: selectedService,
     city: selectedCity,
     date: "",
     time: ""
