@@ -1,4 +1,3 @@
-
 import React from "react";
 import LocationInfo from "./LocationInfo";
 import LocalServiceProviders from "./LocalServiceProviders";

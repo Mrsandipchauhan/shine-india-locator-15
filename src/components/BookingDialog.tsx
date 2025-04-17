@@ -20,7 +20,7 @@ const BookingDialog = ({ selectedService }: BookingDialogProps = {}) => {
   useEffect(() => {
     // Only show dialog if we're on a service location page
     if (isServiceLocationPage) {
-      // Show dialog after 12 seconds instead of 7
+      // Show dialog after 12 seconds
       const timer = setTimeout(() => {
         setIsOpen(true);
       }, 12000);
