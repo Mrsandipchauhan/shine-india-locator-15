@@ -1,13 +1,12 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, ChevronDown, Home, LayoutDashboard } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
@@ -86,13 +85,6 @@ const Navbar = () => {
             >
               Contact
             </Link>
-            <Link 
-              to="/admin" 
-              className={`px-3 py-2 text-sm ${isActive('/admin') ? 'text-primary' : 'text-foreground/90'} hover:text-primary transition-colors flex items-center`}
-            >
-              <LayoutDashboard size={16} className="mr-1" />
-              Admin
-            </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
@@ -135,10 +127,6 @@ const Navbar = () => {
             <Link to="/locations" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Locations</Link>
             <Link to="/about" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>About</Link>
             <Link to="/contact" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Contact</Link>
-            <Link to="/admin" className="flex items-center px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
-              <LayoutDashboard size={16} className="mr-1" />
-              Admin Dashboard
-            </Link>
             <Link to="/services">
               <Button className="w-full bg-primary hover:bg-primary/90">Book Now</Button>
             </Link>
