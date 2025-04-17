@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Award, Users, Car, Tool, BookOpen } from "lucide-react";
+import { Shield, Award, Users, Car, Wrench, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -154,7 +153,7 @@ const About = () => {
                 
                 <div className="flex items-start">
                   <div className="mr-4 mt-1">
-                    <Tool size={20} className="text-primary" />
+                    <Wrench size={20} className="text-primary" />
                   </div>
                   <div>
                     <h4 className="font-medium mb-2">Continuous Innovation</h4>
