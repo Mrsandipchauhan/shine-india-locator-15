@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Locations from "./pages/Locations";
 import CityLocation from "./pages/CityLocation";
 import BookService from "./pages/BookService";
+import BookingConfirmation from "./pages/BookingConfirmation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,7 +26,7 @@ const App = () => (
           <Route path="/locations" element={<Locations />} />
           <Route path="/locations/:cityId" element={<CityLocation />} />
           <Route path="/book-service" element={<BookService />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/booking-confirmation" element={<BookingConfirmation />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
