@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -11,7 +10,7 @@ import PageUtilities from "@/components/PageUtilities";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import BookingForm from "@/components/BookingForm";
 
-// Service data with detailed descriptions
+// Service data with detailed descriptions and matched before/after images of the same cars
 const serviceData = {
   "exterior-detailing": {
     title: "Exterior Detailing",
@@ -74,8 +73,8 @@ const serviceData = {
     `,
     price: "Starting at ₹2,499",
     image: "https://images.unsplash.com/photo-1601362840343-43892066c5b5?q=80&w=1964&auto=format&fit=crop",
-    beforeImage: "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?q=80&w=1000&auto=format&fit=crop",
-    afterImage: "https://images.unsplash.com/photo-1583396752710-1c19d1b0514e?q=80&w=1000&auto=format&fit=crop",
+    beforeImage: "https://images.unsplash.com/photo-1583916057530-02fda0705797?q=80&w=1000&auto=format&fit=crop",
+    afterImage: "https://images.unsplash.com/photo-1583916057587-cfe5cc0fea85?q=80&w=1000&auto=format&fit=crop",
     features: [
       "Deep vacuum cleaning of all carpets, seats, and mats",
       "Thorough cleaning of dashboard, console, and trim",
@@ -108,7 +107,52 @@ const serviceData = {
       "Identifies and addresses hidden issues before they worsen"
     ]
   },
-  // Add detailed data for other services...
+  "ceramic-coating": {
+    title: "Ceramic Coating",
+    description: "Long-lasting protection with advanced nanoceramic technology.",
+    longDescription: `
+      Our ceramic coating service provides ultimate protection for your vehicle's paint with advanced
+      nano-ceramic technology. This semi-permanent coating creates a chemical bond with your vehicle's
+      factory paint, resulting in a layer of protection that lasts for years, not months.
+      
+      The hydrophobic properties repel water, dirt, and contaminants, making your vehicle easier to
+      clean while maintaining its showroom shine. The coating also provides exceptional resistance to
+      UV rays, oxidation, chemical stains, and light scratches.
+    `,
+    price: "Starting at ₹15,999",
+    image: "https://images.unsplash.com/photo-1619642340116-bade7c2b2309?q=80&w=1974&auto=format&fit=crop",
+    beforeImage: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=1000&auto=format&fit=crop",
+    afterImage: "https://images.unsplash.com/photo-1617814076169-2c8a354d6b86?q=80&w=1000&auto=format&fit=crop",
+    features: [
+      "Advanced Nano-Ceramic Formula",
+      "9H Hardness Rating",
+      "5-Year Warranty",
+      "Hydrophobic Properties",
+      "UV Resistance",
+      "Chemical Stain Protection",
+      "Enhanced Gloss Finish",
+      "Simplified Maintenance"
+    ],
+    steps: [
+      "Initial decontamination wash",
+      "Clay bar treatment to remove embedded contaminants",
+      "Paint correction to eliminate swirl marks and imperfections",
+      "Surface preparation with alcohol solution",
+      "Application of ceramic coating in controlled environment",
+      "Curing period with specific temperature and humidity control",
+      "Inspection and quality assurance checks",
+      "Final buff and detail"
+    ],
+    benefits: [
+      "Long-lasting protection (up to 5 years)",
+      "Enhanced paint depth and gloss",
+      "Superior hydrophobic properties for easy cleaning",
+      "Protection from environmental contaminants",
+      "Resistance to chemical stains and etching",
+      "Reduced maintenance time and costs",
+      "Preserved resale value"
+    ]
+  }
 };
 
 const ServiceDetail = () => {

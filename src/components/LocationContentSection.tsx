@@ -18,18 +18,18 @@ interface LocationContentSectionProps {
   providers: ServiceProvider[];
 }
 
-// Sample before/after images for each city
+// Sample before/after images for each city - using same car with different states
 const cityImages: Record<string, { before: string, after: string }> = {
   default: {
-    before: "https://images.unsplash.com/photo-1518306727298-4c17e1bf6942?q=80&w=1000&auto=format&fit=crop",
-    after: "https://images.unsplash.com/photo-1618236248279-640f4c829b5b?q=80&w=1000&auto=format&fit=crop"
+    before: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop",
+    after: "https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1000&auto=format&fit=crop"
   },
   delhi: {
-    before: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=1000&auto=format&fit=crop",
-    after: "https://images.unsplash.com/photo-1617814065893-00757125efab?q=80&w=1000&auto=format&fit=crop"
+    before: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1000&auto=format&fit=crop",
+    after: "https://images.unsplash.com/photo-1605723517503-3cadb5818bc3?q=80&w=1000&auto=format&fit=crop"
   },
   mumbai: {
-    before: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
+    before: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop",
     after: "https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1000&auto=format&fit=crop"
   }
 };
