@@ -1,25 +1,22 @@
 
-import Navbar from "@/components/Navbar";
+import MainLayout from "@/layouts/MainLayout";
 import Hero from "@/components/Hero";
 import ServicesSection from "@/components/ServicesSection";
 import TestimonialsSlider from "@/components/TestimonialsSlider";
 import CTASection from "@/components/CTASection";
-import Footer from "@/components/Footer";
-import BookingDialog from "@/components/BookingDialog";
-import LocationDetection from "@/components/LocationDetection";
+import PageUtilities from "@/components/PageUtilities";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      <Hero />
-      <ServicesSection />
-      <TestimonialsSlider />
-      <CTASection />
-      <Footer />
-      <BookingDialog />
-      <LocationDetection />
-    </div>
+    <MainLayout>
+      <main>
+        <Hero />
+        <ServicesSection />
+        <TestimonialsSlider />
+        <CTASection />
+      </main>
+      <PageUtilities />
+    </MainLayout>
   );
 };
 
