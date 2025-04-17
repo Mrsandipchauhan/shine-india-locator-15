@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from "react";
+import React from "react";
 
 interface GoogleMapEmbedProps {
   address: string;
