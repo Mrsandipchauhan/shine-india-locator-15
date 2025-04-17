@@ -2,8 +2,13 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState } from "react";
+import BookingForm from "./BookingForm";
 
 const Hero = () => {
+  const [showBooking, setShowBooking] = useState(false);
+  
   return (
     <div className="relative overflow-hidden">
       {/* Dark overlay */}
@@ -28,7 +33,11 @@ const Hero = () => {
             Serving 20+ major cities with certified technicians and premium products.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90">
+            <Button 
+              size="lg" 
+              className="bg-primary hover:bg-primary/90"
+              onClick={() => setShowBooking(true)}
+            >
               Book Appointment
             </Button>
             <Link to="/locations">
@@ -58,6 +67,13 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      
+      {/* Booking dialog */}
+      <Dialog open={showBooking} onOpenChange={setShowBooking}>
+        <DialogContent className="sm:max-w-[600px]">
+          <BookingForm />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

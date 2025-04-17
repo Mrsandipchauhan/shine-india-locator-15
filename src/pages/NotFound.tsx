@@ -1,60 +1,56 @@
 
-import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Home, Search } from "lucide-react";
+import { Layout } from "@/components/ui/layout";
+import { MapPin, Search, Home, ArrowLeft } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <>
       <Navbar />
-      
-      <div className="flex-grow flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center">
-          <div className="relative mb-8 mx-auto w-32 h-32">
-            <div className="absolute inset-0 bg-primary rounded-full opacity-10 animate-pulse"></div>
-            <div className="absolute inset-3 bg-background border border-primary/20 rounded-full flex items-center justify-center">
-              <Search size={42} className="text-primary opacity-70" />
+      <div className="container mx-auto px-4 py-16 min-h-[calc(100vh-200px)]">
+        <Card className="max-w-3xl mx-auto border border-border">
+          <CardContent className="p-8 text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-6">
+              <div className="text-4xl font-bold text-primary">404</div>
             </div>
-          </div>
-          
-          <h1 className="text-4xl font-bold mb-4">404</h1>
-          <p className="text-xl text-muted-foreground mb-8">
-            Oops! We couldn't find the page you're looking for.
-          </p>
-          
-          <p className="text-muted-foreground mb-8">
-            The page might have been moved, deleted, or maybe you typed the URL incorrectly.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 w-full sm:w-auto">
-                <Home size={16} className="mr-2" /> Back to Home
-              </Button>
-            </Link>
-            <Link to="/locations">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                Find Nearest Location
-              </Button>
-            </Link>
-          </div>
-        </div>
+            
+            <h1 className="text-3xl font-bold mb-4">Page Not Found</h1>
+            
+            <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+              We're sorry, but the page you're looking for doesn't exist or has been moved.
+              Please check the URL or try one of the options below.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <Link to="/" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
+                <Home size={24} className="text-primary mb-2" />
+                <span className="font-medium">Return Home</span>
+              </Link>
+              
+              <Link to="/locations" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
+                <MapPin size={24} className="text-primary mb-2" />
+                <span className="font-medium">Find Locations</span>
+              </Link>
+              
+              <Link to="/services" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
+                <Search size={24} className="text-primary mb-2" />
+                <span className="font-medium">Browse Services</span>
+              </Link>
+            </div>
+            
+            <Button variant="ghost" onClick={() => window.history.back()} className="flex items-center">
+              <ArrowLeft size={16} className="mr-2" />
+              Go Back
+            </Button>
+          </CardContent>
+        </Card>
       </div>
-      
       <Footer />
-    </div>
+    </>
   );
 };
 

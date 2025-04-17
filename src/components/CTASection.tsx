@@ -2,8 +2,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, MapPin, Phone } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState } from "react";
+import BookingForm from "./BookingForm";
 
 const CTASection = () => {
+  const [showBooking, setShowBooking] = useState(false);
+  
   return (
     <section className="py-16 relative overflow-hidden">
       {/* Background image with overlay */}
@@ -59,7 +64,11 @@ const CTASection = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90">
+            <Button 
+              size="lg" 
+              className="bg-primary hover:bg-primary/90"
+              onClick={() => setShowBooking(true)}
+            >
               Book Appointment
             </Button>
             <Link to="/contact">
@@ -70,6 +79,13 @@ const CTASection = () => {
           </div>
         </div>
       </div>
+      
+      {/* Booking dialog */}
+      <Dialog open={showBooking} onOpenChange={setShowBooking}>
+        <DialogContent className="sm:max-w-[600px]">
+          <BookingForm />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
