@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { services } from "@/data/servicesData";
+import { services, Service } from "@/data/servicesData";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,9 +8,9 @@ import { Pencil, Save, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 const ServiceEditor = () => {
-  const [serviceList, setServiceList] = useState([...services]);
+  const [serviceList, setServiceList] = useState<Service[]>([...services]);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState({
+  const [editForm, setEditForm] = useState<Service>({
     id: "",
     title: "",
     description: "",
@@ -32,7 +31,6 @@ const ServiceEditor = () => {
   };
 
   const handleSave = () => {
-    // In a real application, this would send a request to your backend
     setServiceList(
       serviceList.map(service => 
         service.id === editingId ? { ...editForm } : service
@@ -42,8 +40,6 @@ const ServiceEditor = () => {
     
     toast.success("Service updated successfully!");
     
-    // In a real app, you would persist these changes to a database
-    // For demo purposes, we're just updating the local state
     localStorage.setItem('customServices', JSON.stringify(
       serviceList.map(service => 
         service.id === editingId ? { ...editForm } : service
@@ -68,12 +64,24 @@ const ServiceEditor = () => {
   };
 
   useEffect(() => {
-    // Load any custom services from localStorage (for demo persistence)
     const savedServices = localStorage.getItem('customServices');
     if (savedServices) {
-      setServiceList(JSON.parse(savedServices));
+      try {
+        const parsedServices = JSON.parse(savedServices);
+        const validServices = parsedServices.map((service: any) => ({
+          ...service,
+          category: isValidCategory(service.category) ? service.category : "detailing"
+        }));
+        setServiceList(validServices);
+      } catch (e) {
+        console.error("Error loading saved services:", e);
+      }
     }
   }, []);
+
+  const isValidCategory = (category: string): category is "detailing" | "protection" | "specialty" => {
+    return ["detailing", "protection", "specialty"].includes(category);
+  };
 
   return (
     <div className="space-y-6">
@@ -110,7 +118,10 @@ const ServiceEditor = () => {
                 <select 
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   value={editForm.category}
-                  onChange={(e) => setEditForm({ ...editForm, category: e.target.value as "detailing" | "protection" | "specialty" })}
+                  onChange={(e) => setEditForm({ 
+                    ...editForm, 
+                    category: e.target.value as "detailing" | "protection" | "specialty" 
+                  })}
                 >
                   <option value="detailing">Detailing</option>
                   <option value="protection">Protection</option>

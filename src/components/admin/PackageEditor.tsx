@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { servicePackages } from "@/data/servicesData";
+import { servicePackages, ServicePackage } from "@/data/servicesData";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,9 +9,16 @@ import { Pencil, Save, Plus, Trash2, Check, X } from "lucide-react";
 import { toast } from "sonner";
 
 const PackageEditor = () => {
-  const [packageList, setPackageList] = useState([...servicePackages]);
+  const [packageList, setPackageList] = useState<ServicePackage[]>([...servicePackages]);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editForm, setEditForm] = useState({
+  const [editForm, setEditForm] = useState<{
+    id: string;
+    title: string;
+    description: string;
+    price: string;
+    features: string[];
+    featured: boolean;
+  }>({
     id: "",
     title: "",
     description: "",
@@ -23,7 +30,10 @@ const PackageEditor = () => {
   const handleEdit = (id: string) => {
     const packageToEdit = packageList.find(pkg => pkg.id === id);
     if (packageToEdit) {
-      setEditForm({ ...packageToEdit });
+      setEditForm({ 
+        ...packageToEdit, 
+        featured: packageToEdit.featured || false  // Ensure featured is always defined
+      });
       setEditingId(id);
     }
   };
