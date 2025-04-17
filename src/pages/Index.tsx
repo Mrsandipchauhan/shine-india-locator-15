@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowRight, Check, Car, Shield, Award, Users, Tool, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Check, Car, Shield, Award, Users, Wrench, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -107,7 +107,7 @@ const Index = () => {
               <Card className="bg-card/50 backdrop-blur border border-border hover:border-primary/50 transition-all hover:shadow-md group">
                 <CardContent className="p-6">
                   <div className="mb-4 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Tool className="h-6 w-6 text-primary" />
+                    <Wrench className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">Paint Protection</h3>
                   <p className="text-muted-foreground mb-4">
