@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
 import BookingForm from "./BookingForm";
-import { Check } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 
 interface ServiceCardProps {
   id?: string;
@@ -29,34 +29,54 @@ const ServiceCard = ({
   showDetailedView = false
 }: ServiceCardProps) => {
   const [showBooking, setShowBooking] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   
   return (
     <>
-      <Card className="overflow-hidden group hover-scale premium-shadow transition-all duration-300 border border-border/50 bg-card h-full flex flex-col">
-        <div className="relative h-48 overflow-hidden">
+      <Card 
+        className="overflow-hidden group transition-all duration-500 border-border/30 bg-card/50 h-full flex flex-col rounded-xl backdrop-blur-sm relative"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Hover glow effect */}
+        <div className={`absolute inset-0 bg-primary/5 rounded-xl transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`}></div>
+        
+        <div className="relative h-56 overflow-hidden">
+          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10" />
+          
+          {/* Background image with zoom effect */}
           <img 
             src={image} 
             alt={title}
-            className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500"
+            className={`w-full h-full object-cover transition-transform duration-700 ${isHovered ? 'scale-110' : 'scale-100'}`}
           />
+          
+          {/* Price tag */}
+          <div className="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
+            <p className="text-primary font-semibold">{price}</p>
+          </div>
+          
           <div className="absolute bottom-4 left-4 z-20">
             <h3 className="text-xl font-bold text-white">{title}</h3>
-            <p className="text-primary text-lg font-semibold">{price}</p>
           </div>
         </div>
         
-        <CardContent className="p-6 flex-grow flex flex-col bg-gradient-to-br from-card via-card/95 to-card/90">
-          <p className="text-muted-foreground mb-4">{description}</p>
+        <CardContent className="p-6 flex-grow flex flex-col bg-gradient-to-br from-card via-card/95 to-card/90 relative z-10">
+          <p className="text-muted-foreground mb-5">{description}</p>
           
           {showDetailedView && duration && satisfaction && (
-            <div className="space-y-2 mb-4 text-muted-foreground">
-              <div className="flex items-center text-sm">
-                <span className="mr-2">⏱️</span>
+            <div className="space-y-3 mb-5 text-muted-foreground">
+              <div className="flex items-center text-sm bg-card/70 p-2 rounded-lg">
+                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-primary">⏱️</span>
+                </div>
                 <span>Duration: {duration}</span>
               </div>
-              <div className="flex items-center text-sm">
-                <span className="mr-2">⭐</span>
+              <div className="flex items-center text-sm bg-card/70 p-2 rounded-lg">
+                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-primary">⭐</span>
+                </div>
                 <span>Satisfaction Rate: {satisfaction}</span>
               </div>
             </div>
@@ -65,7 +85,7 @@ const ServiceCard = ({
           <ul className="space-y-3 mb-6 flex-grow">
             {features.map((feature, index) => (
               <li key={index} className="flex items-center text-sm text-muted-foreground">
-                <div className="mr-2 text-primary bg-primary/10 p-1 rounded-full">
+                <div className="mr-3 text-primary bg-primary/10 p-1.5 rounded-full">
                   <Check size={12} />
                 </div>
                 {feature}
@@ -74,12 +94,18 @@ const ServiceCard = ({
           </ul>
           
           <Button 
-            className="w-full bg-primary hover:bg-primary/90 premium-shadow" 
+            className="w-full bg-primary hover:bg-primary/90 rounded-lg group transition-all px-4 py-6 flex items-center justify-center space-x-2" 
             onClick={() => setShowBooking(true)}
           >
-            Book Now
+            <span>Book Now</span>
+            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </Button>
         </CardContent>
+        
+        {/* Border glow effect on hover */}
+        <div 
+          className={`absolute inset-0 rounded-xl border border-primary/50 transition-opacity duration-500 pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+        ></div>
       </Card>
       
       <Dialog open={showBooking} onOpenChange={setShowBooking}>
