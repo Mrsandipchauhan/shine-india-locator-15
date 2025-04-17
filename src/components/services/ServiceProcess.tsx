@@ -1,67 +1,40 @@
 
 import { Badge } from "@/components/ui/badge";
 
-const ServiceProcess = () => {
+interface ServiceProcessProps {
+  title: string;
+  steps: string[];
+}
+
+const ServiceProcess = ({ title, steps }: ServiceProcessProps) => {
   return (
     <section className="mt-24 mb-16 bg-card rounded-xl p-8 border border-border">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <Badge variant="outline" className="mb-2">Our Process</Badge>
-          <h2 className="text-3xl font-bold mb-4">How Our Detailing Works</h2>
+          <h2 className="text-3xl font-bold mb-4">How Our {title} Works</h2>
           <p className="text-lg text-muted-foreground mb-8">
             We follow a systematic approach to ensure exceptional results for every vehicle we service.
           </p>
           
           <div className="space-y-8">
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold mr-4">
-                1
+            {steps.map((step, index) => (
+              <div key={index} className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold mr-4">
+                  {index + 1}
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">
+                    {index === 0 && "Inspection & Assessment"}
+                    {index === 1 && "Pre-Treatment & Washing"}
+                    {index === 2 && "Detailed Cleaning & Correction"}
+                    {index === 3 && "Protection Application"}
+                    {index === 4 && "Final Inspection & Delivery"}
+                  </h3>
+                  <p className="text-muted-foreground">{step}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold">Inspection & Assessment</h3>
-                <p className="text-muted-foreground">We carefully examine your vehicle to identify specific needs and create a tailored plan.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold mr-4">
-                2
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Pre-Treatment & Washing</h3>
-                <p className="text-muted-foreground">Specialized pre-wash treatments and careful hand washing to safely remove contaminants.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold mr-4">
-                3
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Detailed Cleaning & Correction</h3>
-                <p className="text-muted-foreground">Meticulous attention to every surface with specialized tools and techniques.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold mr-4">
-                4
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Protection Application</h3>
-                <p className="text-muted-foreground">Premium protective products applied to preserve your vehicle's appearance.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-semibold mr-4">
-                5
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Final Inspection & Delivery</h3>
-                <p className="text-muted-foreground">Thorough quality check and walkthrough of completed work with maintenance tips.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
         
