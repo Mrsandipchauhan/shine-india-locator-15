@@ -11,6 +11,9 @@ import Locations from "./pages/Locations";
 import ServiceLocations from "./pages/ServiceLocations";
 import CityLocation from "./pages/CityLocation";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
+import Services from "./pages/Services";
+import ServiceDetail from "./pages/ServiceDetail";
 
 const queryClient = new QueryClient();
 
@@ -20,11 +23,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/locations" element={<Locations />} />
           <Route path="/locations/:cityId" element={<ServiceLocations />} />
           <Route path="/city/:cityId" element={<CityLocation />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:serviceId" element={<ServiceDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

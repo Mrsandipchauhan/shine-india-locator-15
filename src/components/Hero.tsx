@@ -18,9 +18,6 @@ const Hero = () => {
         }}
       ></div>
       
-      {/* Animated overlay effect */}
-      <div className="absolute inset-0 animate-shine z-10 opacity-30"></div>
-      
       <div className="container mx-auto px-4 py-20 md:py-28 lg:py-40 relative z-20">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 text-white">

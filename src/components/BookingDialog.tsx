@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import BookingForm from "./BookingForm";
+import { useLocation } from "react-router-dom";
 
 interface BookingDialogProps {
   selectedService?: string;
@@ -9,15 +10,27 @@ interface BookingDialogProps {
 
 const BookingDialog = ({ selectedService }: BookingDialogProps = {}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  
+  // Check if current page is a service location page
+  const isServiceLocationPage = 
+    location.pathname.startsWith('/locations/') ||
+    location.pathname.startsWith('/city/');
   
   useEffect(() => {
-    // Show dialog after 7 seconds
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 7000);
-    
-    return () => clearTimeout(timer);
-  }, []);
+    // Only show dialog if we're on a service location page
+    if (isServiceLocationPage) {
+      // Show dialog after 12 seconds instead of 7
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+      }, 12000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isServiceLocationPage]);
+  
+  // If not on a service location page, don't render the dialog
+  if (!isServiceLocationPage) return null;
   
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

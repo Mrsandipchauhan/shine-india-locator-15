@@ -55,51 +55,132 @@
     @apply bg-background text-foreground;
   }
   
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+  html {
+    scroll-behavior: smooth;
   }
-  
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  @keyframes shine {
-    0% {
-      background-position: -200px;
-    }
-    100% {
-      background-position: calc(100% + 200px);
-    }
-  }
-  
-  .animate-shine {
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    background-size: 200px 100%;
-    background-repeat: no-repeat;
-    animation: shine 2s infinite;
-  }
+}
 
-  /* Custom scrollbar for webkit browsers */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: hsl(var(--background)); 
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: hsl(var(--primary) / 0.5);
-    border-radius: 4px;
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary) / 0.8); 
-  }
+/* Custom slider for before/after comparison */
+.comparison-slider {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.comparison-slider .before,
+.comparison-slider .after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.comparison-slider .before {
+  clip-path: polygon(0 0, var(--position) 0, var(--position) 100%, 0 100%);
+}
+
+.comparison-slider .slider-handle {
+  position: absolute;
+  top: 0;
+  left: var(--position);
+  width: 4px;
+  height: 100%;
+  background: white;
+  transform: translateX(-50%);
+  cursor: ew-resize;
+}
+
+.comparison-slider .slider-handle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comparison-slider .slider-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent var(--primary);
+  margin-left: -5px;
+}
+
+.comparison-slider .slider-handle::before {
+  content: '';
+  margin-left: 14px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent var(--primary) transparent transparent;
+}
+
+/* Hide scrollbar for the city slider */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* SEO Rich content styles */
+.seo-content h2 {
+  @apply text-2xl font-bold mt-8 mb-4 text-primary;
+}
+
+.seo-content h3 {
+  @apply text-xl font-semibold mt-6 mb-3 text-primary/90;
+}
+
+.seo-content p {
+  @apply mb-4 text-muted-foreground;
+}
+
+.seo-content ul {
+  @apply mb-4 list-disc pl-5 space-y-2;
+}
+
+.seo-content li {
+  @apply text-muted-foreground;
+}
+
+.seo-content a {
+  @apply text-primary hover:underline;
+}
+
+.seo-content blockquote {
+  @apply pl-4 border-l-4 border-primary/30 italic my-4;
+}
+
+.seo-content table {
+  @apply w-full border-collapse mb-4;
+}
+
+.seo-content th, .seo-content td {
+  @apply border border-border p-2;
+}
+
+.seo-content th {
+  @apply bg-primary/10;
 }
