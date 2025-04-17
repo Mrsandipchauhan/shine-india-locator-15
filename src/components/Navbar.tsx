@@ -1,11 +1,12 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
@@ -36,7 +37,7 @@ const Navbar = () => {
               <Phone size={16} className="text-primary" />
               <span className="text-sm">+91 800-123-4567</span>
             </div>
-            <Button className="bg-primary hover:bg-primary/90">Book Now</Button>
+            <Button className="bg-primary hover:bg-primary/90" onClick={() => navigate('/book-service')}>Book Now</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -61,7 +62,10 @@ const Navbar = () => {
             <Link to="/gallery" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Gallery</Link>
             <Link to="/about" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>About</Link>
             <Link to="/contact" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Contact</Link>
-            <Button className="w-full bg-primary hover:bg-primary/90">Book Now</Button>
+            <Button className="w-full bg-primary hover:bg-primary/90" onClick={() => {
+              navigate('/book-service');
+              setIsMenuOpen(false);
+            }}>Book Now</Button>
           </div>
         </div>
       )}
