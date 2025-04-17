@@ -16,8 +16,8 @@
     --primary: 217 91% 60%;
     --primary-foreground: 210 40% 98%;
     
-    --secondary: 220 13% 75%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 217 33% 18%;
+    --secondary-foreground: 210 40% 98%;
     
     --muted: 217 33% 18%;
     --muted-foreground: 215 20% 70%;
@@ -50,10 +50,13 @@
   }
 }
 
-/* Custom utilities */
 @layer utilities {
   .glass {
     @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-md border border-white/10;
   }
   
   .card-gradient {
@@ -62,6 +65,18 @@
   
   .text-gradient {
     @apply bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent;
+  }
+  
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  .premium-shadow {
+    @apply shadow-lg shadow-primary/25;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 }
 

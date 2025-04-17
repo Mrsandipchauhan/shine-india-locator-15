@@ -32,9 +32,9 @@ const ServiceCard = ({
   
   return (
     <>
-      <Card className="overflow-hidden group hover:shadow-lg transition-all duration-300 border border-border h-full flex flex-col">
+      <Card className="overflow-hidden group hover-scale premium-shadow transition-all duration-300 border border-border/50 bg-card h-full flex flex-col">
         <div className="relative h-48 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10" />
           <img 
             src={image} 
             alt={title}
@@ -46,27 +46,27 @@ const ServiceCard = ({
           </div>
         </div>
         
-        <CardContent className="p-6 flex-grow flex flex-col">
+        <CardContent className="p-6 flex-grow flex flex-col bg-gradient-to-br from-card via-card/95 to-card/90">
           <p className="text-muted-foreground mb-4">{description}</p>
           
           {showDetailedView && duration && satisfaction && (
-            <div className="space-y-2 mb-4">
-              <div className="flex items-center text-sm text-muted-foreground">
+            <div className="space-y-2 mb-4 text-muted-foreground">
+              <div className="flex items-center text-sm">
                 <span className="mr-2">⏱️</span>
                 <span>Duration: {duration}</span>
               </div>
-              <div className="flex items-center text-sm text-muted-foreground">
+              <div className="flex items-center text-sm">
                 <span className="mr-2">⭐</span>
                 <span>Satisfaction Rate: {satisfaction}</span>
               </div>
             </div>
           )}
           
-          <ul className="space-y-2 mb-6 flex-grow">
+          <ul className="space-y-3 mb-6 flex-grow">
             {features.map((feature, index) => (
-              <li key={index} className="flex items-center text-sm">
-                <div className="mr-2 text-primary">
-                  <Check size={16} />
+              <li key={index} className="flex items-center text-sm text-muted-foreground">
+                <div className="mr-2 text-primary bg-primary/10 p-1 rounded-full">
+                  <Check size={12} />
                 </div>
                 {feature}
               </li>
@@ -74,7 +74,7 @@ const ServiceCard = ({
           </ul>
           
           <Button 
-            className="w-full bg-primary hover:bg-primary/90" 
+            className="w-full bg-primary hover:bg-primary/90 premium-shadow" 
             onClick={() => setShowBooking(true)}
           >
             Book Now
