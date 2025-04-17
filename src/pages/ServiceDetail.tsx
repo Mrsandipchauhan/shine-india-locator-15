@@ -1,11 +1,13 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import BookingForm from "@/components/BookingForm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageUtilities from "@/components/PageUtilities";
+import ServiceFAQ from "@/components/services/ServiceFAQ";
+import { serviceFAQs } from "@/data/faqData";
 import ServiceHero from "@/components/services/ServiceHero";
 import ServiceOverview from "@/components/services/ServiceOverview";
 import ServiceProcess from "@/components/services/ServiceProcess";
@@ -200,6 +202,15 @@ const ServiceDetail = () => {
   const { serviceId } = useParams();
   const [showBooking, setShowBooking] = useState(false);
   
+  useEffect(() => {
+    // Show booking popup after 12 seconds only on service pages
+    const timer = setTimeout(() => {
+      setShowBooking(true);
+    }, 12000);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   // Handle non-existent service
   if (!serviceId || !servicesData[serviceId as keyof typeof servicesData]) {
     return (
@@ -217,6 +228,7 @@ const ServiceDetail = () => {
   }
   
   const service = servicesData[serviceId as keyof typeof servicesData];
+  const faqs = serviceFAQs[serviceId as keyof typeof serviceFAQs] || [];
   
   // Get related services (excluding current service)
   const relatedServicesIds = Object.keys(servicesData).filter(id => id !== serviceId);
@@ -240,6 +252,7 @@ const ServiceDetail = () => {
         <meta itemProp="provider" itemScope itemType="https://schema.org/LocalBusiness" />
         <meta itemProp="areaServed" content="India" />
         <meta itemProp="serviceType" content="Car Detailing" />
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <ServiceHero 
@@ -263,6 +276,11 @@ const ServiceDetail = () => {
             <ServiceBenefits 
               benefits={service.benefits}
             />
+            
+            <ServiceFAQ
+              serviceName={service.title}
+              faqs={faqs}
+            />
           </div>
           
           <div className="lg:col-span-1">
@@ -272,35 +290,6 @@ const ServiceDetail = () => {
               onBookingClick={() => setShowBooking(true)}
               relatedServices={relatedServices}
             />
-          </div>
-        </div>
-        
-        <div className="mt-12 mb-16">
-          <div className="bg-card border border-border rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Expert {service.title} in India</h2>
-            <div className="prose max-w-none">
-              <p>
-                ShineDetailers provides professional {service.title.toLowerCase()} services across major cities in India, including Delhi, Mumbai, Bangalore, Chennai, Hyderabad and more.
-              </p>
-              <p>
-                Our {service.title.toLowerCase()} specialists are trained to deliver exceptional results using the latest techniques and premium products. We understand the unique challenges faced by vehicles in India's diverse climate and urban conditions.
-              </p>
-              <h3>Why Choose Professional {service.title}?</h3>
-              <p>
-                Regular professional {service.title.toLowerCase()} is essential for maintaining your vehicle's value and appearance. Our service goes beyond what can be achieved with DIY methods, providing deeper cleaning, longer-lasting protection, and expert attention to detail.
-              </p>
-              <h3>Customized Solutions For Every Vehicle</h3>
-              <p>
-                Whether you drive a compact hatchback, luxury sedan, or premium SUV, our {service.title.toLowerCase()} services are tailored to your specific vehicle's needs. We consider factors like vehicle age, condition, paint type, and your driving environment to deliver optimal results.
-              </p>
-              <h3>Booking Your {service.title} Service</h3>
-              <p>
-                Scheduling your {service.title.toLowerCase()} appointment is easy. Simply select your city, preferred date and time, and service requirements. Our team will confirm your booking and provide any preparation instructions if needed.
-              </p>
-              <p>
-                Experience the ShineDetailers difference and see why we're India's trusted name in professional car detailing. Book your {service.title.toLowerCase()} service today.
-              </p>
-            </div>
           </div>
         </div>
       </div>
