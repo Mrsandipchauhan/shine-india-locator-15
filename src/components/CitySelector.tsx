@@ -5,6 +5,13 @@ import { Search, MapPin, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Top cities in India by car ownership
 const majorCities = [
@@ -49,7 +56,8 @@ const CitySelector = () => {
           </p>
         </div>
         
-        <div className="max-w-md mx-auto mb-12 relative">
+        <div className="max-w-md mx-auto mb-12 flex flex-col space-y-4">
+          {/* Search Bar */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
             <Input
@@ -61,6 +69,25 @@ const CitySelector = () => {
               onFocus={() => setFocused(true)}
               onBlur={() => setTimeout(() => setFocused(false), 200)}
             />
+          </div>
+          
+          {/* City Dropdown Selector */}
+          <div className="w-full">
+            <Select onValueChange={(value) => window.location.href = `/locations/${value.toLowerCase()}`}>
+              <SelectTrigger className="w-full py-6 bg-background">
+                <SelectValue placeholder="Or select a city from the list" />
+              </SelectTrigger>
+              <SelectContent className="max-h-96">
+                {majorCities.map((city) => (
+                  <SelectItem key={city} value={city}>
+                    <div className="flex items-center">
+                      <MapPin size={14} className="mr-2 text-primary" />
+                      <span>{city}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           {focused && filteredCities.length > 0 && (
@@ -110,27 +137,6 @@ const CitySelector = () => {
             ))}
           </div>
         </div>
-        
-        {/* All cities grid */}
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-xl font-semibold mb-6">All Service Locations</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {majorCities.map((city) => (
-                <Link 
-                  key={city}
-                  to={`/locations/${city.toLowerCase()}`}
-                  className="bg-background hover:bg-primary/10 border border-border rounded-lg p-4 text-center transition-colors"
-                >
-                  <div className="flex flex-col items-center">
-                    <MapPin size={20} className="text-primary mb-2" />
-                    <span className="font-medium">{city}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </section>
   );

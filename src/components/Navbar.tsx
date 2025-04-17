@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -34,6 +34,13 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
+            <Link 
+              to="/" 
+              className={`px-3 py-2 text-sm ${isActive('/') ? 'text-primary' : 'text-foreground/90'} hover:text-primary transition-colors flex items-center`}
+            >
+              <Home size={16} className="mr-1" />
+              Home
+            </Link>
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -66,12 +73,6 @@ const Navbar = () => {
               className={`px-3 py-2 text-sm ${isActive('/locations') ? 'text-primary' : 'text-foreground/90'} hover:text-primary transition-colors`}
             >
               Locations
-            </Link>
-            <Link 
-              to="/gallery" 
-              className={`px-3 py-2 text-sm ${isActive('/gallery') ? 'text-primary' : 'text-foreground/90'} hover:text-primary transition-colors`}
-            >
-              Gallery
             </Link>
             <Link 
               to="/about" 
@@ -113,6 +114,10 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-card/95 backdrop-blur-sm border-b border-border">
           <div className="container mx-auto px-4 py-4 space-y-3">
+            <Link to="/" className="flex items-center space-x-2 px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>
+              <Home size={16} className="mr-1" />
+              Home
+            </Link>
             <div className="space-y-2">
               <div className="font-medium px-3 py-2">Services</div>
               <Link to="/services/exterior-detailing" className="block px-6 py-2 text-sm text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Exterior Detailing</Link>
@@ -121,7 +126,6 @@ const Navbar = () => {
               <Link to="/services/paint-protection" className="block px-6 py-2 text-sm text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Paint Protection</Link>
             </div>
             <Link to="/locations" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Locations</Link>
-            <Link to="/gallery" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Gallery</Link>
             <Link to="/about" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>About</Link>
             <Link to="/contact" className="block px-3 py-2 text-foreground/90 hover:text-primary transition-colors" onClick={() => setIsMenuOpen(false)}>Contact</Link>
             <Link to="/services">

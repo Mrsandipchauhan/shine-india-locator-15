@@ -16,10 +16,14 @@ export const topCities = [
 
 const LocationDetection = () => {
   const [userCity, setUserCity] = useState("");
+  const [hasPrompted, setHasPrompted] = useState(false);
 
   useEffect(() => {
-    detectUserLocation();
-  }, []);
+    // Only attempt detection once per session
+    if (!hasPrompted) {
+      detectUserLocation();
+    }
+  }, [hasPrompted]);
 
   const detectUserLocation = async () => {
     // Only show the prompt if we should (based on the 3-day rule)
@@ -55,14 +59,24 @@ const LocationDetection = () => {
               // Mark that we've shown the prompt even if they dismiss it
               markLocationPromptShown();
             },
-            duration: 8000
+            duration: 8000,
+            cancel: {
+              label: "Don't show again",
+              onClick: () => {
+                markLocationPromptShown();
+              }
+            }
           });
+          
+          // Mark that we've prompted in this session
+          setHasPrompted(true);
         }
       }
     } catch (error) {
       console.error("Error detecting location:", error);
       // Mark that we've shown the prompt even if there was an error
       markLocationPromptShown();
+      setHasPrompted(true);
     }
   };
 

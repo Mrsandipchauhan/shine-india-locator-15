@@ -25,7 +25,7 @@ const NotFound = () => {
               Please check the URL or try one of the options below.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
               <Link to="/" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
                 <Home size={24} className="text-primary mb-2" />
                 <span className="font-medium">Return Home</span>
@@ -34,11 +34,6 @@ const NotFound = () => {
               <Link to="/locations" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
                 <MapPin size={24} className="text-primary mb-2" />
                 <span className="font-medium">Find Locations</span>
-              </Link>
-              
-              <Link to="/services" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
-                <Search size={24} className="text-primary mb-2" />
-                <span className="font-medium">Browse Services</span>
               </Link>
             </div>
             
