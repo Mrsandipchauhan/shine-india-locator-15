@@ -15,7 +15,8 @@ const BookingDialog = ({ selectedService }: BookingDialogProps = {}) => {
   // Check if current page is a service location page
   const isServiceLocationPage = 
     location.pathname.startsWith('/locations/') ||
-    location.pathname.startsWith('/city/');
+    location.pathname.startsWith('/city/') ||
+    location.pathname.startsWith('/services/');
   
   useEffect(() => {
     // Only show dialog if we're on a service location page

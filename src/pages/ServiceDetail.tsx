@@ -1,246 +1,318 @@
-import React, { useEffect, useState } from "react";
+
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import BookingForm from "@/components/BookingForm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageUtilities from "@/components/PageUtilities";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import BookingForm from "@/components/BookingForm";
 import ServiceHero from "@/components/services/ServiceHero";
 import ServiceOverview from "@/components/services/ServiceOverview";
 import ServiceProcess from "@/components/services/ServiceProcess";
 import ServiceBenefits from "@/components/services/ServiceBenefits";
 import ServiceSidebar from "@/components/services/ServiceSidebar";
 
-// Service data with detailed descriptions and matched before/after images of the same cars
-const serviceData = {
+const servicesData = {
   "exterior-detailing": {
     title: "Exterior Detailing",
-    description: "Complete exterior cleaning, clay bar treatment, polishing, and waxing to restore your car's shine.",
-    longDescription: `
-      Our premium exterior detailing service is a comprehensive treatment designed to restore and enhance
-      your vehicle's exterior surfaces. This service goes far beyond a standard car wash, addressing issues
-      such as swirl marks, minor scratches, oxidation, and environmental contamination.
-      
-      Our certified technicians follow a meticulous multi-step process that includes a thorough wash,
-      clay bar treatment to remove embedded contaminants, machine polishing to correct imperfections,
-      and the application of premium wax or sealant for lasting protection.
-    `,
+    description: "Restore your vehicle's exterior shine with our professional detailing service",
+    fullDescription: "Our exterior detailing service is a comprehensive treatment designed to restore and protect your vehicle's outer surfaces. We use premium products and techniques to remove contaminants, restore shine, and apply protective treatments that shield your car from environmental damage.",
     price: "Starting at ₹2,999",
     image: "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?q=80&w=2070&auto=format&fit=crop",
-    beforeImage: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1000&auto=format&fit=crop",
-    afterImage: "https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1000&auto=format&fit=crop",
+    beforeImage: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1000&auto=format&fit=crop",
+    afterImage: "https://images.unsplash.com/photo-1605723517503-3cadb5818bc3?q=80&w=1000&auto=format&fit=crop",
     features: [
-      "Hand wash using premium pH-neutral shampoos",
+      "Thorough exterior hand wash with pH-balanced soap",
       "Clay bar treatment to remove embedded contaminants",
-      "Machine polishing to eliminate swirl marks and minor scratches",
-      "Paint correction for deeper imperfections",
-      "Application of premium carnauba wax or synthetic sealant",
-      "Wheel cleaning and tire dressing",
-      "Trim restoration and protection",
-      "Glass cleaning and treatment"
+      "Machine polishing to remove swirls and minor scratches",
+      "Paint sealant or wax application for lasting protection",
+      "Wheel and tire cleaning and dressing",
+      "Exterior glass cleaning and treatment",
+      "Chrome and trim restoration and protection"
     ],
-    steps: [
-      "Initial high-pressure rinse to remove loose dirt",
-      "Hand washing with microfiber wash mitts and pH-neutral shampoo",
-      "Decontamination with iron remover and clay bar treatment",
-      "Surface inspection and assessment of paint condition",
-      "Machine polishing with compound or polish as needed",
-      "Second polishing step with finer polish if required",
-      "Panel wipe to remove any residue",
-      "Application of protective wax, sealant, or coating",
-      "Wheel cleaning, tire dressing, and trim restoration",
+    process: [
+      "Initial rinse to remove loose dirt and debris",
+      "Foam application and hand washing with microfiber mitts",
+      "Clay bar treatment to remove bonded contaminants",
+      "Machine polishing to correct paint imperfections",
+      "Application of premium sealant or wax for protection",
+      "Wheel and tire cleaning, including wheel wells",
+      "Exterior trim and plastic restoration",
       "Final inspection and touch-ups"
     ],
     benefits: [
-      "Restores showroom shine and gloss",
-      "Removes surface contaminants and embedded particles",
-      "Eliminates swirl marks and minor scratches",
-      "Provides protection against environmental contaminants",
-      "Enhances vehicle appearance and maintains value",
-      "Creates a hydrophobic surface that repels water and dirt"
+      "Enhanced vehicle appearance and restored shine",
+      "Protection against environmental contaminants",
+      "Prevention of premature paint oxidation and fading",
+      "Increased resale value with maintained exterior",
+      "Removal of harmful contaminants that can damage paint",
+      "Lasting protection between maintenance washes",
+      "Professional results that exceed typical car wash cleaning"
     ]
   },
   "interior-detailing": {
     title: "Interior Detailing",
-    description: "Deep cleaning of all interior surfaces, fabric/leather treatment, and sanitization.",
-    longDescription: `
-      Our interior detailing service transforms your vehicle's cabin into a clean, fresh, and sanitized
-      environment. We address every surface and component, from carpets and upholstery to the smallest
-      vents and crevices.
-      
-      Using specialized tools, equipment, and products, our technicians thoroughly clean, condition, and
-      protect all interior surfaces while paying careful attention to material-specific requirements.
-      The result is a rejuvenated interior that looks, feels, and smells like new.
-    `,
+    description: "Deep cleaning of all interior surfaces for a fresh, sanitized cabin",
+    fullDescription: "Our interior detailing service delivers a meticulous cleaning and rejuvenation of your vehicle's cabin. We thoroughly clean every surface, remove stains, eliminate odors, and apply protective treatments to restore your interior to a like-new condition while sanitizing all touchpoints.",
     price: "Starting at ₹2,499",
     image: "https://images.unsplash.com/photo-1601362840343-43892066c5b5?q=80&w=1964&auto=format&fit=crop",
-    beforeImage: "https://images.unsplash.com/photo-1583916057530-02fda0705797?q=80&w=1000&auto=format&fit=crop",
-    afterImage: "https://images.unsplash.com/photo-1583916057587-cfe5cc0fea85?q=80&w=1000&auto=format&fit=crop",
+    beforeImage: "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?q=80&w=1000&auto=format&fit=crop",
+    afterImage: "https://images.unsplash.com/photo-1601362840343-43892066c5b5?q=80&w=1000&auto=format&fit=crop",
     features: [
-      "Deep vacuum cleaning of all carpets, seats, and mats",
-      "Thorough cleaning of dashboard, console, and trim",
-      "Leather cleaning and conditioning treatment",
-      "Fabric upholstery shampooing and extraction",
-      "Complete air vent and crevice cleaning",
-      "Glass interior cleaning and anti-fog treatment",
-      "Odor elimination and sanitization",
-      "UV protection for interior surfaces"
+      "Complete vacuuming of all interior surfaces",
+      "Steam cleaning of seats, carpets, and floor mats",
+      "Dashboard, console, and trim cleaning and protection",
+      "Leather cleaning, conditioning, and protection",
+      "Interior glass cleaning and anti-fog treatment",
+      "Air vent cleaning and sanitization",
+      "Odor elimination treatments"
     ],
-    steps: [
-      "Remove all personal items and floor mats",
-      "Thorough vacuuming of all surfaces including seat crevices and trunk",
-      "Clean and condition leather surfaces with appropriate products",
-      "Shampoo fabric upholstery and extract dirt and stains",
-      "Clean all hard surfaces with appropriate products for each material",
-      "Detail air vents, switches, buttons, and small components",
-      "Clean and treat door jambs and thresholds",
-      "Apply UV protectant to prevent fading and cracking",
-      "Clean all interior glass and mirrors",
-      "Steam cleaning for stubborn stains and sanitization",
-      "Deodorizing treatment and final inspection"
+    process: [
+      "Removal of all personal items and trash",
+      "Thorough vacuuming of all surfaces including seats and trunk",
+      "Steam cleaning of fabric surfaces and floor mats",
+      "Specialized leather cleaning and conditioning",
+      "Interior plastic and vinyl cleaning and protection",
+      "Detailed cleaning of all switches, buttons, and vents",
+      "Glass cleaning with streak-free solutions",
+      "Application of fabric protectant and sanitizer"
     ],
     benefits: [
-      "Creates a cleaner, healthier vehicle environment",
-      "Removes allergens, bacteria, and odor-causing agents",
-      "Prevents premature wear and deterioration of interior materials",
-      "Enhances driving comfort and experience",
-      "Preserves the value of your vehicle",
-      "Identifies and addresses hidden issues before they worsen"
+      "Elimination of allergens, bacteria, and germs",
+      "Removal of stubborn stains and embedded dirt",
+      "Prevention of premature wear on interior surfaces",
+      "Restoration of leather, vinyl, and fabric surfaces",
+      "Elimination of odors at their source, not masking",
+      "Protection against UV damage to interior components",
+      "Healthier vehicle environment for you and passengers"
     ]
   },
   "ceramic-coating": {
     title: "Ceramic Coating",
-    description: "Long-lasting protection with advanced nanoceramic technology.",
-    longDescription: `
-      Our ceramic coating service provides ultimate protection for your vehicle's paint with advanced
-      nano-ceramic technology. This semi-permanent coating creates a chemical bond with your vehicle's
-      factory paint, resulting in a layer of protection that lasts for years, not months.
-      
-      The hydrophobic properties repel water, dirt, and contaminants, making your vehicle easier to
-      clean while maintaining its showroom shine. The coating also provides exceptional resistance to
-      UV rays, oxidation, chemical stains, and light scratches.
-    `,
+    description: "Long-lasting protection with advanced nano-ceramic technology",
+    fullDescription: "Our professional ceramic coating service applies a nano-ceramic liquid polymer that bonds with your vehicle's paint at a molecular level. This creates a permanent protective layer that offers unmatched gloss, hardness, and hydrophobic properties that protect your paint for years, not months.",
     price: "Starting at ₹15,999",
     image: "https://images.unsplash.com/photo-1619642340116-bade7c2b2309?q=80&w=1974&auto=format&fit=crop",
-    beforeImage: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=1000&auto=format&fit=crop",
-    afterImage: "https://images.unsplash.com/photo-1617814076169-2c8a354d6b86?q=80&w=1000&auto=format&fit=crop",
+    beforeImage: "https://images.unsplash.com/photo-1594051673969-172a6f721d3c?q=80&w=1000&auto=format&fit=crop",
+    afterImage: "https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?q=80&w=1000&auto=format&fit=crop",
     features: [
-      "Advanced Nano-Ceramic Formula",
-      "9H Hardness Rating",
-      "5-Year Warranty",
-      "Hydrophobic Properties",
-      "UV Resistance",
-      "Chemical Stain Protection",
-      "Enhanced Gloss Finish",
-      "Simplified Maintenance"
+      "Premium grade 9H hardness ceramic coating",
+      "Multi-stage paint correction before application",
+      "Extreme hydrophobic properties for easy cleaning",
+      "UV protection to prevent paint oxidation",
+      "Chemical resistance against harsh contaminants",
+      "Enhanced gloss and depth of color",
+      "5-year warranty with documented application"
     ],
-    steps: [
-      "Initial decontamination wash",
-      "Clay bar treatment to remove embedded contaminants",
-      "Paint correction to eliminate swirl marks and imperfections",
-      "Surface preparation with alcohol solution",
-      "Application of ceramic coating in controlled environment",
-      "Curing period with specific temperature and humidity control",
-      "Inspection and quality assurance checks",
-      "Final buff and detail"
+    process: [
+      "Initial decontamination wash and clay bar treatment",
+      "Multi-stage paint correction to remove defects",
+      "Surface preparation with specialized alcohols",
+      "Professional application of ceramic coating in layers",
+      "Controlled curing in optimal conditions",
+      "Final inspection and documentation for warranty",
+      "Detailed care instructions for maintenance"
     ],
     benefits: [
-      "Long-lasting protection (up to 5 years)",
-      "Enhanced paint depth and gloss",
-      "Superior hydrophobic properties for easy cleaning",
-      "Protection from environmental contaminants",
-      "Resistance to chemical stains and etching",
-      "Reduced maintenance time and costs",
-      "Preserved resale value"
+      "Long-term protection lasting 5+ years with proper care",
+      "Superior gloss and shine compared to traditional waxes",
+      "Extreme water beading and self-cleaning properties",
+      "Protection against bird droppings, tree sap, and acid rain",
+      "Resistance to micro-marring and wash swirls",
+      "Reduced maintenance time and frequency",
+      "Enhanced resale value with documented protection"
+    ]
+  },
+  "paint-protection": {
+    title: "Paint Protection Film",
+    description: "Ultimate physical protection with self-healing film technology",
+    fullDescription: "Our Paint Protection Film (PPF) service applies a virtually invisible urethane film to your vehicle's exterior. This thermoplastic material offers the ultimate physical barrier against rock chips, scratches, and environmental damage while featuring self-healing properties that maintain a perfect finish.",
+    price: "Starting at ₹25,999",
+    image: "https://images.unsplash.com/photo-1621712493890-0069349208c6?q=80&w=1964&auto=format&fit=crop",
+    beforeImage: "https://images.unsplash.com/photo-1542230387-bfc77d70f34f?q=80&w=1000&auto=format&fit=crop",
+    afterImage: "https://images.unsplash.com/photo-1543465077-db45d34b88a5?q=80&w=1000&auto=format&fit=crop",
+    features: [
+      "Optically clear self-healing film technology",
+      "Protection against rock chips and road debris",
+      "Resistance to scratches and abrasions",
+      "UV protection to prevent yellowing and fading",
+      "Custom patterns for full vehicle or partial coverage",
+      "Professional installation with no visible seams",
+      "10-year warranty against yellowing and cracking"
+    ],
+    process: [
+      "Full vehicle paint correction before installation",
+      "Computer-cut patterns tailored to your specific vehicle",
+      "Professional installation by certified technicians",
+      "Heat-forming and stretching for perfect fitment",
+      "Trimming and finishing for invisible edges",
+      "Final inspection and documentation for warranty",
+      "Detailed care instructions for maintenance"
+    ],
+    benefits: [
+      "Self-healing technology that eliminates minor scratches",
+      "Preservation of factory paint for higher resale value",
+      "Protection from road salt and winter conditions",
+      "Invisible protection that doesn't alter appearance",
+      "Peace of mind when driving on highways and gravel roads",
+      "Maintained gloss and color without yellowing",
+      "Reduced long-term cost of paint repairs and touch-ups"
+    ]
+  },
+  "headlight-restoration": {
+    title: "Headlight Restoration",
+    description: "Restore clarity and brightness to yellowed, foggy headlights",
+    fullDescription: "Our headlight restoration service removes oxidation, yellowing, and haziness from your vehicle's headlights. Using professional-grade compounds and UV sealants, we restore optical clarity for improved visibility and safety while enhancing your vehicle's appearance.",
+    price: "Starting at ₹1,999",
+    image: "https://images.unsplash.com/photo-1567789232377-845662da09b5?q=80&w=1374&auto=format&fit=crop",
+    beforeImage: "https://images.unsplash.com/photo-1591311630200-ffa5138a1d79?q=80&w=1000&auto=format&fit=crop",
+    afterImage: "https://images.unsplash.com/photo-1600661653561-629509413baa?q=80&w=1000&auto=format&fit=crop",
+    features: [
+      "Removal of yellowing, oxidation, and haziness",
+      "Multi-stage wet sanding to restore clarity",
+      "Machine polishing to perfect surface finish",
+      "UV-resistant sealant to prevent future deterioration",
+      "Improved light output and beam pattern",
+      "Enhanced appearance of vehicle front end",
+      "Typically completed in 1-2 hours"
+    ],
+    process: [
+      "Thorough cleaning and preparation of headlight surface",
+      "Progressive wet sanding with various grits",
+      "Machine polishing with specialized compounds",
+      "Application of UV sealant for lasting protection",
+      "Before and after light output testing",
+      "Final inspection and documentation with photos"
+    ],
+    benefits: [
+      "Improved nighttime visibility and safety",
+      "Restored appearance of vehicle front end",
+      "Cost-effective alternative to headlight replacement",
+      "Prevention of further UV damage and deterioration",
+      "Potential improvement in vehicle inspection approval",
+      "Enhanced light output for safer driving conditions",
+      "Quick service with immediate visible results"
     ]
   }
 };
 
 const ServiceDetail = () => {
   const { serviceId } = useParams();
-  const [service, setService] = useState<any>(null);
   const [showBooking, setShowBooking] = useState(false);
   
-  useEffect(() => {
-    if (serviceId && serviceData[serviceId as keyof typeof serviceData]) {
-      setService(serviceData[serviceId as keyof typeof serviceData]);
-    }
-  }, [serviceId]);
-  
-  if (!service) {
+  // Handle non-existent service
+  if (!serviceId || !servicesData[serviceId as keyof typeof servicesData]) {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-3xl font-bold mb-4">Service Not Found</h1>
-            <p className="mb-8">Sorry, the service you're looking for doesn't exist or has been moved.</p>
-          </div>
-        </main>
+        <div className="container mx-auto px-4 py-16">
+          <h1 className="text-3xl font-bold">Service Not Found</h1>
+          <p className="text-muted-foreground mt-4">
+            The requested service does not exist. Please check our available services.
+          </p>
+        </div>
         <Footer />
       </>
     );
   }
-
-  const relatedServices = Object.entries(serviceData)
-    .filter(([id]) => id !== serviceId)
-    .slice(0, 3)
-    .map(([id, data]) => ({
-      id,
-      title: data.title,
-      price: data.price,
-      image: data.image,
-    }));
+  
+  const service = servicesData[serviceId as keyof typeof servicesData];
+  
+  // Get related services (excluding current service)
+  const relatedServicesIds = Object.keys(servicesData).filter(id => id !== serviceId);
+  const relatedServices = relatedServicesIds.slice(0, 3).map(id => ({
+    id,
+    title: servicesData[id as keyof typeof servicesData].title,
+    price: servicesData[id as keyof typeof servicesData].price,
+    image: servicesData[id as keyof typeof servicesData].image
+  }));
   
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-6 pb-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <ServiceHero 
-                title={service.title}
-                description={service.description}
-                image={service.image}
-              />
-              
-              <ServiceOverview 
-                description={service.longDescription}
-                features={service.features}
-                beforeImage={service.beforeImage}
-                afterImage={service.afterImage}
-              />
-              
-              <ServiceProcess 
-                title={service.title}
-                steps={service.steps}
-              />
-              
-              <ServiceBenefits 
-                benefits={service.benefits}
-              />
-            </div>
+      <div 
+        className="container mx-auto px-4 py-8"
+        itemScope 
+        itemType="https://schema.org/Service"
+      >
+        <meta itemProp="name" content={service.title} />
+        <meta itemProp="description" content={service.fullDescription} />
+        <meta itemProp="provider" itemScope itemType="https://schema.org/LocalBusiness" />
+        <meta itemProp="areaServed" content="India" />
+        <meta itemProp="serviceType" content="Car Detailing" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <ServiceHero 
+              title={service.title} 
+              description={service.description}
+              image={service.image}
+            />
             
-            <div className="lg:col-span-1">
-              <ServiceSidebar 
-                price={service.price}
-                title={service.title}
-                onBookingClick={() => setShowBooking(true)}
-                relatedServices={relatedServices}
-              />
+            <ServiceOverview 
+              description={service.fullDescription}
+              features={service.features}
+              beforeImage={service.beforeImage}
+              afterImage={service.afterImage}
+            />
+            
+            <ServiceProcess 
+              title={service.title}
+              steps={service.process}
+            />
+            
+            <ServiceBenefits 
+              benefits={service.benefits}
+            />
+          </div>
+          
+          <div className="lg:col-span-1">
+            <ServiceSidebar
+              price={service.price}
+              title={service.title}
+              onBookingClick={() => setShowBooking(true)}
+              relatedServices={relatedServices}
+            />
+          </div>
+        </div>
+        
+        <div className="mt-12 mb-16">
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h2 className="text-2xl font-bold mb-4">Expert {service.title} in India</h2>
+            <div className="prose max-w-none">
+              <p>
+                ShineDetailers provides professional {service.title.toLowerCase()} services across major cities in India, including Delhi, Mumbai, Bangalore, Chennai, Hyderabad and more.
+              </p>
+              <p>
+                Our {service.title.toLowerCase()} specialists are trained to deliver exceptional results using the latest techniques and premium products. We understand the unique challenges faced by vehicles in India's diverse climate and urban conditions.
+              </p>
+              <h3>Why Choose Professional {service.title}?</h3>
+              <p>
+                Regular professional {service.title.toLowerCase()} is essential for maintaining your vehicle's value and appearance. Our service goes beyond what can be achieved with DIY methods, providing deeper cleaning, longer-lasting protection, and expert attention to detail.
+              </p>
+              <h3>Customized Solutions For Every Vehicle</h3>
+              <p>
+                Whether you drive a compact hatchback, luxury sedan, or premium SUV, our {service.title.toLowerCase()} services are tailored to your specific vehicle's needs. We consider factors like vehicle age, condition, paint type, and your driving environment to deliver optimal results.
+              </p>
+              <h3>Booking Your {service.title} Service</h3>
+              <p>
+                Scheduling your {service.title.toLowerCase()} appointment is easy. Simply select your city, preferred date and time, and service requirements. Our team will confirm your booking and provide any preparation instructions if needed.
+              </p>
+              <p>
+                Experience the ShineDetailers difference and see why we're India's trusted name in professional car detailing. Book your {service.title.toLowerCase()} service today.
+              </p>
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
-      <PageUtilities />
+      </div>
       
       <Dialog open={showBooking} onOpenChange={setShowBooking}>
         <DialogContent className="sm:max-w-[600px]">
           <BookingForm selectedService={service.title} />
         </DialogContent>
       </Dialog>
+      
+      <Footer />
+      <PageUtilities />
     </>
   );
 };
