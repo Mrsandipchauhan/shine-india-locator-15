@@ -5,11 +5,9 @@ import { toast } from "sonner";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import BookingForm from "@/components/BookingForm";
-import LocalServiceProviders from "@/components/LocalServiceProviders";
-import GoogleMapEmbed from "@/components/GoogleMapEmbed";
-import LocationInfo from "@/components/LocationInfo";
-import ServiceBenefits from "@/components/ServiceBenefits";
+import LocationHeader from "@/components/LocationHeader";
+import LocationContentSection from "@/components/LocationContentSection";
+import SidebarContent from "@/components/SidebarContent";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 import { serviceProvidersByCity, defaultProviders } from "@/data/serviceProviders";
 import { cityContents, getDefaultCityContent } from "@/data/cityContent";
@@ -65,35 +63,15 @@ const ServiceLocations = () => {
       <Navbar />
       
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4">{cityContent.title}</h1>
-          <p className="text-lg text-muted-foreground">{cityContent.description}</p>
-        </div>
+        <LocationHeader title={cityContent.title} description={cityContent.description} />
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-          <div className="lg:col-span-8">
-            <div className="space-y-8">
-              <LocationInfo cityName={cityName} content={cityContent} />
-              <LocalServiceProviders city={cityName} providers={providers} />
-              
-              <div className="mt-8">
-                <h2 className="text-2xl font-bold mb-4">Car Detailing Locations in {cityName}</h2>
-                <GoogleMapEmbed 
-                  address="" 
-                  city={cityContent.mapLocation} 
-                  height="400px"
-                  zoom={12}
-                />
-              </div>
-            </div>
-          </div>
-          
-          <div className="lg:col-span-4">
-            <div className="sticky top-24">
-              <BookingForm selectedCity={cityName} />
-              <ServiceBenefits cityName={cityName} />
-            </div>
-          </div>
+          <LocationContentSection 
+            cityName={cityName}
+            content={cityContent}
+            providers={providers}
+          />
+          <SidebarContent cityName={cityName} />
         </div>
       </div>
       
