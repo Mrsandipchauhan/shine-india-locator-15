@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Navbar from "@/components/Navbar";
@@ -15,20 +15,38 @@ import ServicesSEO from "@/components/services/ServicesSEO";
 const Services = () => {
   const [showBooking, setShowBooking] = useState(false);
   const [selectedService, setSelectedService] = useState("");
+  const [processSteps, setProcessSteps] = useState<string[]>([]);
+  const [processTitle, setProcessTitle] = useState("Detailing");
   
-  const handleBookService = (service: string) => {
-    setSelectedService(service);
-    setShowBooking(true);
-  };
-  
-  // Define the service process steps
-  const serviceProcessSteps = [
+  // Define the default service process steps
+  const defaultServiceProcessSteps = [
     "We carefully examine your vehicle to identify specific needs and create a tailored plan.",
     "Specialized pre-wash treatments and careful hand washing to safely remove contaminants.",
     "Meticulous attention to every surface with specialized tools and techniques.",
     "Premium protective products applied to preserve your vehicle's appearance.",
     "Thorough quality check and walkthrough of completed work with maintenance tips."
   ];
+  
+  useEffect(() => {
+    // Load custom process steps from localStorage if they exist
+    const savedSteps = localStorage.getItem('processSteps');
+    const savedTitle = localStorage.getItem('processTitle');
+    
+    if (savedSteps) {
+      setProcessSteps(JSON.parse(savedSteps));
+    } else {
+      setProcessSteps(defaultServiceProcessSteps);
+    }
+    
+    if (savedTitle) {
+      setProcessTitle(savedTitle);
+    }
+  }, []);
+  
+  const handleBookService = (service: string) => {
+    setSelectedService(service);
+    setShowBooking(true);
+  };
   
   return (
     <>
@@ -68,8 +86,8 @@ const Services = () => {
         
         {/* Process Section */}
         <ServiceProcess 
-          title="Detailing" 
-          steps={serviceProcessSteps}
+          title={processTitle} 
+          steps={processSteps}
         />
         
         {/* Rich Content for SEO */}

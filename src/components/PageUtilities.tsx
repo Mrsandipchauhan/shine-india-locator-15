@@ -1,12 +1,12 @@
 
-import BookingDialog from "./BookingDialog";
-import LocationDetection from "./LocationDetection";
+import BackToTop from "./BackToTop";
+import NavbarAdmin from "./NavbarAdmin";
 
 const PageUtilities = () => {
   return (
     <>
-      <BookingDialog />
-      <LocationDetection />
+      <BackToTop />
+      <NavbarAdmin />
     </>
   );
 };
