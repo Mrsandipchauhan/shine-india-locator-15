@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import BookingForm from "./BookingForm";
 
-const BookingDialog = () => {
+interface BookingDialogProps {
+  selectedService?: string;
+}
+
+const BookingDialog = ({ selectedService }: BookingDialogProps = {}) => {
   const [isOpen, setIsOpen] = useState(false);
   
   useEffect(() => {
@@ -21,7 +25,7 @@ const BookingDialog = () => {
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">Book Your Car Detailing Service</DialogTitle>
         </DialogHeader>
-        <BookingForm />
+        <BookingForm selectedService={selectedService} />
       </DialogContent>
     </Dialog>
   );
