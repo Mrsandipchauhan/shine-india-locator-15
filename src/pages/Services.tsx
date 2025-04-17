@@ -187,9 +187,9 @@ const Services = () => {
       >
         <meta itemProp="name" content="Car Detailing Services" />
         <meta itemProp="description" content="Professional car detailing services including exterior and interior detailing, ceramic coating, paint protection, and specialty services." />
-        <meta itemProp="provider" itemScope itemType="https://schema.org/LocalBusiness">
+        <div itemProp="provider" itemScope itemType="https://schema.org/LocalBusiness">
           <meta itemProp="name" content="ShineDetailers" />
-        </meta>
+        </div>
         
         {/* Hero Section */}
         <div className="text-center mb-12">
