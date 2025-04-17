@@ -10,14 +10,25 @@ interface LocationResponse {
   query?: string;
 }
 
-// Function to get the user's location using ip-api.com (free tier)
+// Function to get the user's location using ip-api.com (using HTTPS)
 export const getUserLocation = async (): Promise<LocationResponse> => {
   try {
-    const response = await fetch('http://ip-api.com/json/?fields=city,regionName,country,lat,lon,query');
-    if (!response.ok) throw new Error('Failed to fetch location data');
+    // Using HTTPS version of the API
+    const response = await fetch('https://pro.ip-api.com/json/?fields=city,regionName,country,lat,lon,query', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch location data');
+    }
+    
     return await response.json();
   } catch (error) {
     console.error('Error fetching user location:', error);
+    // Return empty object on error instead of throwing
     return {};
   }
 };
