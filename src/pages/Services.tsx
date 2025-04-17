@@ -21,6 +21,15 @@ const Services = () => {
     setShowBooking(true);
   };
   
+  // Define the service process steps
+  const serviceProcessSteps = [
+    "We carefully examine your vehicle to identify specific needs and create a tailored plan.",
+    "Specialized pre-wash treatments and careful hand washing to safely remove contaminants.",
+    "Meticulous attention to every surface with specialized tools and techniques.",
+    "Premium protective products applied to preserve your vehicle's appearance.",
+    "Thorough quality check and walkthrough of completed work with maintenance tips."
+  ];
+  
   return (
     <>
       <Navbar />
@@ -58,7 +67,10 @@ const Services = () => {
         />
         
         {/* Process Section */}
-        <ServiceProcess />
+        <ServiceProcess 
+          title="Detailing" 
+          steps={serviceProcessSteps}
+        />
         
         {/* Rich Content for SEO */}
         <section className="mt-24 mb-16">
