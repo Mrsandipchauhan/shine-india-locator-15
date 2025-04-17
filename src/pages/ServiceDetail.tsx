@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import BeforeAfterSlider from "@/components/BeforeAfterSlider";
-import { ChevronLeft } from "lucide-react";
 import PageUtilities from "@/components/PageUtilities";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import BookingForm from "@/components/BookingForm";
+import ServiceHero from "@/components/services/ServiceHero";
+import ServiceOverview from "@/components/services/ServiceOverview";
+import ServiceProcess from "@/components/services/ServiceProcess";
+import ServiceBenefits from "@/components/services/ServiceBenefits";
+import ServiceSidebar from "@/components/services/ServiceSidebar";
 
 // Service data with detailed descriptions and matched before/after images of the same cars
 const serviceData = {
@@ -161,7 +162,6 @@ const ServiceDetail = () => {
   const [showBooking, setShowBooking] = useState(false);
   
   useEffect(() => {
-    // Get service data based on serviceId
     if (serviceId && serviceData[serviceId as keyof typeof serviceData]) {
       setService(serviceData[serviceId as keyof typeof serviceData]);
     }
@@ -175,225 +175,60 @@ const ServiceDetail = () => {
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-3xl font-bold mb-4">Service Not Found</h1>
             <p className="mb-8">Sorry, the service you're looking for doesn't exist or has been moved.</p>
-            <Link to="/services">
-              <Button variant="outline">
-                <ChevronLeft className="mr-2 h-4 w-4" /> View All Services
-              </Button>
-            </Link>
           </div>
         </main>
         <Footer />
       </>
     );
   }
+
+  const relatedServices = Object.entries(serviceData)
+    .filter(([id]) => id !== serviceId)
+    .slice(0, 3)
+    .map(([id, data]) => ({
+      id,
+      title: data.title,
+      price: data.price,
+      image: data.image,
+    }));
   
   return (
     <>
       <Navbar />
       <main className="min-h-screen pt-6 pb-16">
         <div className="container mx-auto px-4">
-          <Link to="/services" className="inline-flex items-center text-primary hover:underline mb-6">
-            <ChevronLeft className="mr-1 h-4 w-4" /> Back to Services
-          </Link>
-          
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
             <div className="lg:col-span-2">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">{service.title}</h1>
-              <p className="text-xl text-muted-foreground mb-6">{service.description}</p>
+              <ServiceHero 
+                title={service.title}
+                description={service.description}
+                image={service.image}
+              />
               
-              <Card className="mb-8 overflow-hidden">
-                <CardContent className="p-0">
-                  <img 
-                    src={service.image} 
-                    alt={service.title}
-                    className="w-full h-64 md:h-80 object-cover"
-                  />
-                </CardContent>
-              </Card>
+              <ServiceOverview 
+                description={service.longDescription}
+                features={service.features}
+                beforeImage={service.beforeImage}
+                afterImage={service.afterImage}
+              />
               
-              <Card className="mb-8">
-                <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">Service Overview</h2>
-                  <p className="text-muted-foreground mb-6">{service.longDescription}</p>
-                  
-                  <h3 className="text-xl font-semibold mb-3">What's Included</h3>
-                  <ul className="space-y-2 mb-6">
-                    {service.features.map((feature: string, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <svg
-                          className="w-5 h-5 mr-2 text-primary flex-shrink-0 mt-0.5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+              <ServiceProcess 
+                title={service.title}
+                steps={service.steps}
+              />
               
-              <Card className="mb-8">
-                <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">Before & After</h2>
-                  <p className="text-muted-foreground mb-6">
-                    Slide to see the dramatic transformation our {service.title} service provides.
-                  </p>
-                  <BeforeAfterSlider 
-                    beforeImage={service.beforeImage} 
-                    afterImage={service.afterImage}
-                    beforeLabel="Before"
-                    afterLabel="After"
-                  />
-                </CardContent>
-              </Card>
-              
-              <Card className="mb-8">
-                <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">Our Process</h2>
-                  <p className="text-muted-foreground mb-6">
-                    Our {service.title} follows a meticulous multi-step process to ensure exceptional results:
-                  </p>
-                  <ol className="space-y-3 mb-6">
-                    {service.steps.map((step: string, index: number) => (
-                      <li key={index} className="flex items-start">
-                        <span className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-3">
-                          {index + 1}
-                        </span>
-                        <span className="text-muted-foreground">{step}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-2xl font-bold mb-4">Benefits</h2>
-                  <p className="text-muted-foreground mb-6">
-                    Here's why our customers choose our professional {service.title} service:
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {service.benefits.map((benefit: string, index: number) => (
-                      <div key={index} className="bg-card/50 p-4 rounded-lg border border-border">
-                        <div className="flex items-start">
-                          <svg
-                            className="w-5 h-5 mr-2 text-primary flex-shrink-0 mt-0.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          <span>{benefit}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <ServiceBenefits 
+                benefits={service.benefits}
+              />
             </div>
             
-            {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="sticky top-24 space-y-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-2">Service Details</h3>
-                    <div className="space-y-4 mb-6">
-                      <div>
-                        <p className="text-sm text-muted-foreground">Price</p>
-                        <p className="text-lg font-semibold text-primary">{service.price}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Duration</p>
-                        <p className="font-medium">4-6 hours (varies by vehicle)</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Recommendation</p>
-                        <p className="font-medium">Every 3-4 months</p>
-                      </div>
-                    </div>
-                    <Button 
-                      className="w-full bg-primary hover:bg-primary/90"
-                      onClick={() => setShowBooking(true)}
-                    >
-                      Book This Service
-                    </Button>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-4">FAQ</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-semibold">How long does this service take?</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Most vehicles require 4-6 hours for complete treatment, depending on size and condition.
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold">Do I need to book in advance?</h4>
-                        <p className="text-sm text-muted-foreground">
-                          We recommend booking 2-3 days in advance to ensure availability, especially during weekends.
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold">Is this service safe for all vehicles?</h4>
-                        <p className="text-sm text-muted-foreground">
-                          Yes, our techniques and products are safe for all vehicle types, from everyday cars to luxury vehicles.
-                        </p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold">How often should I get this service?</h4>
-                        <p className="text-sm text-muted-foreground">
-                          We recommend this service every 3-4 months for optimal vehicle maintenance and protection.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-4">Related Services</h3>
-                    <div className="space-y-3">
-                      {Object.entries(serviceData)
-                        .filter(([id]) => id !== serviceId)
-                        .slice(0, 3)
-                        .map(([id, data]) => (
-                          <Link key={id} to={`/services/${id}`} className="block">
-                            <div className="flex items-start hover:bg-primary/5 p-2 rounded-lg transition-colors">
-                              <img 
-                                src={data.image} 
-                                alt={data.title} 
-                                className="w-16 h-12 object-cover rounded mr-3"
-                              />
-                              <div>
-                                <h4 className="font-medium">{data.title}</h4>
-                                <p className="text-xs text-primary">{data.price}</p>
-                              </div>
-                            </div>
-                          </Link>
-                        ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+              <ServiceSidebar 
+                price={service.price}
+                title={service.title}
+                onBookingClick={() => setShowBooking(true)}
+                relatedServices={relatedServices}
+              />
             </div>
           </div>
         </div>
