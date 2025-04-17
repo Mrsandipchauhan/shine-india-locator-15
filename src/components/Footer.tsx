@@ -1,6 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import CitySlider from "./CitySlider";
 
 // Top cities in India by car ownership
 const majorCities = [
@@ -21,6 +22,20 @@ const cityGroups = [
 const Footer = () => {
   return (
     <footer className="bg-card">
+      {/* City Slider Section */}
+      <div className="border-b border-border">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold mb-3 md:mb-0">Find Car Detailing in Your City</h3>
+            <Link to="/locations" className="text-sm text-primary hover:underline">
+              View All Locations
+            </Link>
+          </div>
+          <CitySlider />
+        </div>
+      </div>
+      
+      {/* Main Footer Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
@@ -31,16 +46,16 @@ const Footer = () => {
               certified technicians and premium products in 20+ cities across India.
             </p>
             <div className="flex space-x-4 mt-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Facebook">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Twitter">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Youtube">
                 <Youtube size={18} />
               </a>
             </div>

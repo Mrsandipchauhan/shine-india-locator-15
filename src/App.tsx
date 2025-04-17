@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Page imports
 import Index from "./pages/Index";
 import Locations from "./pages/Locations";
+import ServiceLocations from "./pages/ServiceLocations";
 import CityLocation from "./pages/CityLocation";
 import NotFound from "./pages/NotFound";
 
@@ -22,7 +23,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/locations" element={<Locations />} />
-          <Route path="/locations/:cityId" element={<CityLocation />} />
+          <Route path="/locations/:cityId" element={<ServiceLocations />} />
+          <Route path="/city/:cityId" element={<CityLocation />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
