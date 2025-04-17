@@ -45,7 +45,6 @@ const BeforeAfterSlider = ({
       const newPosition = Math.min(Math.max((x / rect.width) * 100, 0), 100);
       setPosition(newPosition);
       
-      // Prevent scrolling while dragging
       e.preventDefault();
     };
 
@@ -80,28 +79,64 @@ const BeforeAfterSlider = ({
   return (
     <div 
       ref={sliderRef} 
-      className="comparison-slider" 
+      className="comparison-slider relative w-full aspect-[16/9] overflow-hidden rounded-lg" 
       style={{"--position": `${position}%`} as React.CSSProperties}
+      itemScope
+      itemType="https://schema.org/ImageObject"
     >
       <div 
-        className="after" 
-        style={{ backgroundImage: `url(${afterImage})` }}
+        className="absolute inset-0 w-full h-full overflow-hidden"
+        style={{ 
+          clipPath: `inset(0 ${100 - position}% 0 0)` 
+        }}
       >
+        <img 
+          src={afterImage}
+          alt="After detailing"
+          className="absolute inset-0 w-full h-full object-cover"
+          itemProp="contentUrl"
+        />
         <div className="absolute bottom-3 right-3 bg-black/70 text-white px-3 py-1 rounded text-sm">
           {afterLabel}
         </div>
       </div>
       
-      <div 
-        className="before" 
-        style={{ backgroundImage: `url(${beforeImage})` }}
-      >
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <img 
+          src={beforeImage}
+          alt="Before detailing"
+          className="absolute inset-0 w-full h-full object-cover"
+          itemProp="contentUrl"
+        />
         <div className="absolute bottom-3 left-3 bg-black/70 text-white px-3 py-1 rounded text-sm">
           {beforeLabel}
         </div>
       </div>
       
-      <div ref={handleRef} className="slider-handle"></div>
+      <div 
+        ref={handleRef}
+        className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize"
+        style={{ left: `${position}%` }}
+      >
+        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M21 12H3M3 12l4-4M3 12l4 4M21 12l-4-4m4 4l-4 4"/>
+          </svg>
+        </div>
+      </div>
+      
+      <meta itemProp="name" content="Car Detailing Before & After Comparison" />
+      <meta itemProp="description" content="Visual comparison of a vehicle before and after professional detailing service" />
     </div>
   );
 };

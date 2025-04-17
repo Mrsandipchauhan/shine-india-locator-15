@@ -1,3 +1,4 @@
+
 import React from "react";
 import LocationInfo from "./LocationInfo";
 import LocalServiceProviders from "./LocalServiceProviders";
@@ -34,16 +35,23 @@ const cityImages: Record<string, { before: string, after: string }> = {
 };
 
 const LocationContentSection = ({ cityName, content, providers }: LocationContentSectionProps) => {
-  // Get city images or use default if not found
   const lowerCityName = cityName.toLowerCase();
   const images = cityImages[lowerCityName] || cityImages.default;
   
   return (
-    <div className="lg:col-span-8">
+    <div 
+      className="lg:col-span-8"
+      itemScope 
+      itemType="https://schema.org/LocalBusiness"
+    >
+      <meta itemProp="name" content={`ShineDetailers Car Detailing - ${cityName}`} />
+      <meta itemProp="description" content={`Professional car detailing services in ${cityName}. We provide exterior detailing, interior cleaning, ceramic coating, and paint protection.`} />
+      <meta itemProp="areaServed" content={cityName} />
+      <meta itemProp="priceRange" content="₹₹₹" />
+      
       <div className="space-y-8">
         <LocationInfo cityName={cityName} content={content} />
         
-        {/* Before/After Comparison Slider */}
         <Card className="p-6">
           <h2 className="text-2xl font-bold mb-4">See the Difference in {cityName}</h2>
           <p className="text-muted-foreground mb-6">
