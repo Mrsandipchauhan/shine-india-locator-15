@@ -2,8 +2,11 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, ArrowRight } from "lucide-react";
+import { MapPin, ArrowRight, Navigation } from "lucide-react";
 import localAreasData from "@/data/localAreasData";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { getUserLocation, findNearestCity } from "@/services/locationService";
 
 // Get a selection of featured areas from different parent cities
 const getFeaturedAreas = (count = 6) => {
@@ -35,7 +38,32 @@ const getFeaturedAreas = (count = 6) => {
 };
 
 const FeaturedAreasSection = () => {
+  const [nearbyArea, setNearbyArea] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const featuredAreas = getFeaturedAreas(6);
+
+  useEffect(() => {
+    const detectLocation = async () => {
+      try {
+        const location = await getUserLocation();
+        if (location.lat && location.lon) {
+          const nearest = findNearestCity(location.lat, location.lon);
+          if (nearest?.city) {
+            setNearbyArea(localAreasData.find(area => area.parentCity.toLowerCase() === nearest.city.name.toLowerCase()));
+            toast.success(`Found services near ${nearest.city.name}!`, {
+              description: "We've highlighted services available in your area."
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error detecting location:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    detectLocation();
+  }, []);
   
   return (
     <section className="py-16 bg-card">
@@ -45,11 +73,29 @@ const FeaturedAreasSection = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Find premium car detailing services in these popular areas or search for your location to discover services near you.
           </p>
+          {nearbyArea && (
+            <div className="mt-6 flex items-center justify-center space-x-2">
+              <div className="bg-primary/10 p-2 rounded-full">
+                <Navigation className="w-5 h-5 text-primary" />
+              </div>
+              <p className="text-primary">
+                Services available near you in{" "}
+                <Link to={`/area/${nearbyArea.id}`} className="font-semibold hover:underline">
+                  {nearbyArea.name}
+                </Link>
+              </p>
+            </div>
+          )}
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredAreas.map((area) => (
-            <Card key={area.id} className="bg-background hover:shadow-md transition-shadow overflow-hidden">
+            <Card 
+              key={area.id} 
+              className={`bg-background hover:shadow-md transition-shadow overflow-hidden ${
+                nearbyArea && area.id === nearbyArea.id ? 'ring-2 ring-primary' : ''
+              }`}
+            >
               <div className="h-40 bg-cover bg-center" style={{ 
                 backgroundImage: `url('https://source.unsplash.com/featured/?${area.name},car')`,
                 filter: "brightness(0.7) contrast(1.1)"
