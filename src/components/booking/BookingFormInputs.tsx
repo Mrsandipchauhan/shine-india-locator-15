@@ -3,7 +3,7 @@ import { User, Phone, Mail, Car, Calendar, Clock } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { serviceTypes } from "@/data/servicesData";
+import { services } from "@/data/servicesData";
 
 interface BookingFormInputsProps {
   formData: {
@@ -110,8 +110,8 @@ export const BookingFormInputs = ({
               <SelectValue placeholder="Select service type" />
             </SelectTrigger>
             <SelectContent>
-              {serviceTypes.map((service) => (
-                <SelectItem key={service.id} value={service.name}>{service.name}</SelectItem>
+              {services.map((service) => (
+                <SelectItem key={service.id} value={service.title}>{service.title}</SelectItem>
               ))}
             </SelectContent>
           </Select>

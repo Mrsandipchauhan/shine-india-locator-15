@@ -14,7 +14,7 @@ import ServiceProcess from "@/components/services/ServiceProcess";
 import ServiceBenefits from "@/components/services/ServiceBenefits";
 import ServiceSidebar from "@/components/services/ServiceSidebar";
 import { ServiceCostCalculator } from "@/components/services/ServiceCostCalculator";
-import { servicesData } from "@/data/servicesData";
+import { services } from "@/data/servicesData";
 
 const ServiceDetail = () => {
   const { serviceId } = useParams();
@@ -28,7 +28,7 @@ const ServiceDetail = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  if (!serviceId || !servicesData[serviceId as keyof typeof servicesData]) {
+  if (!serviceId || !services.find(s => s.id === serviceId)) {
     return (
       <>
         <Navbar />
@@ -43,16 +43,19 @@ const ServiceDetail = () => {
     );
   }
   
-  const service = servicesData[serviceId as keyof typeof servicesData];
+  const service = services.find(s => s.id === serviceId)!;
   const faqs = serviceFAQs[serviceId as keyof typeof serviceFAQs] || [];
   
-  const relatedServicesIds = Object.keys(servicesData).filter(id => id !== serviceId);
-  const relatedServices = relatedServicesIds.slice(0, 3).map(id => ({
-    id,
-    title: servicesData[id as keyof typeof servicesData].title,
-    price: servicesData[id as keyof typeof servicesData].price,
-    image: servicesData[id as keyof typeof servicesData].image
-  }));
+  const relatedServicesIds = services.filter(s => s.id !== serviceId).map(s => s.id);
+  const relatedServices = relatedServicesIds.slice(0, 3).map(id => {
+    const relatedService = services.find(s => s.id === id)!;
+    return {
+      id,
+      title: relatedService.title,
+      price: relatedService.price,
+      image: relatedService.image
+    };
+  });
   
   return (
     <>
@@ -63,7 +66,7 @@ const ServiceDetail = () => {
         itemType="https://schema.org/Service"
       >
         <meta itemProp="name" content={service.title} />
-        <meta itemProp="description" content={service.fullDescription} />
+        <meta itemProp="description" content={service.description} />
         <meta itemProp="provider" itemScope itemType="https://schema.org/LocalBusiness" />
         <meta itemProp="areaServed" content="India" />
         <meta itemProp="serviceType" content="Car Detailing" />
@@ -77,10 +80,10 @@ const ServiceDetail = () => {
             />
             
             <ServiceOverview 
-              description={service.fullDescription}
+              description={service.description}
               features={service.features}
-              beforeImage={service.beforeImage}
-              afterImage={service.afterImage}
+              beforeImage={service.image}
+              afterImage={service.image}
             />
             
             <ServiceCostCalculator
@@ -90,11 +93,11 @@ const ServiceDetail = () => {
             
             <ServiceProcess 
               title={service.title}
-              steps={service.process}
+              steps={service.features.map((feature, index) => `Step ${index + 1}: ${feature}`)}
             />
             
             <ServiceBenefits 
-              benefits={service.benefits}
+              benefits={service.features}
             />
             
             <ServiceFAQ
