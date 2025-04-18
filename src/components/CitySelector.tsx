@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, MapPin, ChevronRight } from "lucide-react";
@@ -110,8 +109,17 @@ const CitySelector = () => {
         </div>
         
         {/* Featured Cities with Images */}
-        <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-6 text-center">Top Detailing Destinations</h3>
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold mb-6">Top Detailing Destinations</h3>
+            <Link 
+              to="/sitemap"
+              className="text-sm text-primary hover:underline flex items-center"
+            >
+              View All Locations
+              <ChevronRight size={16} className="ml-1" />
+            </Link>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {featuredCities.map((city) => (
               <Link 
