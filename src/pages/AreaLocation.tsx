@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -26,8 +25,12 @@ const AreaLocation = () => {
   const [providers, setProviders] = useState<any[]>([]);
   
   useEffect(() => {
-    // Find the area data
-    const area = localAreasData.find(area => area.id === areaId);
+    // Find the area data with case-insensitive matching and handling hyphens
+    const normalizedAreaId = areaId?.toLowerCase();
+    const area = localAreasData.find(area => 
+      area.id.toLowerCase() === normalizedAreaId || 
+      area.id.toLowerCase().replace(/-/g, '') === normalizedAreaId?.replace(/-/g, '')
+    );
     
     if (area) {
       setAreaData(area);
@@ -51,6 +54,9 @@ const AreaLocation = () => {
       if (metaDescription) {
         metaDescription.setAttribute("content", area.description);
       }
+    } else {
+      console.log(`Area not found for ID: ${areaId}`);
+      console.log("Available areas:", localAreasData.map(a => a.id));
     }
   }, [areaId]);
   

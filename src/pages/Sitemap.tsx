@@ -1,9 +1,10 @@
 
 import { Link } from "react-router-dom";
-import { Landmark, MapPin, Building, ChevronRight } from "lucide-react";
+import { Landmark, MapPin, Building, ChevronRight, Sitemap as SitemapIcon } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import citiesData from "@/data/citiesData";
+import localAreasData from "@/data/localAreasData";
 
 // Group cities by region for better organization
 const regions = {
@@ -14,13 +15,41 @@ const regions = {
   central: ["Indore", "Bhopal", "Nagpur"]
 };
 
-const popularAreas = {
-  "Delhi": ["Dwarka", "Rohini", "South Delhi", "Noida", "Gurgaon", "Greater Noida"],
-  "Mumbai": ["Andheri", "Bandra", "Borivali", "Thane", "Navi Mumbai", "Powai"],
-  "Bangalore": ["Whitefield", "Electronic City", "Koramangala", "HSR Layout", "Indiranagar", "JP Nagar"],
-  "Hyderabad": ["HITEC City", "Gachibowli", "Jubilee Hills", "Banjara Hills", "Madhapur", "Kukatpally"],
-  "Chennai": ["Anna Nagar", "T Nagar", "OMR", "Velachery", "Adyar", "Porur"],
-  // Add more cities and their popular areas here
+// Get popular areas based on the actual data
+const getPopularAreas = () => {
+  const popularCities = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Chandigarh"];
+  
+  const areasByCity: Record<string, string[]> = {};
+  
+  // Group areas by their parent city
+  localAreasData.forEach(area => {
+    if (!areasByCity[area.parentCity]) {
+      areasByCity[area.parentCity] = [];
+    }
+    areasByCity[area.parentCity].push(area.name);
+  });
+  
+  // Create a map of city names to their areas
+  const popularAreas: Record<string, string[]> = {};
+  
+  // Get the city name from citiesData based on ID
+  citiesData.forEach(city => {
+    if (popularCities.includes(city.name) && areasByCity[city.id]) {
+      popularAreas[city.name] = areasByCity[city.id];
+    }
+  });
+  
+  return popularAreas;
+};
+
+const popularAreas = getPopularAreas();
+
+// Function to find area ID by name
+const getAreaIdByName = (areaName: string): string => {
+  const area = localAreasData.find(area => 
+    area.name.toLowerCase() === areaName.toLowerCase()
+  );
+  return area ? area.id : areaName.toLowerCase().replace(/\s+/g, '-');
 };
 
 const Sitemap = () => {
@@ -69,10 +98,10 @@ const Sitemap = () => {
                   {city}
                 </Link>
                 <ul className="space-y-2">
-                  {areas.map((area) => (
+                  {areas.slice(0, 6).map((area) => (
                     <li key={area}>
                       <Link 
-                        to={`/area/${area.toLowerCase().replace(/\s+/g, '-')}`}
+                        to={`/area/${getAreaIdByName(area)}`}
                         className="flex items-center text-sm text-muted-foreground hover:text-foreground"
                       >
                         <ChevronRight className="mr-1" size={16} />
@@ -93,19 +122,42 @@ const Sitemap = () => {
             <div key={region} className="mb-8">
               <h3 className="text-lg font-medium mb-4 capitalize">{region} India</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {cities.map((city) => (
-                  <Link
-                    key={city}
-                    to={`/locations/${city.toLowerCase()}`}
-                    className="flex items-center p-3 bg-card rounded-lg hover:bg-accent"
-                  >
-                    <MapPin className="mr-2 text-primary" size={16} />
-                    {city}
-                  </Link>
-                ))}
+                {cities.map((city) => {
+                  // Find city ID for the link
+                  const cityData = citiesData.find(c => c.name.toLowerCase() === city.toLowerCase());
+                  const cityId = cityData ? cityData.id : city.toLowerCase();
+                  
+                  return (
+                    <Link
+                      key={city}
+                      to={`/locations/${cityId}`}
+                      className="flex items-center p-3 bg-card rounded-lg hover:bg-accent"
+                    >
+                      <MapPin className="mr-2 text-primary" size={16} />
+                      {city}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           ))}
+        </div>
+        
+        {/* All Areas Alphabetically */}
+        <div className="mt-12">
+          <h2 className="text-xl font-semibold mb-6">All Areas</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {localAreasData.map((area) => (
+              <Link
+                key={area.id}
+                to={`/area/${area.id}`}
+                className="flex items-center p-3 bg-card rounded-lg hover:bg-accent"
+              >
+                <MapPin className="mr-2 text-primary" size={16} />
+                {area.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </main>
 
