@@ -1,9 +1,22 @@
 import { Link } from "react-router-dom";
-import { Landmark, MapPin, Building, ChevronRight, LayoutList } from "lucide-react";
+import { 
+  Landmark, 
+  MapPin, 
+  Building, 
+  ChevronRight, 
+  LayoutList,
+  CarFront,
+  Wrench,
+  Star,
+  CircleCheck,
+  PhoneCall
+} from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import citiesData from "@/data/citiesData";
 import localAreasData from "@/data/localAreasData";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 // Group cities by region for better organization
 const regions = {
@@ -67,26 +80,67 @@ const Sitemap = () => {
           </p>
         </div>
 
+        {/* Services Overview */}
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+            <CarFront className="text-primary" size={20} />
+            Our Services
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="p-4 hover:bg-accent transition-colors">
+              <Link to="/services/exterior-detailing" className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Wrench className="text-primary" size={16} />
+                  <span>Exterior Detailing</span>
+                </div>
+                <ChevronRight size={16} />
+              </Link>
+            </Card>
+            <Card className="p-4 hover:bg-accent transition-colors">
+              <Link to="/services/interior-detailing" className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Wrench className="text-primary" size={16} />
+                  <span>Interior Detailing</span>
+                </div>
+                <ChevronRight size={16} />
+              </Link>
+            </Card>
+            <Card className="p-4 hover:bg-accent transition-colors">
+              <Link to="/services/ceramic-coating" className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Star className="text-primary" size={16} />
+                  <span>Ceramic Coating</span>
+                </div>
+                <ChevronRight size={16} />
+              </Link>
+            </Card>
+          </div>
+        </div>
+
         {/* Quick Links */}
         <div className="mb-12">
-          <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <h2 className="text-xl font-semibold mb-4">Navigation</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <Link to="/services" className="flex items-center p-4 bg-card rounded-lg hover:bg-accent">
-              <Building className="mr-2 text-primary" />
-              Our Services
+              <Wrench className="mr-2 text-primary" />
+              All Services
             </Link>
             <Link to="/locations" className="flex items-center p-4 bg-card rounded-lg hover:bg-accent">
               <MapPin className="mr-2 text-primary" />
               All Locations
             </Link>
             <Link to="/contact" className="flex items-center p-4 bg-card rounded-lg hover:bg-accent">
-              <Landmark className="mr-2 text-primary" />
+              <PhoneCall className="mr-2 text-primary" />
               Contact Us
+            </Link>
+            <Link to="/about" className="flex items-center p-4 bg-card rounded-lg hover:bg-accent">
+              <Landmark className="mr-2 text-primary" />
+              About Us
             </Link>
           </div>
         </div>
 
-        {/* Top Cities */}
+        {/* Top Cities with Areas */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4">Top Cities</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -122,22 +176,28 @@ const Sitemap = () => {
           <h2 className="text-xl font-semibold mb-4">All Locations by Region</h2>
           {Object.entries(regions).map(([region, cities]) => (
             <div key={region} className="mb-8">
-              <h3 className="text-lg font-medium mb-4 capitalize">{region} India</h3>
+              <h3 className="text-lg font-medium mb-4 capitalize flex items-center gap-2">
+                <MapPin className="text-primary" size={18} />
+                {region} India
+              </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {cities.map((city) => {
-                  // Find city ID for the link
                   const cityData = citiesData.find(c => c.name.toLowerCase() === city.toLowerCase());
                   const cityId = cityData ? cityData.id : city.toLowerCase();
                   
                   return (
-                    <Link
-                      key={city}
-                      to={`/locations/${cityId}`}
-                      className="flex items-center p-3 bg-card rounded-lg hover:bg-accent"
-                    >
-                      <MapPin className="mr-2 text-primary" size={16} />
-                      {city}
-                    </Link>
+                    <Card key={city} className="p-4 hover:bg-accent transition-colors">
+                      <Link
+                        to={`/locations/${cityId}`}
+                        className="flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Building className="text-primary" size={16} />
+                          {city}
+                        </div>
+                        <ChevronRight size={16} />
+                      </Link>
+                    </Card>
                   );
                 })}
               </div>
@@ -145,20 +205,29 @@ const Sitemap = () => {
           ))}
         </div>
         
-        {/* All Areas Alphabetically */}
+        {/* All Areas A-Z */}
         <div className="mt-12">
-          <h2 className="text-xl font-semibold mb-6">All Areas</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {localAreasData.map((area) => (
-              <Link
-                key={area.id}
-                to={`/area/${area.id}`}
-                className="flex items-center p-3 bg-card rounded-lg hover:bg-accent"
-              >
-                <MapPin className="mr-2 text-primary" size={16} />
-                {area.name}
-              </Link>
-            ))}
+          <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
+            <MapPin className="text-primary" size={20} />
+            All Service Areas (A-Z)
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {localAreasData
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((area) => (
+                <Card key={area.id} className="p-4 hover:bg-accent transition-colors">
+                  <Link
+                    to={`/area/${area.id}`}
+                    className="flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <CircleCheck className="text-primary" size={16} />
+                      {area.name}
+                    </div>
+                    <ChevronRight size={16} />
+                  </Link>
+                </Card>
+              ))}
           </div>
         </div>
       </main>
