@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import BookingForm from "@/components/BookingForm";
 import Navbar from "@/components/Navbar";
@@ -13,6 +13,12 @@ import ServiceOverview from "@/components/services/ServiceOverview";
 import ServiceProcess from "@/components/services/ServiceProcess";
 import ServiceBenefits from "@/components/services/ServiceBenefits";
 import ServiceSidebar from "@/components/services/ServiceSidebar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Button } from "@/components/ui/button";
+import { Calculator } from "lucide-react";
 
 const servicesData = {
   "exterior-detailing": {
@@ -202,8 +208,11 @@ const ServiceDetail = () => {
   const { serviceId } = useParams();
   const [showBooking, setShowBooking] = useState(false);
   
+  const [vehicleType, setVehicleType] = useState("sedan");
+  const [vehicleCondition, setVehicleCondition] = useState(50);
+  const [estimatedCost, setEstimatedCost] = useState("");
+  
   useEffect(() => {
-    // Show booking popup after 12 seconds only on service pages
     const timer = setTimeout(() => {
       setShowBooking(true);
     }, 12000);
@@ -211,7 +220,6 @@ const ServiceDetail = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  // Handle non-existent service
   if (!serviceId || !servicesData[serviceId as keyof typeof servicesData]) {
     return (
       <>
@@ -230,7 +238,6 @@ const ServiceDetail = () => {
   const service = servicesData[serviceId as keyof typeof servicesData];
   const faqs = serviceFAQs[serviceId as keyof typeof serviceFAQs] || [];
   
-  // Get related services (excluding current service)
   const relatedServicesIds = Object.keys(servicesData).filter(id => id !== serviceId);
   const relatedServices = relatedServicesIds.slice(0, 3).map(id => ({
     id,
@@ -238,6 +245,36 @@ const ServiceDetail = () => {
     price: servicesData[id as keyof typeof servicesData].price,
     image: servicesData[id as keyof typeof servicesData].image
   }));
+  
+  const calculateEstimatedCost = () => {
+    const basePrices: Record<string, number> = {
+      "Exterior Detailing": 2999,
+      "Interior Detailing": 2499,
+      "Ceramic Coating": 15999,
+      "Paint Protection Film": 25999,
+      "Headlight Restoration": 1999,
+      "Engine Bay Detailing": 1499
+    };
+    
+    const typeMultipliers: Record<string, number> = {
+      "hatchback": 0.9,
+      "sedan": 1.0,
+      "suv": 1.3,
+      "luxury": 1.5
+    };
+    
+    const conditionFactor = 0.8 + ((100 - vehicleCondition) / 100) * 0.5;
+    
+    const basePrice = basePrices[service.title] || 3000;
+    
+    const estimate = Math.round(basePrice * typeMultipliers[vehicleType] * conditionFactor);
+    
+    return "₹" + estimate.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+  
+  useEffect(() => {
+    setEstimatedCost(calculateEstimatedCost());
+  }, [vehicleType, vehicleCondition, serviceId]);
   
   return (
     <>
@@ -268,6 +305,68 @@ const ServiceDetail = () => {
               afterImage={service.afterImage}
             />
             
+            <Card className="mt-8 mb-8 border border-border bg-card/50 backdrop-blur-sm">
+              <CardHeader className="bg-primary/5 border-b border-border/50">
+                <CardTitle className="flex items-center gap-2">
+                  <Calculator className="h-5 w-5 text-primary" />
+                  <span>{service.title} Cost Estimator</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="vehicle-type">Vehicle Type</Label>
+                      <Select value={vehicleType} onValueChange={setVehicleType}>
+                        <SelectTrigger id="vehicle-type" className="mt-2">
+                          <SelectValue placeholder="Select vehicle type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="hatchback">Hatchback</SelectItem>
+                          <SelectItem value="sedan">Sedan</SelectItem>
+                          <SelectItem value="suv">SUV/MUV</SelectItem>
+                          <SelectItem value="luxury">Luxury/Premium</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="condition">Vehicle Condition</Label>
+                      <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                        <span>Poor</span>
+                        <span>Good</span>
+                        <span>Excellent</span>
+                      </div>
+                      <Slider
+                        id="condition"
+                        defaultValue={[50]}
+                        max={100}
+                        step={10}
+                        className="mt-2"
+                        onValueChange={(value) => setVehicleCondition(value[0])}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col justify-center items-center space-y-4 p-4 bg-primary/5 rounded-lg">
+                    <div className="text-center">
+                      <h4 className="text-sm text-muted-foreground">Estimated Price</h4>
+                      <div className="text-3xl font-bold text-primary mt-1">{estimatedCost}</div>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Based on average pricing for your selections
+                      </p>
+                    </div>
+                    <Button 
+                      className="w-full" 
+                      onClick={() => setShowBooking(true)}
+                    >
+                      Book Now
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
             <ServiceProcess 
               title={service.title}
               steps={service.process}
@@ -295,7 +394,13 @@ const ServiceDetail = () => {
       </div>
       
       <Dialog open={showBooking} onOpenChange={setShowBooking}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Book {service.title}</DialogTitle>
+            <DialogDescription>
+              Fill out the form below to schedule your {service.title} appointment.
+            </DialogDescription>
+          </DialogHeader>
           <BookingForm selectedService={service.title} />
         </DialogContent>
       </Dialog>
