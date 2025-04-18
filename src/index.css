@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -47,6 +46,8 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    /* Add content-visibility for better rendering performance */
+    content-visibility: auto;
   }
   
   html {
@@ -60,11 +61,25 @@
   /* Add section spacing for consistency */
   section {
     @apply py-10 md:py-16;
+    /* Add contain property for performance optimization */
+    contain: content;
+  }
+  
+  /* Explicitly set section margins to prevent layout shifts */
+  section + section {
+    @apply mt-0;
   }
   
   /* Fix mobile overflow issues */
   main {
     @apply overflow-hidden;
+  }
+  
+  /* Add image optimization styles */
+  img {
+    @apply max-w-full h-auto;
+    /* Add decoding async for performance */
+    decoding: async;
   }
 }
 
@@ -158,6 +173,54 @@
   .mobile-tap-target {
     @apply min-h-[44px] min-w-[44px];
   }
+  
+  /* Performance utilities */
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .hardware-accelerated {
+    transform: translateZ(0);
+  }
+  
+  /* Improve scrolling performance */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix layout shifts */
+  .no-layout-shift {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
+  }
+  
+  /* Mobile-specific performance improvements */
+  @media (max-width: 768px) {
+    .mobile-perf {
+      /* Reduce animation complexity on mobile */
+      animation: none !important;
+      transform: none !important;
+      transition: none !important;
+      background-attachment: scroll !important;
+    }
+    
+    /* Prevent mobile scrolling jank */
+    .mobile-scroll {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    
+    /* Fix section spacing on mobile */
+    section {
+      @apply py-8;
+    }
+    
+    /* Consistent spacing for mobile */
+    .container {
+      @apply px-4;
+    }
+  }
 }
 
 /* Custom slider for before/after comparison */
@@ -250,6 +313,8 @@
     position: fixed !important;
     width: 100% !important;
     z-index: 50 !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
   
   /* Add padding to main content to prevent overlap with fixed navbar */
@@ -261,6 +326,28 @@
   nav .container .flex > .md\:hidden .space-y-4 > a,
   nav .container .flex > .md\:hidden .space-y-4 > div {
     margin-bottom: 8px;
+  }
+  
+  /* Fix spacing between sections */
+  main > div > section {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Optimize image loading */
+img {
+  content-visibility: auto;
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

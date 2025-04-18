@@ -1,51 +1,48 @@
+
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, ArrowRight, Navigation, MapPinOff, Car } from "lucide-react";
 import localAreasData from "@/data/localAreasData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 import { serviceProvidersByCity } from "@/data/serviceProviders";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const getFeaturedAreas = (count = 6) => {
-  const featuredAreas = [];
-  const parentCities = new Set();
-  
-  for (const area of localAreasData) {
-    if (!parentCities.has(area.parentCity)) {
-      parentCities.add(area.parentCity);
-      featuredAreas.push(area);
-    }
-    
-    if (featuredAreas.length >= count) break;
-  }
-  
-  if (featuredAreas.length < count) {
-    for (const area of localAreasData) {
-      if (!featuredAreas.includes(area)) {
-        featuredAreas.push(area);
-      }
-      
-      if (featuredAreas.length >= count) break;
-    }
-  }
-  
-  return featuredAreas.slice(0, count);
-};
-
 const FeaturedAreasSection = () => {
   const [nearbyArea, setNearbyArea] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [locationError, setLocationError] = useState<string | null>(null);
-  const featuredAreas = getFeaturedAreas(6);
   const [nearbyAreas, setNearbyAreas] = useState<any[]>([]);
 
-  useEffect(() => {
-    detectLocation();
+  // Use useMemo to avoid recalculating on every render
+  const featuredAreas = useMemo(() => {
+    const areas = [];
+    const parentCities = new Set();
+    
+    for (const area of localAreasData) {
+      if (!parentCities.has(area.parentCity)) {
+        parentCities.add(area.parentCity);
+        areas.push(area);
+      }
+      
+      if (areas.length >= 6) break;
+    }
+    
+    if (areas.length < 6) {
+      for (const area of localAreasData) {
+        if (!areas.includes(area)) {
+          areas.push(area);
+        }
+        
+        if (areas.length >= 6) break;
+      }
+    }
+    
+    return areas.slice(0, 6);
   }, []);
-  
+
   const detectLocation = async () => {
     try {
       setIsLoading(true);
@@ -94,15 +91,24 @@ const FeaturedAreasSection = () => {
     }
   };
   
+  useEffect(() => {
+    // Delay location detection to improve initial page load
+    const timer = setTimeout(() => {
+      detectLocation();
+    }, 1500);
+    
+    return () => clearTimeout(timer);
+  }, []);
+  
   const handleRetryLocation = () => {
     detectLocation();
   };
   
   return (
-    <section className="py-16 bg-card">
+    <section className="py-12 md:py-16 bg-card">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Popular Detailing Locations</h2>
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Popular Detailing Locations</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Find premium car detailing services in these popular areas or search for your location to discover services near you.
           </p>
@@ -159,8 +165,9 @@ const FeaturedAreasSection = () => {
           )}
         </div>
         
-        <ScrollArea className="w-full">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-w-[768px]">
+        {/* Use CSS-based solution that's more efficient than ScrollArea on mobile */}
+        <div className="mb-4 overflow-x-auto pb-6 no-scrollbar">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-w-[768px] md:min-w-0">
             {featuredAreas.map((area) => (
               <Card 
                 key={area.id} 
@@ -169,7 +176,7 @@ const FeaturedAreasSection = () => {
                 }`}
               >
                 <div className="h-40 bg-cover bg-center relative" style={{ 
-                  backgroundImage: `url('https://source.unsplash.com/featured/?${area.name},car')`,
+                  backgroundImage: `url('https://source.unsplash.com/featured/?${area.name},car&auto=format&w=500')`,
                 }}>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
                     <div className="absolute bottom-0 left-0 p-4">
@@ -200,7 +207,7 @@ const FeaturedAreasSection = () => {
               </Card>
             ))}
           </div>
-        </ScrollArea>
+        </div>
         
         <div className="text-center mt-8">
           <Link to="/locations">
