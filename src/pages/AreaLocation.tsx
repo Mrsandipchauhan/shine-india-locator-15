@@ -71,6 +71,10 @@ const AreaLocation = () => {
     );
   }
 
+  const uniqueNearbyLocations = areaData.content.nearbyLocations ? 
+    [...new Set(areaData.content.nearbyLocations)] : 
+    [];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -382,9 +386,9 @@ const AreaLocation = () => {
             </div>
             
             <div className="mb-12">
-              <h2 className="text-2xl font-bold mb-6">Car Detailing in Nearby Areas</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {areaData.content.nearbyLocations.map((location: string, index: number) => {
+              <h2 className="text-2xl font-bold mb-4">Car Detailing in Nearby Areas</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 space-y-0">
+                {uniqueNearbyLocations.map((location: string, index: number) => {
                   const matchedArea = localAreasData.find(area => 
                     area.name.toLowerCase() === location.toLowerCase()
                   );
