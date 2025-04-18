@@ -32,22 +32,26 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero />
-        <div className="py-6 bg-background">
+        <div className="py-4 md:py-6 bg-background">
           <div className="container mx-auto px-4">
             <CitySlider />
           </div>
         </div>
-        <ServicesSection />
-        <QuickServiceEstimator />
-        <WorkProcessSection />
-        <CarCareTips />
-        <WhyChooseUsSection />
-        <DetailingPackages />
-        <TestimonialsSlider />
-        <FeaturedAreasSection />
-        <CitySelector />
-        <BookWithConfidence />
-        <CTASection />
+        <div className="space-y-0">
+          <ServicesSection />
+          <QuickServiceEstimator />
+          <WorkProcessSection />
+          <CarCareTips />
+          <WhyChooseUsSection />
+          <DetailingPackages />
+          <TestimonialsSlider />
+          <FeaturedAreasSection />
+          <div className="mt-6 md:mt-10">
+            <CitySelector />
+          </div>
+          <BookWithConfidence />
+          <CTASection />
+        </div>
       </main>
       <Footer />
       <PageUtilities />

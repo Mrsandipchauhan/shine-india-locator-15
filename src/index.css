@@ -56,6 +56,16 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
   }
+  
+  /* Add section spacing for consistency */
+  section {
+    @apply py-10 md:py-16;
+  }
+  
+  /* Fix mobile overflow issues */
+  main {
+    @apply overflow-hidden;
+  }
 }
 
 @layer utilities {
@@ -102,6 +112,25 @@
   .shine-effect::before {
     @apply content-[''] absolute top-0 left-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transform-gpu;
     animation: shine 3s infinite linear;
+  }
+  
+  /* Responsive container helpers */
+  .container-tight {
+    @apply container mx-auto px-4 md:px-6;
+  }
+  
+  /* Mobile padding helpers */
+  .px-mobile {
+    @apply px-4 md:px-6;
+  }
+  
+  .py-mobile {
+    @apply py-8 md:py-16;
+  }
+  
+  /* Responsive spacing for mobile */
+  .mobile-gap {
+    @apply gap-4 md:gap-6;
   }
   
   /* Animation for floating elements */
@@ -213,6 +242,26 @@
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+/* Fix navbar on mobile */
+@media (max-width: 768px) {
+  .fixed.top-0.w-full.z-50 {
+    position: fixed !important;
+    width: 100% !important;
+    z-index: 50 !important;
+  }
+  
+  /* Add padding to main content to prevent overlap with fixed navbar */
+  body > div#root > main {
+    padding-top: 72px;
+  }
+  
+  /* Fix spacing in mobile menu items */
+  nav .container .flex > .md\:hidden .space-y-4 > a,
+  nav .container .flex > .md\:hidden .space-y-4 > div {
+    margin-bottom: 8px;
+  }
 }
 
 /* SEO Rich content styles */

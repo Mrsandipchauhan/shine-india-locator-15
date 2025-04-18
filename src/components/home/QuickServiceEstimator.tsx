@@ -45,11 +45,11 @@ const QuickServiceEstimator = () => {
   };
 
   return (
-    <section className="py-16 bg-background">
+    <section className="py-12 md:py-16 bg-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold mb-4">Quick Price Estimator</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+        <div className="text-center mb-8 md:mb-10">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Quick Price Estimator</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-sm md:text-base">
             Get an instant estimate for our premium detailing services based on your vehicle type
           </p>
         </div>
@@ -58,19 +58,19 @@ const QuickServiceEstimator = () => {
           <Card className="border-primary/10 overflow-hidden">
             <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none"></div>
             
-            <CardHeader className="text-center relative z-10">
-              <CardTitle className="flex items-center justify-center gap-2">
-                <Calculator className="text-primary h-6 w-6" />
+            <CardHeader className="text-center relative z-10 pb-2 pt-6">
+              <CardTitle className="flex items-center justify-center gap-2 text-lg md:text-xl">
+                <Calculator className="text-primary h-5 w-5 md:h-6 md:w-6" />
                 Service Cost Calculator
               </CardTitle>
             </CardHeader>
             
-            <CardContent className="relative z-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <CardContent className="relative z-10 p-4 md:p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
                 <div>
                   <label className="block text-sm font-medium mb-2">Vehicle Type</label>
                   <Select value={carType} onValueChange={setCarType}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select your vehicle" />
                     </SelectTrigger>
                     <SelectContent>
@@ -86,7 +86,7 @@ const QuickServiceEstimator = () => {
                 <div>
                   <label className="block text-sm font-medium mb-2">Service Type</label>
                   <Select value={serviceType} onValueChange={setServiceType}>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select service" />
                     </SelectTrigger>
                     <SelectContent>
@@ -102,7 +102,7 @@ const QuickServiceEstimator = () => {
               
               <Button 
                 onClick={calculateEstimate} 
-                className="w-full bg-primary hover:bg-primary/90 mb-6"
+                className="w-full bg-primary hover:bg-primary/90 mb-4 md:mb-6"
                 size="lg"
               >
                 Calculate Estimate
@@ -111,16 +111,16 @@ const QuickServiceEstimator = () => {
               {estimatedPrice !== null && (
                 <div className="bg-primary/5 p-4 rounded-lg text-center animate-fade-in">
                   <p className="text-sm mb-2">Estimated price starting from:</p>
-                  <p className="text-3xl font-bold text-primary mb-3">₹{estimatedPrice}</p>
+                  <p className="text-2xl md:text-3xl font-bold text-primary mb-3">₹{estimatedPrice}</p>
                   <p className="text-xs text-muted-foreground mb-4">
                     *Final price may vary based on vehicle condition and specific requirements
                   </p>
-                  <div className="flex gap-3 justify-center">
-                    <Link to="/services">
-                      <Button variant="outline" size="sm">View All Services</Button>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Link to="/services" className="w-full sm:w-auto">
+                      <Button variant="outline" size="sm" className="w-full">View All Services</Button>
                     </Link>
-                    <Link to="/contact">
-                      <Button size="sm">Request Quote</Button>
+                    <Link to="/contact" className="w-full sm:w-auto">
+                      <Button size="sm" className="w-full">Request Quote</Button>
                     </Link>
                   </div>
                 </div>
