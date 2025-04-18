@@ -5,6 +5,7 @@ import { Search, MapPin, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AreaListingSection from "@/components/AreaListingSection";
 import citiesData from "@/data/citiesData";
 
 const Locations = () => {
@@ -95,6 +96,9 @@ const Locations = () => {
           ))}
         </div>
       </div>
+      
+      {/* Local Areas Section */}
+      <AreaListingSection />
       
       {/* Benefits Section */}
       <div className="bg-card py-16">

@@ -44,7 +44,7 @@ const Hero = () => {
             #1 Premium Detailing Service in India
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-6">
             <span className="text-white">Transform Your</span>
             <br />
             <span className="text-gradient">Car's Appearance</span>
@@ -77,7 +77,7 @@ const Hero = () => {
             </Link>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 relative">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 relative">
             <div className="relative overflow-hidden rounded-xl glass px-6 py-8 backdrop-blur-md group hover-scale transition-all">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <div className="relative z-10">

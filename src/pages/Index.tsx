@@ -14,6 +14,7 @@ import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 import DetailingPackages from "@/components/home/DetailingPackages";
 import CarCareTips from "@/components/home/CarCareTips";
 import BookWithConfidence from "@/components/home/BookWithConfidence";
+import FeaturedAreasSection from "@/components/FeaturedAreasSection";
 
 const Index = () => {
   // Set page title and description for SEO
@@ -41,6 +42,7 @@ const Index = () => {
         <WhyChooseUsSection />
         <DetailingPackages />
         <TestimonialsSlider />
+        <FeaturedAreasSection />
         <CitySelector />
         <BookWithConfidence />
         <CTASection />

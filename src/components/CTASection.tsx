@@ -31,7 +31,7 @@ const CTASection = () => {
             Our certified technicians use premium products to deliver exceptional results every time.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
             <div className="bg-background/10 backdrop-blur-sm border border-white/10 p-6 rounded-lg flex flex-col items-center">
               <div className="bg-primary/20 p-3 rounded-full mb-4">
                 <CalendarDays size={24} className="text-primary" />

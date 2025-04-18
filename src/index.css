@@ -103,6 +103,32 @@
     @apply content-[''] absolute top-0 left-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full transform-gpu;
     animation: shine 3s infinite linear;
   }
+  
+  /* Animation for floating elements */
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  /* Animation for fade in */
+  @keyframes fade-in {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 1s ease-out forwards;
+  }
+  
+  /* Mobile-friendly tap targets */
+  .mobile-tap-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
 }
 
 /* Custom slider for before/after comparison */

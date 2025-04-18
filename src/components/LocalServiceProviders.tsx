@@ -58,7 +58,7 @@ const LocalServiceProviders = ({ city, providers }: LocalServiceProvidersProps) 
                 
                 {/* Provider details */}
                 <div className="md:col-span-10 p-4">
-                  <div className="flex flex-col md:flex-row justify-between">
+                  <div className="flex flex-col sm:flex-row justify-between">
                     <div>
                       <h3 className="font-bold text-lg">{provider.name}</h3>
                       

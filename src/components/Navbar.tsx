@@ -34,7 +34,7 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
       <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap">
           <Link to="/" className="flex items-center space-x-2 z-10">
             <div className="w-10 h-10 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent rounded-full opacity-80 animate-pulse-glow"></div>

@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import Locations from "./pages/Locations";
 import ServiceLocations from "./pages/ServiceLocations";
 import CityLocation from "./pages/CityLocation";
+import AreaLocation from "./pages/AreaLocation";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 import Services from "./pages/Services";
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/locations" element={<Locations />} />
           <Route path="/locations/:cityId" element={<ServiceLocations />} />
           <Route path="/city/:cityId" element={<CityLocation />} />
+          <Route path="/area/:areaId" element={<AreaLocation />} />
           <Route path="/services" element={<Services />} />
           <Route path="/services/:serviceId" element={<ServiceDetail />} />
           <Route path="/about" element={<About />} />

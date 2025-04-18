@@ -81,7 +81,7 @@ const BookingForm = ({ selectedCity = "", selectedService = "" }: BookingFormPro
       </CardHeader>
       <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name" className="flex items-center space-x-2">
                 <User className="w-4 h-4 text-primary" />
