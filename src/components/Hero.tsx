@@ -31,7 +31,6 @@ const Hero = () => {
           // Use transform for hardware acceleration
           transform: "translateZ(0)"
         }}
-        loading="lazy"
       />
       
       {/* Simplified overlay gradient */}
