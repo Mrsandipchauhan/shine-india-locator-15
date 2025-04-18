@@ -1,4 +1,3 @@
-
 // 30 local areas with high car ownership across India
 // Each area is structured with relevant data for SEO and content
 
@@ -636,6 +635,46 @@ const localAreasData: LocalArea[] = [
     },
     phoneNumber: "+91 9876543239",
     address: "Shop 45, DLF Promenade Mall, Vasant Kunj, New Delhi - 110070"
+  },
+  {
+    id: "dwarka",
+    name: "Dwarka",
+    parentCity: "delhi",
+    title: "Car Detailing Services in Dwarka - ShineDetailers",
+    description: "Professional car detailing services in Dwarka, Delhi. Expert technicians provide premium exterior & interior detailing, ceramic coating & PPF. Book now!",
+    content: {
+      introduction: "ShineDetailers provides premium car detailing services in Dwarka, Delhi. As one of Delhi's largest planned sub-cities with numerous residential societies and commercial spaces, Dwarka has a high concentration of vehicles requiring professional care.",
+      localChallenges: "Dwarka vehicles face challenges from metro construction dust, extreme weather conditions, and urban pollution. Our specialized detailing processes address these specific environmental factors.",
+      specialTips: "For Dwarka residents, we recommend bi-monthly detailing with additional protection during dust storms. Our ceramic coating services are particularly effective against Delhi's harsh environmental conditions.",
+      serviceAreas: ["Sector 1-29", "Metro Hub", "Asia's Largest Mall", "Dwarka Mor", "Dwarka Expressway"],
+      nearbyLocations: ["Janakpuri", "Uttam Nagar", "Dashrath Puri", "Palam", "Gurgaon"]
+    },
+    coordinates: {
+      lat: 28.5823,
+      lng: 77.0500
+    },
+    phoneNumber: "+91 9876543240",
+    address: "Shop 12, Vegas Mall, Sector 14, Dwarka, New Delhi - 110078"
+  },
+  {
+    id: "kandivali",
+    name: "Kandivali",
+    parentCity: "mumbai",
+    title: "Car Detailing Services in Kandivali - ShineDetailers",
+    description: "Professional car detailing services in Kandivali, Mumbai. Expert technicians provide premium exterior & interior detailing, ceramic coating & PPF. Book now!",
+    content: {
+      introduction: "ShineDetailers delivers exceptional car detailing services in Kandivali, Mumbai. With its mix of residential complexes and commercial areas, Kandivali has a growing number of premium vehicles needing specialized care.",
+      localChallenges: "Kandivali vehicles face challenges from coastal climate, monsoon damage, and industrial pollution. Our tailored solutions address these environmental factors.",
+      specialTips: "For Kandivali residents, we recommend quarterly detailing with monthly maintenance during monsoon season. Our anti-rust treatments are essential for coastal area protection.",
+      serviceAreas: ["Kandivali East", "Kandivali West", "Thakur Complex", "Lokhandwala Township", "Poisar"],
+      nearbyLocations: ["Borivali", "Malad", "Goregaon", "Dahisar", "Mira Road"]
+    },
+    coordinates: {
+      lat: 19.2037,
+      lng: 72.8473
+    },
+    phoneNumber: "+91 9876543241",
+    address: "Shop 7, Growels 101 Mall, Kandivali East, Mumbai - 400101"
   }
 ];
 

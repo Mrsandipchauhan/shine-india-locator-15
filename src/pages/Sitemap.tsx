@@ -1,6 +1,5 @@
-
 import { Link } from "react-router-dom";
-import { Landmark, MapPin, Building, ChevronRight, Sitemap as SitemapIcon } from "lucide-react";
+import { Landmark, MapPin, Building, ChevronRight, LayoutList } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import citiesData from "@/data/citiesData";
@@ -59,7 +58,10 @@ const Sitemap = () => {
       
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4">Site Map</h1>
+          <h1 className="text-3xl font-bold mb-4 flex items-center gap-2">
+            <LayoutList className="text-primary" />
+            Site Map
+          </h1>
           <p className="text-muted-foreground">
             Find premium car detailing services across all our locations in India
           </p>
