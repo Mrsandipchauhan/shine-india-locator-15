@@ -15,6 +15,7 @@ import DetailingPackages from "@/components/home/DetailingPackages";
 import CarCareTips from "@/components/home/CarCareTips";
 import BookWithConfidence from "@/components/home/BookWithConfidence";
 import FeaturedAreasSection from "@/components/FeaturedAreasSection";
+import QuickServiceEstimator from "@/components/home/QuickServiceEstimator";
 
 const Index = () => {
   // Set page title and description for SEO
@@ -37,6 +38,7 @@ const Index = () => {
           </div>
         </div>
         <ServicesSection />
+        <QuickServiceEstimator />
         <WorkProcessSection />
         <CarCareTips />
         <WhyChooseUsSection />
