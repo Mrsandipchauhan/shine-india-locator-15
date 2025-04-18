@@ -6,14 +6,13 @@ import localAreasData from "@/data/localAreasData";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
-import { serviceProvidersByCity as providers } from "@/data/serviceProviders";
+import { serviceProvidersByCity } from "@/data/serviceProviders";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-// Get a selection of featured areas from different parent cities
 const getFeaturedAreas = (count = 6) => {
   const featuredAreas = [];
   const parentCities = new Set();
   
-  // First pick one area from each parent city
   for (const area of localAreasData) {
     if (!parentCities.has(area.parentCity)) {
       parentCities.add(area.parentCity);
@@ -23,7 +22,6 @@ const getFeaturedAreas = (count = 6) => {
     if (featuredAreas.length >= count) break;
   }
   
-  // If we need more areas, add additional ones
   if (featuredAreas.length < count) {
     for (const area of localAreasData) {
       if (!featuredAreas.includes(area)) {
@@ -57,19 +55,19 @@ const FeaturedAreasSection = () => {
       if (location.lat && location.lon) {
         const nearest = findNearestCity(location.lat, location.lon);
         if (nearest?.city) {
-          // Find the primary nearby area
           const mainArea = localAreasData.find(area => 
-            area.parentCity.toLowerCase() === nearest.city.name.toLowerCase()
+            area.parentCity.toLowerCase() === nearest.city.name.toLowerCase() ||
+            area.name.toLowerCase() === nearest.city.name.toLowerCase()
           );
           
           if (mainArea) {
             setNearbyArea(mainArea);
             
-            // Find additional nearby areas (within the same city or neighboring cities)
             const additionalAreas = localAreasData.filter(area => 
               area.id !== mainArea.id && 
               (area.parentCity.toLowerCase() === nearest.city.name.toLowerCase() || 
-               area.name.toLowerCase().includes(nearest.city.name.toLowerCase()))
+               area.name.toLowerCase().includes(nearest.city.name.toLowerCase()) ||
+               mainArea.content.nearbyLocations.includes(area.name))
             ).slice(0, 3);
             
             setNearbyAreas(additionalAreas);
@@ -161,46 +159,48 @@ const FeaturedAreasSection = () => {
           )}
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredAreas.map((area) => (
-            <Card 
-              key={area.id} 
-              className={`bg-background hover:shadow-md transition-shadow overflow-hidden ${
-                nearbyArea && area.id === nearbyArea.id ? 'ring-2 ring-primary shadow-lg' : ''
-              }`}
-            >
-              <div className="h-40 bg-cover bg-center" style={{ 
-                backgroundImage: `url('https://source.unsplash.com/featured/?${area.name},car')`,
-                filter: "brightness(0.7) contrast(1.1)"
-              }}>
-                <div className="w-full h-full bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4">
-                  <div className="flex items-center text-white">
-                    <MapPin size={16} className="text-primary mr-2" />
-                    <h3 className="font-semibold">{area.name}</h3>
+        <ScrollArea className="w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-w-[768px]">
+            {featuredAreas.map((area) => (
+              <Card 
+                key={area.id} 
+                className={`bg-background hover:shadow-md transition-shadow overflow-hidden ${
+                  nearbyArea && area.id === nearbyArea.id ? 'ring-2 ring-primary shadow-lg' : ''
+                }`}
+              >
+                <div className="h-40 bg-cover bg-center relative" style={{ 
+                  backgroundImage: `url('https://source.unsplash.com/featured/?${area.name},car')`,
+                }}>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
+                    <div className="absolute bottom-0 left-0 p-4">
+                      <div className="flex items-center text-white">
+                        <MapPin size={16} className="text-primary mr-2" />
+                        <h3 className="font-semibold">{area.name}</h3>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <CardContent className="p-4">
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {area.content.introduction.substring(0, 100)}...
-                </p>
-                
-                {/* Show available service count if we have providers for this area's parent city */}
-                {providers[area.parentCity.toLowerCase()] && (
-                  <p className="text-xs text-primary mb-3">
-                    {providers[area.parentCity.toLowerCase()].length} service providers available
+                <CardContent className="p-4">
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    {area.content.introduction.substring(0, 100)}...
                   </p>
-                )}
-                
-                <Link to={`/area/${area.id}`}>
-                  <Button className="w-full bg-primary hover:bg-primary/90 flex items-center justify-center">
-                    View Services <ArrowRight size={16} className="ml-2" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  
+                  {serviceProvidersByCity[area.parentCity.toLowerCase()] && (
+                    <p className="text-xs text-primary mb-3">
+                      {serviceProvidersByCity[area.parentCity.toLowerCase()].length} service providers available
+                    </p>
+                  )}
+                  
+                  <Link to={`/area/${area.id}`}>
+                    <Button className="w-full bg-primary hover:bg-primary/90 flex items-center justify-center">
+                      View Services <ArrowRight size={16} className="ml-2" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </ScrollArea>
         
         <div className="text-center mt-8">
           <Link to="/locations">
