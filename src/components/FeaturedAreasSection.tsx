@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { MapPin, ArrowRight, Navigation, MapPinOff, Car } from "lucide-react";
 import localAreasData from "@/data/localAreasData";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { getUserLocation, findNearestCity, serviceProvidersByCity } from "@/services/locationService";
+import { getUserLocation, findNearestCity } from "@/services/locationService";
 import { serviceProvidersByCity as providers } from "@/data/serviceProviders";
 
 // Get a selection of featured areas from different parent cities
@@ -46,56 +45,56 @@ const FeaturedAreasSection = () => {
   const [nearbyAreas, setNearbyAreas] = useState<any[]>([]);
 
   useEffect(() => {
-    const detectLocation = async () => {
-      try {
-        setIsLoading(true);
-        setLocationError(null);
-        
-        const location = await getUserLocation();
-        if (location.lat && location.lon) {
-          const nearest = findNearestCity(location.lat, location.lon);
-          if (nearest?.city) {
-            // Find the primary nearby area
-            const mainArea = localAreasData.find(area => 
-              area.parentCity.toLowerCase() === nearest.city.name.toLowerCase()
-            );
-            
-            if (mainArea) {
-              setNearbyArea(mainArea);
-              
-              // Find additional nearby areas (within the same city or neighboring cities)
-              const additionalAreas = localAreasData.filter(area => 
-                area.id !== mainArea.id && 
-                (area.parentCity.toLowerCase() === nearest.city.name.toLowerCase() || 
-                 area.name.toLowerCase().includes(nearest.city.name.toLowerCase()))
-              ).slice(0, 3);
-              
-              setNearbyAreas(additionalAreas);
-              
-              toast.success(`Found services near ${nearest.city.name}!`, {
-                description: "We've highlighted services available in your area."
-              });
-            } else {
-              setLocationError("No service areas found in your location");
-              toast.error("No service areas available in your exact location", {
-                description: "Please check our other locations or contact us directly."
-              });
-            }
-          }
-        }
-      } catch (error) {
-        console.error("Error detecting location:", error);
-        setLocationError("Unable to detect your location");
-        toast.error("Location detection failed", {
-          description: "Please allow location access or select your city manually."
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     detectLocation();
   }, []);
+  
+  const detectLocation = async () => {
+    try {
+      setIsLoading(true);
+      setLocationError(null);
+      
+      const location = await getUserLocation();
+      if (location.lat && location.lon) {
+        const nearest = findNearestCity(location.lat, location.lon);
+        if (nearest?.city) {
+          // Find the primary nearby area
+          const mainArea = localAreasData.find(area => 
+            area.parentCity.toLowerCase() === nearest.city.name.toLowerCase()
+          );
+          
+          if (mainArea) {
+            setNearbyArea(mainArea);
+            
+            // Find additional nearby areas (within the same city or neighboring cities)
+            const additionalAreas = localAreasData.filter(area => 
+              area.id !== mainArea.id && 
+              (area.parentCity.toLowerCase() === nearest.city.name.toLowerCase() || 
+               area.name.toLowerCase().includes(nearest.city.name.toLowerCase()))
+            ).slice(0, 3);
+            
+            setNearbyAreas(additionalAreas);
+            
+            toast.success(`Found services near ${nearest.city.name}!`, {
+              description: "We've highlighted services available in your area."
+            });
+          } else {
+            setLocationError("No service areas found in your location");
+            toast.error("No service areas available in your exact location", {
+              description: "Please check our other locations or contact us directly."
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error detecting location:", error);
+      setLocationError("Unable to detect your location");
+      toast.error("Location detection failed", {
+        description: "Please allow location access or select your city manually."
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   const handleRetryLocation = () => {
     detectLocation();
