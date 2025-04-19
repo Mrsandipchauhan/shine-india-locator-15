@@ -20,6 +20,9 @@ export const AreaCard = ({
   area,
   isNearby
 }: AreaCardProps) => {
+  // Create a consistent area route
+  const areaRoute = `/area/${encodeURIComponent(area.id.toLowerCase())}`;
+  
   return (
     <Card className={`bg-background hover:shadow-md transition-shadow overflow-hidden ${isNearby ? 'ring-2 ring-primary shadow-lg' : ''}`}>
       <CardContent className="p-5">
@@ -41,7 +44,7 @@ export const AreaCard = ({
           {area.content.introduction.substring(0, 120)}...
         </p>
         
-        <Link to={`/area/${area.id}`} className="w-full">
+        <Link to={areaRoute} className="w-full">
           <Button variant="outline" className="w-full flex items-center justify-between">
             <span>View Services</span>
             <ArrowRight size={16} />

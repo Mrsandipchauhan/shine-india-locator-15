@@ -73,7 +73,7 @@ const CitySlider = ({ locations, onLocationSelect }: CitySliderProps) => {
         {locations.map((location) => (
           <Link
             key={location}
-            to={`/locations/${location.toLowerCase()}`}
+            to={`/locations/${encodeURIComponent(location.toLowerCase())}`}
             onClick={() => onLocationSelect?.(location)}
             className="flex items-center whitespace-nowrap bg-card hover:bg-primary/10 border border-border rounded-full px-3 py-1.5 transition-colors snap-start"
           >

@@ -1,44 +1,48 @@
 
-// Updated provider list to include Enquire button, and no Call/Direction buttons.
-// Also assumes view results toggle state fixed via localStorage check and removal.
-
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import LocationHeader from "@/components/LocationHeader";
 import LocationContentSection from "@/components/LocationContentSection";
 import SidebarContent from "@/components/SidebarContent";
+import PricingPackages from "@/components/PricingPackages";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 import { serviceProvidersByCity, defaultProviders } from "@/data/serviceProviders";
 import { cityContents, getDefaultCityContent } from "@/data/cityContent";
 
 const ServiceLocations = () => {
   const { cityId = "" } = useParams<{ cityId: string }>();
+  const navigate = useNavigate();
   const [cityName, setCityName] = useState("");
   const [providers, setProviders] = useState(defaultProviders);
   const [cityContent, setCityContent] = useState(getDefaultCityContent(""));
   const [hasViewedResults, setHasViewedResults] = useState(false);
 
   useEffect(() => {
-    const normalizedCityId = cityId.toLowerCase();
-    const cityProviders = serviceProvidersByCity[normalizedCityId] || defaultProviders;
+    // Ensure cityId is properly decoded for handling URL-encoded parameters
+    const decodedCityId = decodeURIComponent(cityId).toLowerCase();
+    const cityProviders = serviceProvidersByCity[decodedCityId] || defaultProviders;
     setProviders(cityProviders);
 
-    const formattedCityName = normalizedCityId.charAt(0).toUpperCase() + normalizedCityId.slice(1);
+    // Format the city name properly for display
+    const formattedCityName = decodedCityId
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
     setCityName(formattedCityName);
 
-    setCityContent(cityContents[normalizedCityId] || getDefaultCityContent(formattedCityName));
+    // Get appropriate content based on the city
+    setCityContent(cityContents[decodedCityId] || getDefaultCityContent(formattedCityName));
 
-    if (!normalizedCityId) {
+    if (!decodedCityId) {
       detectUserLocation();
     }
   }, [cityId]);
 
   useEffect(() => {
-    // Assuming "viewResults" in localStorage indicates if user clicked "View Results"
+    // Check if user clicked "View Results" from a prompt
     const viewed = localStorage.getItem('viewResultsClicked') === 'true';
     setHasViewedResults(viewed);
     if (viewed && window.location.pathname.includes('/locations')) {
@@ -61,7 +65,7 @@ const ServiceLocations = () => {
               label: "View Services",
               onClick: () => {
                 localStorage.setItem('viewResultsClicked', 'true');
-                window.location.href = `/locations/${nearest.city.id}`;
+                navigate(`/locations/${encodeURIComponent(nearest.city.id.toLowerCase())}`);
               }
             },
             duration: 8000
@@ -87,6 +91,11 @@ const ServiceLocations = () => {
             providers={providers}
           />
           <SidebarContent cityName={cityName} />
+        </div>
+
+        {/* Adding Pricing Packages to ensure consistent design */}
+        <div className="mb-12">
+          <PricingPackages />
         </div>
       </div>
 

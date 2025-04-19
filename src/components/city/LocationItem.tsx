@@ -23,7 +23,7 @@ export const LocationItem = ({ location, isNearestCity, isNearbyArea }: Location
     return className;
   };
 
-  // Standardize the location route
+  // Create a consistent URL format for all locations
   const locationPath = `/locations/${encodeURIComponent(location.toLowerCase())}`;
 
   return (

@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import SEOMetadata from "@/components/SEOMetadata";
 import MainLayout from "@/layouts/MainLayout";
@@ -28,6 +29,14 @@ const ServiceArea = ({
   afterImage,
   country
 }: ServiceAreaProps) => {
+  // Create consistent routes for services
+  const createServiceRoute = (service: string) => {
+    if (country) {
+      return `/area/${country.toLowerCase()}/${cityName.toLowerCase()}/${encodeURIComponent(areaName.toLowerCase())}/${service}`;
+    }
+    return `/area/${encodeURIComponent(areaName.toLowerCase())}/${service}`;
+  };
+
   return (
     <MainLayout>
       <SEOMetadata city={areaName} type="service" />
@@ -152,13 +161,13 @@ const ServiceArea = ({
               <Card className="mt-6 p-6">
                 <h3 className="font-semibold mb-4">Other Services in {areaName}</h3>
                 <div className="space-y-2">
-                  <Link to={`/area/${areaName.toLowerCase()}/exterior-detailing`}>
+                  <Link to={createServiceRoute("exterior-detailing")}>
                     <Button variant="ghost" className="w-full justify-start">Exterior Detailing</Button>
                   </Link>
-                  <Link to={`/area/${areaName.toLowerCase()}/interior-detailing`}>
+                  <Link to={createServiceRoute("interior-detailing")}>
                     <Button variant="ghost" className="w-full justify-start">Interior Detailing</Button>
                   </Link>
-                  <Link to={`/area/${areaName.toLowerCase()}/ceramic-coating`}>
+                  <Link to={createServiceRoute("ceramic-coating")}>
                     <Button variant="ghost" className="w-full justify-start">Ceramic Coating</Button>
                   </Link>
                 </div>
