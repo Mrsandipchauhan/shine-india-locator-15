@@ -1,3 +1,4 @@
+
 import React from "react";
 import { ServiceProvider } from "@/data/serviceProviders";
 import { Card } from "./ui/card";
@@ -21,7 +22,8 @@ const LocalServiceProviders = ({ city, providers, ctaText = "Enquire Now" }: Loc
               <p className="text-sm mt-1"><strong>Phone:</strong> <a href={`tel:${provider.phone}`} className="text-primary underline">{provider.phone}</a></p>
             </div>
             <div className="mt-4 sm:mt-0">
-              <Button size="md" variant="primary" className="w-full sm:w-auto" onClick={() => window.location.href = `mailto:${provider.email}`}>
+              {/* Since ServiceProvider doesn't have email, we use call action on button */}
+              <Button size="default" variant="default" className="w-full sm:w-auto" onClick={() => window.location.href = `tel:${provider.phone.replace(/\D/g, '')}`}>
                 {ctaText}
               </Button>
             </div>
@@ -33,3 +35,4 @@ const LocalServiceProviders = ({ city, providers, ctaText = "Enquire Now" }: Loc
 };
 
 export default LocalServiceProviders;
+
