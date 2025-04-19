@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -59,10 +60,11 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
         .join(' ');
     }
     
+    // Update form data with selected service from props
     setFormData(prev => ({
       ...prev,
       city: prev.city || cityFromUrl || selectedCity,
-      serviceType: prev.serviceType || serviceFromUrl || selectedService
+      serviceType: selectedService || prev.serviceType || serviceFromUrl
     }));
     
     if (!formData.city) {
@@ -107,18 +109,18 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
     e.preventDefault();
     
     if (!formData.name || !formData.phone || !formData.email) {
-      toast.error("कृपया सभी आवश्यक फ़ील्ड भरें", {
-        description: "नाम, फ़ोन नंबर और ईमेल आवश्यक हैं"
+      toast.error("Please fill all required fields", {
+        description: "Name, phone number, and email are required"
       });
       return;
     }
     
     toast.success(
-      isQuoteForm ? "कोटेशन अनुरोध प्राप्त हुआ!" : "बुकिंग अनुरोध सफल!",
+      isQuoteForm ? "Quote request received!" : "Booking request successful!",
       {
         description: isQuoteForm
-          ? `धन्यवाद ${formData.name}, हम जल्द ही आपका कस्टम कोटेशन भेजेंगे`
-          : `धन्यवाद ${formData.name}, आपकी ${formData.serviceType || "डिटेलिंग"} अपॉइंटमेंट का अनुरोध प्राप्त हो गया है`
+          ? `Thank you ${formData.name}, we'll send your custom quote soon`
+          : `Thank you ${formData.name}, your ${formData.serviceType || "detailing"} appointment request has been received`
       }
     );
     
@@ -160,13 +162,13 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
               type="submit" 
               className="w-full bg-primary hover:bg-primary/90 mt-4"
             >
-              {isQuoteForm ? "मुफ्त कोटेशन पाएं" : "अपॉइंटमेंट बुक करें"}
+              {isQuoteForm ? "Get Free Quote" : "Book Appointment"}
             </Button>
             
             <p className="text-xs text-muted-foreground text-center mt-2">
               {isQuoteForm 
-                ? "हमारी टीम 24 घंटों के भीतर आपसे संपर्क करेगी" 
-                : "हमारा प्रतिनिधि आपकी अपॉइंटमेंट की पुष्टि के लिए संपर्क करेगा"}
+                ? "Our team will contact you within 24 hours" 
+                : "Our representative will contact you to confirm your appointment"}
             </p>
           </form>
         </CardContent>

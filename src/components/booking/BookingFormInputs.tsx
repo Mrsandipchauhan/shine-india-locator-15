@@ -1,3 +1,4 @@
+
 import { User, Phone, Mail, Car, Calendar, Clock } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -116,6 +117,9 @@ export const BookingFormInputs = ({
                   {service.title}
                 </SelectItem>
               ))}
+              <SelectItem value="Essential Care">Essential Care</SelectItem>
+              <SelectItem value="Premium Care">Premium Care</SelectItem>
+              <SelectItem value="Ultimate Care">Ultimate Care</SelectItem>
             </SelectContent>
           </Select>
         </div>
