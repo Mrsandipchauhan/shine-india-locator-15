@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Car, Calculator, MapPin, Search, CarFront, IndianRupee, DollarSign, Euro, PoundSterling } from "lucide-react";
 import { useCountryDetection } from "@/hooks/use-country-detection";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
+import { worldwideLocations } from "@/data/globalLocationsData";
 
 // Car types with global availability
 const carTypes = [
@@ -203,7 +204,7 @@ const QuickServiceEstimator = () => {
     detectLocation();
   }, []);
   
-  // Enhanced location search with suggestions
+  // Update location search with country-specific suggestions
   useEffect(() => {
     if (searchTerm.trim().length < 2) {
       setSearchResults([]);
@@ -213,13 +214,19 @@ const QuickServiceEstimator = () => {
     setIsSearching(true);
 
     const timer = setTimeout(() => {
-      const locations = getPopularLocations();
-      const results = locations.filter(city => 
+      // Get locations for current country only
+      const countryLocations = currentCountry && worldwideLocations[
+        Object.keys(worldwideLocations).find(continent =>
+          Object.keys(worldwideLocations[continent as keyof typeof worldwideLocations]).includes(currentCountry)
+        ) as keyof typeof worldwideLocations
+      ]?.[currentCountry as string] || [];
+
+      const results = countryLocations.filter(city => 
         city.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
       // Find closest matches for suggestions
-      const suggestions = locations
+      const suggestions = countryLocations
         .filter(city => !results.includes(city))
         .filter(city => {
           const similarity = calculateStringSimilarity(city.toLowerCase(), searchTerm.toLowerCase());
@@ -501,21 +508,7 @@ const QuickServiceEstimator = () => {
                 </div>
               )}
               
-              {/* Popular searches in current country */}
-              <div className="mt-6 pt-6 border-t border-border/50">
-                <p className="text-xs text-muted-foreground mb-3">Popular searches in {currentCountry}:</p>
-                <div className="flex flex-wrap gap-2">
-                  {getPopularLocations().slice(0, 6).map(city => (
-                    <div
-                      key={city}
-                      onClick={() => handleLocationSelect(city)}
-                      className="text-xs px-3 py-1 bg-accent/20 hover:bg-accent/40 rounded-full cursor-pointer transition-colors"
-                    >
-                      {city}
-                    </div>
-                  ))}
-                </div>
-              </div>
+              
             </CardContent>
           </Card>
         </div>
