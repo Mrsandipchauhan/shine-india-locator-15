@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
@@ -7,10 +6,12 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 import localAreasData from "@/data/localAreasData";
 
-// Default cities to show if location is not detected
+// Expanded list of default cities
 const defaultCities = [
   "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", 
-  "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow"
+  "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow",
+  "Chandigarh", "Coimbatore", "Nagpur", "Surat", "Indore",
+  "Bhopal", "Patna", "Vadodara", "Guwahati", "Kochi"
 ];
 
 // Create areas mapping from localAreasData
@@ -38,17 +39,29 @@ const CitySlider = () => {
           const nearest = findNearestCity(location.lat, location.lon);
           if (nearest?.city) {
             const nearestCity = nearest.city.name;
-            // Get areas for the nearest city
-            const nearbyAreas = localAreasData
+            // Get areas for the nearest city and surrounding cities
+            let nearbyAreas = localAreasData
               .filter(area => area.parentCity.toLowerCase() === nearestCity.toLowerCase())
               .map(area => area.name);
             
+            // If we have nearby areas, add them first, then add other major cities
             if (nearbyAreas.length > 0) {
+              // Add the nearest city first
+              nearbyAreas = [nearestCity, ...nearbyAreas];
+              // Add other major cities until we have a good number of locations
+              const otherCities = defaultCities.filter(city => 
+                city.toLowerCase() !== nearestCity.toLowerCase()
+              );
+              nearbyAreas = [...new Set([...nearbyAreas, ...otherCities])];
               setDisplayLocations(nearbyAreas);
             } else {
               setDisplayLocations(defaultCities);
             }
+          } else {
+            setDisplayLocations(defaultCities);
           }
+        } else {
+          setDisplayLocations(defaultCities);
         }
       } catch (error) {
         console.error("Error detecting location:", error);
