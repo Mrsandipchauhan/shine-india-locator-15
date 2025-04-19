@@ -19,7 +19,7 @@ import QuickServiceEstimator from "@/components/home/QuickServiceEstimator";
 import SEOContent from "@/components/home/SEOContent";
 import LocalBusinessSchema from "@/components/SEO/LocalBusinessSchema";
 import PerformanceMonitor from "@/components/SEO/PerformanceMonitor";
-import { ImageOptimizer } from "@/components/ImageOptimizer";
+import ImageOptimizer from "@/components/ImageOptimizer";
 import { H1, H2 } from "@/components/SEO/HeadingStructure";
 
 const Index = () => {

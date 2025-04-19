@@ -1,6 +1,16 @@
 
 import { useEffect } from 'react';
 
+// Define interfaces for extended performance entries
+interface PerformanceEntryWithProcessing extends PerformanceEntry {
+  processingStart?: number;
+}
+
+interface LayoutShiftEntry extends PerformanceEntry {
+  hadRecentInput?: boolean;
+  value?: number;
+}
+
 const PerformanceMonitor = () => {
   useEffect(() => {
     if ('PerformanceObserver' in window) {
@@ -14,17 +24,21 @@ const PerformanceMonitor = () => {
       // FID Observer
       const fidObserver = new PerformanceObserver((list) => {
         list.getEntries().forEach((entry) => {
-          const fid = entry.processingStart! - entry.startTime;
-          console.log('FID:', Math.round(fid), 'ms');
+          const fidEntry = entry as PerformanceEntryWithProcessing;
+          if (fidEntry.processingStart) {
+            const fid = fidEntry.processingStart - fidEntry.startTime;
+            console.log('FID:', Math.round(fid), 'ms');
+          }
         });
       });
       
       // CLS Observer
       const clsObserver = new PerformanceObserver((list) => {
         let clsValue = 0;
-        list.getEntries().forEach((entry: any) => {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
+        list.getEntries().forEach((entry) => {
+          const layoutShiftEntry = entry as LayoutShiftEntry;
+          if (layoutShiftEntry && !layoutShiftEntry.hadRecentInput) {
+            clsValue += layoutShiftEntry.value || 0;
           }
         });
         console.log('CLS:', clsValue);
