@@ -1,8 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronDown, Home, Shield, Star, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "./theme-toggle";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -195,6 +195,11 @@ const Navbar = () => {
             <Link to="/contact" className="flex items-center space-x-2 px-4 py-3 rounded-lg text-white hover:bg-primary/5 transition-colors" onClick={() => setIsMenuOpen(false)}>
               <span>Contact</span>
             </Link>
+            
+            <div className="flex items-center justify-between px-4 py-3">
+              <span className="text-sm text-muted-foreground">Switch theme</span>
+              <ThemeToggle />
+            </div>
             
             <div className="flex items-center space-x-3 px-4 py-3">
               <div className="p-2 rounded-full bg-primary/10">
