@@ -1,9 +1,11 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
+import localAreasData from "@/data/localAreasData";
 
 // Default cities to show if location is not detected
 const defaultCities = [
@@ -11,14 +13,14 @@ const defaultCities = [
   "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow"
 ];
 
-// Areas mapped to major cities
-const cityAreas: { [key: string]: string[] } = {
-  "Ahmedabad": ["Satellite", "Bopal", "Thaltej", "Vastrapur", "Bodakdev", "Prahlad Nagar", "SG Highway", "Maninagar"],
-  "Mumbai": ["Andheri", "Bandra", "Juhu", "Powai", "Worli", "Malad", "Goregaon", "Thane"],
-  "Delhi": ["Connaught Place", "Karol Bagh", "Dwarka", "Rohini", "Vasant Kunj", "Saket", "Greater Kailash"],
-  "Bangalore": ["Koramangala", "Indiranagar", "Whitefield", "JP Nagar", "HSR Layout", "Marathahalli"],
-  // Add more cities and their areas as needed
-};
+// Create areas mapping from localAreasData
+const cityAreas: { [key: string]: string[] } = {};
+localAreasData.forEach(area => {
+  if (!cityAreas[area.parentCity]) {
+    cityAreas[area.parentCity] = [];
+  }
+  cityAreas[area.parentCity].push(area.name);
+});
 
 const CitySlider = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -37,7 +39,10 @@ const CitySlider = () => {
           if (nearest?.city) {
             const nearestCity = nearest.city.name;
             // Get areas for the nearest city
-            const nearbyAreas = cityAreas[nearestCity] || [];
+            const nearbyAreas = localAreasData
+              .filter(area => area.parentCity.toLowerCase() === nearestCity.toLowerCase())
+              .map(area => area.name);
+            
             if (nearbyAreas.length > 0) {
               setDisplayLocations(nearbyAreas);
             } else {
