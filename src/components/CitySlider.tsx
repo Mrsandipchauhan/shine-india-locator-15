@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getUserLocation, findNearestCity } from "@/services/locationService";
 
 // Top cities in India by car ownership
 const majorCities = [
@@ -15,8 +16,63 @@ const majorCities = [
 
 const CitySlider = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [sortedCities, setSortedCities] = useState(majorCities);
+  const [autoScrollInterval, setAutoScrollInterval] = useState<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Detect user location and sort cities
+  useEffect(() => {
+    const detectLocationAndSortCities = async () => {
+      try {
+        const location = await getUserLocation();
+        if (location.lat && location.lon) {
+          const nearest = findNearestCity(location.lat, location.lon);
+          if (nearest?.city) {
+            // Sort cities by distance from user's location
+            const nearestCity = nearest.city.name;
+            const sorted = [...majorCities].sort((a, b) => {
+              if (a === nearestCity) return -1;
+              if (b === nearestCity) return 1;
+              return 0;
+            });
+            setSortedCities(sorted);
+          }
+        }
+      } catch (error) {
+        console.error("Error detecting location:", error);
+      }
+    };
+    
+    detectLocationAndSortCities();
+  }, []);
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    const startAutoScroll = () => {
+      if (sliderRef.current) {
+        const interval = setInterval(() => {
+          const slider = sliderRef.current;
+          if (slider) {
+            if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
+              slider.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+              slider.scrollBy({ left: 200, behavior: 'smooth' });
+            }
+          }
+        }, 3000);
+        setAutoScrollInterval(interval);
+      }
+    };
+
+    startAutoScroll();
+
+    return () => {
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+      }
+    };
+  }, []);
   
   const scroll = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
@@ -94,10 +150,32 @@ const CitySlider = () => {
         className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar"
         style={{ 
           scrollbarWidth: "none",
-          msOverflowStyle: "none"
+          msOverflowStyle: "none",
+          scrollBehavior: "smooth"
+        }}
+        onMouseEnter={() => {
+          if (autoScrollInterval) {
+            clearInterval(autoScrollInterval);
+            setAutoScrollInterval(null);
+          }
+        }}
+        onMouseLeave={() => {
+          if (!autoScrollInterval && sliderRef.current) {
+            const interval = setInterval(() => {
+              const slider = sliderRef.current;
+              if (slider) {
+                if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
+                  slider.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                  slider.scrollBy({ left: 200, behavior: 'smooth' });
+                }
+              }
+            }, 3000);
+            setAutoScrollInterval(interval);
+          }
         }}
       >
-        {majorCities.map((city) => (
+        {sortedCities.map((city) => (
           <Link
             key={city}
             to={`/locations/${city.toLowerCase()}`}
