@@ -39,9 +39,9 @@ const Index = () => {
         </div>
         <div className="space-y-8 md:space-y-0 w-full overflow-hidden">
           <ServicesSection />
+          <DetailingPackages />
           <QuickServiceEstimator />
           <WorkProcessSection />
-          <DetailingPackages />
           <WhyChooseUsSection />
           <CarCareTips />
           <TestimonialsSlider />
