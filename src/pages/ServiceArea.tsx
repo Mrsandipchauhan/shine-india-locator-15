@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import ServiceAreaComponent from "@/components/services/ServiceArea";
 import ServiceAreaSEO from "@/components/services/ServiceAreaSEO";

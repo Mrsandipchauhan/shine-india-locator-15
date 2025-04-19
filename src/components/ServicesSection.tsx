@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -88,6 +87,30 @@ const ServicesSection = () => {
       icon: <Star className="h-6 w-6 text-primary" />,
       price: "From ₹999",
       features: ["Quick Service", "Essential Cleaning", "Interior Vacuum", "Exterior Wash"]
+    },
+    {
+      id: "ac-sanitization",
+      title: "AC Sanitization",
+      description: "Complete air conditioning system cleaning and sanitization for fresh, healthy air.",
+      icon: <SprayCan className="h-6 w-6 text-primary" />,
+      price: "From ₹999",
+      features: ["Deep AC Cleaning", "Antibacterial Treatment", "Odor Removal", "Air Quality Test"]
+    },
+    {
+      id: "ppf-protection",
+      title: "PPF Protection",
+      description: "Premium paint protection film installation for ultimate paint protection.",
+      icon: <Shield className="h-6 w-6 text-primary" />,
+      price: "From ₹24,999",
+      features: ["Self-Healing Film", "10 Year Warranty", "UV Protection", "Stone Chip Protection"]
+    },
+    {
+      id: "denting-painting",
+      title: "Denting & Painting",
+      description: "Professional dent removal and painting services for all types of vehicles.",
+      icon: <Car className="h-6 w-6 text-primary" />,
+      price: "From ₹4,999",
+      features: ["Dent Removal", "Color Matching", "Premium Paint", "Clear Coat Protection"]
     }
   ];
 
