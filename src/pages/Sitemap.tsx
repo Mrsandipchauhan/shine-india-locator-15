@@ -15,10 +15,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import citiesData from "@/data/citiesData";
 import localAreasData from "@/data/localAreasData";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-// Group cities by region for better organization
 const regions = {
   north: ["Delhi", "Chandigarh", "Lucknow", "Jaipur"],
   south: ["Bangalore", "Hyderabad", "Chennai", "Coimbatore", "Kochi"],
@@ -27,13 +25,11 @@ const regions = {
   central: ["Indore", "Bhopal", "Nagpur"]
 };
 
-// Get popular areas based on the actual data
 const getPopularAreas = () => {
   const popularCities = ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Chandigarh"];
   
   const areasByCity: Record<string, string[]> = {};
   
-  // Group areas by their parent city
   localAreasData.forEach(area => {
     if (!areasByCity[area.parentCity]) {
       areasByCity[area.parentCity] = [];
@@ -41,10 +37,8 @@ const getPopularAreas = () => {
     areasByCity[area.parentCity].push(area.name);
   });
   
-  // Create a map of city names to their areas
   const popularAreas: Record<string, string[]> = {};
   
-  // Get the city name from citiesData based on ID
   citiesData.forEach(city => {
     if (popularCities.includes(city.name) && areasByCity[city.id]) {
       popularAreas[city.name] = areasByCity[city.id];
@@ -56,7 +50,6 @@ const getPopularAreas = () => {
 
 const popularAreas = getPopularAreas();
 
-// Function to find area ID by name
 const getAreaIdByName = (areaName: string): string => {
   const area = localAreasData.find(area => 
     area.name.toLowerCase() === areaName.toLowerCase()
@@ -80,13 +73,12 @@ const Sitemap = () => {
           </p>
         </div>
 
-        {/* Services Overview */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <CarFront className="text-primary" size={20} />
             Our Services
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <Card className="p-4 hover:bg-accent transition-colors">
               <Link to="/services/exterior-detailing" className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -117,10 +109,9 @@ const Sitemap = () => {
           </div>
         </div>
 
-        {/* Quick Links */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4">Navigation</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <Link to="/services" className="flex items-center p-4 bg-card rounded-lg hover:bg-accent">
               <Wrench className="mr-2 text-primary" />
               All Services
@@ -140,10 +131,9 @@ const Sitemap = () => {
           </div>
         </div>
 
-        {/* Top Cities with Areas */}
         <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4">Top Cities</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {Object.entries(popularAreas).map(([city, areas]) => (
               <div key={city} className="bg-card p-6 rounded-lg">
                 <Link 
@@ -153,11 +143,11 @@ const Sitemap = () => {
                   <Building className="mr-2" size={20} />
                   {city}
                 </Link>
-                <ul className="space-y-2">
+                <ul className="space-y-2 max-h-36 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/50">
                   {areas.slice(0, 6).map((area) => (
                     <li key={area}>
                       <Link 
-                        to={`/area/${getAreaIdByName(area)}`}
+                        to={`/area/${area.toLowerCase().replace(/\s+/g,'-')}`}
                         className="flex items-center text-sm text-muted-foreground hover:text-foreground"
                       >
                         <ChevronRight className="mr-1" size={16} />
@@ -171,10 +161,9 @@ const Sitemap = () => {
           </div>
         </div>
 
-        {/* All Cities by Region */}
-        <div>
+        <div className="mb-12">
           <h2 className="text-xl font-semibold mb-4">All Locations by Region</h2>
-          {Object.entries(regions).map(([region, cities]) => (
+          {Object.entries({'north': ['Delhi', 'Chandigarh', 'Lucknow', 'Jaipur'], 'south': ['Bangalore', 'Hyderabad', 'Chennai', 'Coimbatore', 'Kochi'], 'west': ['Mumbai', 'Pune', 'Ahmedabad', 'Surat', 'Vadodara'], 'east': ['Kolkata', 'Patna', 'Guwahati'], 'central': ['Indore', 'Bhopal', 'Nagpur'],}).map(([region, cities]) => (
             <div key={region} className="mb-8">
               <h3 className="text-lg font-medium mb-4 capitalize flex items-center gap-2">
                 <MapPin className="text-primary" size={18} />
@@ -184,7 +173,7 @@ const Sitemap = () => {
                 {cities.map((city) => {
                   const cityData = citiesData.find(c => c.name.toLowerCase() === city.toLowerCase());
                   const cityId = cityData ? cityData.id : city.toLowerCase();
-                  
+
                   return (
                     <Card key={city} className="p-4 hover:bg-accent transition-colors">
                       <Link
@@ -205,13 +194,12 @@ const Sitemap = () => {
           ))}
         </div>
         
-        {/* All Areas A-Z */}
         <div className="mt-12">
           <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
             <MapPin className="text-primary" size={20} />
             All Service Areas (A-Z)
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-auto scrollbar-thin scrollbar-thumb-primary/50">
             {localAreasData
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((area) => (

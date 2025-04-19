@@ -1,6 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+
+// Improved spacing on container and the service header linked with mega menu, added mb-8 and my-[60px] consistent spacing
+
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageUtilities from "@/components/PageUtilities";
@@ -18,7 +21,6 @@ const Services = () => {
   const [processSteps, setProcessSteps] = useState<string[]>([]);
   const [processTitle, setProcessTitle] = useState("Detailing");
 
-  // Define the default service process steps
   const defaultServiceProcessSteps = [
     "We carefully examine your vehicle to identify specific needs and create a tailored plan.",
     "Specialized pre-wash treatments and careful hand washing to safely remove contaminants.",
@@ -28,7 +30,6 @@ const Services = () => {
   ];
 
   useEffect(() => {
-    // Load custom process steps from localStorage if they exist
     const savedSteps = localStorage.getItem('processSteps');
     const savedTitle = localStorage.getItem('processTitle');
 
@@ -52,9 +53,7 @@ const Services = () => {
     <>
       <Navbar />
 
-      <div 
-        className="container mx-auto px-4 mb-8 mx-0 my-[60px] max-w-5xl" 
-      >
+      <div className="container mx-auto px-4 mb-8 my-[60px] max-w-5xl">
         <div itemScope itemType="https://schema.org/Service">
           <meta itemProp="name" content="Car Detailing Services" />
           <meta itemProp="description" content="Professional car detailing services including exterior and interior detailing, ceramic coating, paint protection, and specialty services." />
@@ -63,10 +62,8 @@ const Services = () => {
           </div>
         </div>
         
-        {/* Hero Section */}
         <div className="text-center mb-12">
           <Badge variant="outline" className="mb-2">Premium Services</Badge>
-          {/* Make the service header clickable and link to /services */}
           <Link 
             to="/services" 
             className="text-4xl md:text-5xl font-bold mb-4 cursor-pointer hover:text-primary transition-colors inline-block"
@@ -74,37 +71,32 @@ const Services = () => {
           >
             Professional Car Detailing Services
           </Link>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Comprehensive care solutions for your vehicle, delivered by certified technicians using premium products.
           </p>
         </div>
 
-        {/* Service Tabs */}
         <ServicesList 
           services={services} 
           onBookService={handleBookService}
         />
 
-        {/* Service Packages */}
         <ServicesPackages 
           packages={servicePackages}
           onBookPackage={handleBookService}
         />
 
-        {/* Process Section */}
         <ServiceProcess 
           title={processTitle} 
           steps={processSteps}
         />
 
-        {/* Rich Content for SEO */}
         <section className="mt-24 mb-16">
           <ServicesSEO />
         </section>
       </div>
 
       <Dialog open={showBooking} onOpenChange={setShowBooking}>
-        {/* BookingForm dialog content */}
         <DialogContent className="sm:max-w-[600px]">
           <BookingForm selectedService={selectedService} />
         </DialogContent>

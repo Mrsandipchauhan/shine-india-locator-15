@@ -1,3 +1,6 @@
+
+// Adjust navbar container for better spacing and stacking on small screen
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronDown, Home, Shield, Star, Settings } from "lucide-react";
@@ -33,7 +36,7 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between flex-wrap">
           <Link to="/" className="flex items-center space-x-2 z-10">
             <div className="w-10 h-10 relative overflow-hidden">
@@ -60,7 +63,9 @@ const Navbar = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className={`px-3 py-2 text-sm font-medium ${isActive('/services') ? 'text-primary' : 'text-white/90'}`}>Services</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className={`px-3 py-2 text-sm font-medium ${isActive('/services') ? 'text-primary' : 'text-white/90'}`}>
+                    Services
+                  </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid grid-cols-2 gap-4 p-6 w-[600px] bg-card/95 backdrop-blur-xl border border-border/30 rounded-xl">
                       <Link to="/services/exterior-detailing" className="group block space-y-2 p-4 rounded-lg hover:bg-primary/5">
@@ -150,6 +155,7 @@ const Navbar = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-lg text-white hover:bg-white/5"
+              aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

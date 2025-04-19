@@ -1,7 +1,9 @@
 
+// Reformatted ServicesSEO for better readability with Tailwind spacing and readable paragraphs
+
 const ServicesSEO = () => {
   return (
-    <section className="prose prose-slate max-w-none mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="prose prose-slate max-w-none mx-auto px-4 sm:px-6 lg:px-8 mb-8 my-[60px]">
       <h2 className="text-2xl md:text-3xl font-semibold mb-4">
         Professional Car Detailing Services Across India
       </h2>
