@@ -171,6 +171,7 @@ const CitySlider = () => {
             }`}
             onClick={() => scroll("left")}
             disabled={!canScrollLeft}
+            style={{ transform: "translateY(-50%)", left: "-6px" }}
           >
             <ChevronLeft size={20} />
           </Button>
@@ -183,6 +184,7 @@ const CitySlider = () => {
             }`}
             onClick={() => scroll("right")}
             disabled={!canScrollRight}
+            style={{ transform: "translateY(-50%)", right: "-6px" }}
           >
             <ChevronRight size={20} />
           </Button>
@@ -261,14 +263,6 @@ const CitySlider = () => {
           </Link>
         ))}
       </div>
-      
-      {nearestCity && nearbyAreas.length > 0 && (
-        <div className="mt-2 px-4 text-xs text-muted-foreground">
-          <span>
-            {nearbyAreas.length} areas near {nearestCity} 
-          </span>
-        </div>
-      )}
     </div>
   );
 };
