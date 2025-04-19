@@ -10,7 +10,7 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+    <div className="min-h-screen w-full bg-background text-foreground relative overflow-hidden">
       {/* Simplified background elements */}
       <div className="fixed top-0 left-0 w-full h-screen overflow-hidden -z-10 opacity-50">
         <div className="absolute top-[-400px] right-[-400px] w-[800px] h-[800px] rounded-full bg-primary/5 blur-3xl"></div>
@@ -18,7 +18,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       </div>
       
       <Navbar />
-      <main className="relative z-10 flex flex-col">
+      <main className="relative z-10 flex flex-col w-full overflow-x-hidden">
         {children}
       </main>
       <Footer />

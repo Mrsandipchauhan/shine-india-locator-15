@@ -59,12 +59,12 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
 
   return (
     <div 
-      className="relative will-change-transform" 
+      className="relative w-full overflow-hidden will-change-transform" 
       style={{ contain: "content" }}
     >
       <div
         ref={sliderRef}
-        className="transition-all duration-300 ease-linear"
+        className="transition-all duration-300 ease-linear w-full"
         onMouseEnter={() => {
           if (autoScrollInterval) {
             clearInterval(autoScrollInterval);

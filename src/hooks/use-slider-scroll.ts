@@ -38,7 +38,11 @@ export const useSliderScroll = ({ onScroll }: UseSliderScrollProps = {}) => {
   // Make sure scroll position is updated after manual scroll
   const scroll = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
-    const scrollAmount = direction === "left" ? -200 : 200;
+    
+    // Calculate scroll amount based on viewport width
+    const viewportWidth = window.innerWidth;
+    const scrollAmount = direction === "left" ? -1 * Math.min(200, viewportWidth * 0.2) : Math.min(200, viewportWidth * 0.2);
+    
     sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     
     // Manually update scroll position after animation
