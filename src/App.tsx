@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -23,6 +24,7 @@ import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/AdminDashboard";
 import PageUtilities from "./components/PageUtilities";
 import Sitemap from "./pages/Sitemap";
+import LocationsCity from "./pages/LocationsCity";
 
 const queryClient = new QueryClient();
 
