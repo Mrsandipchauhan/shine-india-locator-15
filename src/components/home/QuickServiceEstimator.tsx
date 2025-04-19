@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -200,27 +199,64 @@ const QuickServiceEstimator = () => {
     detectLocation();
   }, []);
   
-  // Handle location search
+  // Enhanced location search with suggestions
   useEffect(() => {
     if (searchTerm.trim().length < 2) {
       setSearchResults([]);
       return;
     }
-    
+
     setIsSearching(true);
-    
+
     const timer = setTimeout(() => {
-      const allLocations = getPopularLocations();
-      const results = allLocations.filter(city => 
+      const locations = getPopularLocations();
+      const results = locations.filter(city => 
         city.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setSearchResults(results);
-      setShowLocationDropdown(results.length > 0);
+
+      // Find closest matches for suggestions
+      const suggestions = locations
+        .filter(city => !results.includes(city))
+        .filter(city => {
+          const similarity = calculateStringSimilarity(city.toLowerCase(), searchTerm.toLowerCase());
+          return similarity > 0.3; // Show suggestions with 30% or more similarity
+        })
+        .slice(0, 3); // Limit to top 3 suggestions
+
+      setSearchResults([...results, ...suggestions]);
+      setShowLocationDropdown(results.length > 0 || suggestions.length > 0);
       setIsSearching(false);
     }, 300);
-    
+
     return () => clearTimeout(timer);
   }, [searchTerm, currentCountry]);
+
+  // Helper function to calculate string similarity
+  const calculateStringSimilarity = (str1: string, str2: string) => {
+    const len1 = str1.length;
+    const len2 = str2.length;
+    const matrix = Array(len2 + 1).fill(null).map(() => Array(len1 + 1).fill(0));
+
+    for (let i = 0; i <= len1; i++) matrix[0][i] = i;
+    for (let j = 0; j <= len2; j++) matrix[j][0] = j;
+
+    for (let j = 1; j <= len2; j++) {
+      for (let i = 1; i <= len1; i++) {
+        if (str1[i - 1] === str2[j - 1]) {
+          matrix[j][i] = matrix[j - 1][i - 1];
+        } else {
+          matrix[j][i] = Math.min(
+            matrix[j - 1][i - 1] + 1,
+            matrix[j][i - 1] + 1,
+            matrix[j - 1][i] + 1
+          );
+        }
+      }
+    }
+
+    const maxLen = Math.max(len1, len2);
+    return (maxLen - matrix[len2][len1]) / maxLen;
+  };
   
   const handleLocationSelect = (selectedLocation: string) => {
     setLocation(selectedLocation);
@@ -248,7 +284,7 @@ const QuickServiceEstimator = () => {
     
     if (selectedCar && basePriceObj && basePriceObj[serviceType as keyof typeof basePriceObj]) {
       // Calculate base price
-      const basePrice = basePriceObj[serviceType as keyof typeof basePriceObj] * selectedCar.priceMultiplier;
+      const basePrice = basePriceObj[serviceType as keyof basePriceObj] * selectedCar.priceMultiplier;
       
       // Add price for additional services
       const additionalPrice = additionalServices.reduce((total, service) => {
@@ -315,13 +351,8 @@ const QuickServiceEstimator = () => {
                     </SelectTrigger>
                     <SelectContent>
                       {carTypes.map(car => (
-                        <SelectItem key={car.id} value={car.id} className="flex items-center">
-                          <div className="flex justify-between w-full">
-                            <span>{car.name}</span>
-                            <span className="text-xs text-muted-foreground">
-                              {car.priceMultiplier}x
-                            </span>
-                          </div>
+                        <SelectItem key={car.id} value={car.id}>
+                          {car.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -376,16 +407,26 @@ const QuickServiceEstimator = () => {
                         <div className="text-center py-2 text-sm text-muted-foreground">Searching...</div>
                       ) : (
                         <ul className="py-1">
-                          {searchResults.map((city) => (
-                            <li 
-                              key={city} 
-                              className="px-3 py-2 text-sm hover:bg-accent cursor-pointer flex items-center"
-                              onClick={() => handleLocationSelect(city)}
-                            >
-                              <MapPin size={14} className="mr-2 text-primary" />
-                              {city}
-                            </li>
-                          ))}
+                          {searchResults.map((city, index) => {
+                            const isMatch = city.toLowerCase().includes(searchTerm.toLowerCase());
+                            return (
+                              <li 
+                                key={city} 
+                                className={`px-3 py-2 text-sm hover:bg-accent cursor-pointer flex items-center ${
+                                  !isMatch ? 'text-muted-foreground' : ''
+                                }`}
+                                onClick={() => handleLocationSelect(city)}
+                              >
+                                <MapPin size={14} className="mr-2 text-primary" />
+                                {city}
+                                {!isMatch && (
+                                  <span className="ml-2 text-xs text-muted-foreground">
+                                    (suggested)
+                                  </span>
+                                )}
+                              </li>
+                            );
+                          })}
                         </ul>
                       )}
                     </div>
