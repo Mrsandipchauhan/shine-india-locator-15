@@ -7,16 +7,16 @@ import { services } from "@/data/servicesData";
 import { useEffect, useState } from "react";
 
 const ServiceArea = () => {
-  const { areaId, serviceId } = useParams();
+  const { country, cityId, areaId, serviceId } = useParams();
   const [cityName, setCityName] = useState("");
   
   useEffect(() => {
     // Extract city name from area ID (e.g., "south-delhi" -> "Delhi")
-    const city = areaId?.split('-').pop();
+    const city = cityId || areaId?.split('-').pop();
     if (city) {
       setCityName(city.charAt(0).toUpperCase() + city.slice(1));
     }
-  }, [areaId]);
+  }, [cityId, areaId]);
   
   const service = services.find(s => s.id === serviceId);
   
@@ -29,19 +29,25 @@ const ServiceArea = () => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
   
-  const areaContent = serviceAreaContent[areaId || ""]?.[serviceId || ""];
+  const locationKey = country ? `${country.toLowerCase()}-${cityId}-${areaId}` : areaId || "";
+  const areaContent = serviceAreaContent[locationKey]?.[serviceId || ""];
 
   return (
     <>
-      <ServiceAreaSEO areaId={areaId || ""} serviceId={serviceId || ""} />
-    <ServiceAreaComponent
-      serviceId={serviceId || ""}
-      areaName={areaName || ""}
-      cityName={cityName}
-      serviceTitle={service.title}
-      beforeImage={service.image}
-      afterImage={service.image}
-    />
+      <ServiceAreaSEO 
+        areaId={locationKey} 
+        serviceId={serviceId || ""} 
+        country={country}
+      />
+      <ServiceAreaComponent
+        serviceId={serviceId || ""}
+        areaName={areaName || ""}
+        cityName={cityName}
+        serviceTitle={service.title}
+        beforeImage={service.image}
+        afterImage={service.image}
+        country={country}
+      />
     </>
   );
 };

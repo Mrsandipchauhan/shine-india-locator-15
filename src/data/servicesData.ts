@@ -1,4 +1,3 @@
-
 export interface Service {
   id: string;
   title: string;
@@ -206,6 +205,57 @@ export const services: Service[] = [
       "Enhanced Appearance"
     ],
     duration: "1-2 hours",
+    satisfaction: "97%"
+  },
+  {
+    id: "ac-sanitization",
+    title: "AC Sanitization",
+    description: "Complete air conditioning system cleaning and sanitization for fresh, healthy air.",
+    price: "Starting at ₹999",
+    image: "https://images.unsplash.com/photo-1597007066704-67bf2068d5b2?q=80&w=2070&auto=format&fit=crop",
+    category: "specialty",
+    features: [
+      "Deep AC Cleaning",
+      "Antibacterial Treatment",
+      "Odor Removal",
+      "Air Quality Test",
+      "Filter Cleaning"
+    ],
+    duration: "1-2 hours",
+    satisfaction: "98%"
+  },
+  {
+    id: "ppf-protection",
+    title: "PPF Protection",
+    description: "Premium paint protection film installation for ultimate paint protection.",
+    price: "Starting at ₹24,999",
+    image: "https://images.unsplash.com/photo-1619771914272-e3c1ba17ba6d?q=80&w=1974&auto=format&fit=crop",
+    category: "protection",
+    features: [
+      "Self-Healing Film",
+      "10 Year Warranty",
+      "UV Protection",
+      "Stone Chip Protection",
+      "Hydrophobic Coating"
+    ],
+    duration: "2-3 days",
+    satisfaction: "99%"
+  },
+  {
+    id: "denting-painting",
+    title: "Denting & Painting",
+    description: "Professional dent removal and painting services for all types of vehicles.",
+    price: "Starting at ₹4,999",
+    image: "https://images.unsplash.com/photo-1589188354938-666703380cf1?q=80&w=2074&auto=format&fit=crop",
+    category: "specialty",
+    features: [
+      "Dent Removal",
+      "Scratch Repair",
+      "Color Matching",
+      "Premium Paint",
+      "Clear Coat Protection"
+    ],
+    duration: "3-5 days",
     satisfaction: "97%"
   }
 ];

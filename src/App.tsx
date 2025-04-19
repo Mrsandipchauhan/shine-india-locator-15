@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -42,7 +41,7 @@ const App = () => (
             <Route path="/locations/:cityId" element={<ServiceLocations />} />
             <Route path="/city/:cityId" element={<CityLocation />} />
             <Route path="/area/:areaId" element={<AreaLocation />} />
-<Route path="/area/:areaId/:serviceId" element={<ServiceArea />} />
+            <Route path="/area/:areaId/:serviceId" element={<ServiceArea />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/:serviceId" element={<ServiceDetail />} />
             <Route path="/about" element={<About />} />
@@ -50,6 +49,11 @@ const App = () => (
             <Route path="/sitemap" element={<Sitemap />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
+            
+            {/* International Routes */}
+            <Route path="/area/:country/:cityId/:areaId" element={<ServiceArea />} />
+            <Route path="/area/:country/:cityId/:areaId/:serviceId" element={<ServiceArea />} />
+            
           </Routes>
           <PageUtilities />
         </BrowserRouter>
