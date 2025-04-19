@@ -9,13 +9,13 @@ import { getUserLocation, findNearestCity } from "@/services/locationService";
 const majorCities = [
   "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", 
   "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow",
-  "Chandigarh", "Coimbatore", "Nagpur", "Surat", "Indore",
-  "Bhopal", "Patna", "Vadodara", "Guwahati", "Kochi"
+  "Chandigarh", "Coimbatore", "Nagpur", "Surat", "Indore"
 ];
 
 const CitySlider = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [sortedCities, setSortedCities] = useState(majorCities);
+  const [sortedCities, setSortedCities] = useState<string[]>([]);
+  const [autoScrollInterval, setAutoScrollInterval] = useState<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -27,24 +27,54 @@ const CitySlider = () => {
         if (location.lat && location.lon) {
           const nearest = findNearestCity(location.lat, location.lon);
           if (nearest?.city) {
-            // Sort cities by distance from user's location
+            // Get 5 nearest cities based on distance
             const nearestCity = nearest.city.name;
-            const sorted = [...majorCities].sort((a, b) => {
-              if (a === nearestCity) return -1;
-              if (b === nearestCity) return 1;
-              return 0;
-            });
+            const sorted = [...majorCities]
+              .sort((a, b) => {
+                if (a === nearestCity) return -1;
+                if (b === nearestCity) return 1;
+                return 0;
+              })
+              .slice(0, 5); // Only show 5 nearest cities
             setSortedCities(sorted);
           }
         }
       } catch (error) {
         console.error("Error detecting location:", error);
+        setSortedCities(majorCities.slice(0, 5));
       }
     };
     
     detectLocationAndSortCities();
   }, []);
-  
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    const startAutoScroll = () => {
+      if (sliderRef.current) {
+        const interval = setInterval(() => {
+          const slider = sliderRef.current;
+          if (slider) {
+            if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
+              slider.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+              slider.scrollBy({ left: 100, behavior: 'smooth' });
+            }
+          }
+        }, 2000); // Faster interval
+        setAutoScrollInterval(interval);
+      }
+    };
+
+    startAutoScroll();
+
+    return () => {
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+      }
+    };
+  }, [sortedCities]);
+
   const scroll = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
     
@@ -119,7 +149,32 @@ const CitySlider = () => {
       <div
         ref={sliderRef}
         className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        style={{ 
+          scrollbarWidth: "none", 
+          msOverflowStyle: "none",
+          scrollBehavior: "smooth"
+        }}
+        onMouseEnter={() => {
+          if (autoScrollInterval) {
+            clearInterval(autoScrollInterval);
+            setAutoScrollInterval(null);
+          }
+        }}
+        onMouseLeave={() => {
+          if (!autoScrollInterval && sliderRef.current) {
+            const interval = setInterval(() => {
+              const slider = sliderRef.current;
+              if (slider) {
+                if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
+                  slider.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                  slider.scrollBy({ left: 100, behavior: 'smooth' });
+                }
+              }
+            }, 2000);
+            setAutoScrollInterval(interval);
+          }
+        }}
       >
         {sortedCities.map((city) => (
           <Link
