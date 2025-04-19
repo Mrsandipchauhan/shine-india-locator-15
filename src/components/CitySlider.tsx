@@ -32,11 +32,18 @@ const CitySlider = () => {
   const [nearbyAreas, setNearbyAreas] = useState<string[]>([]);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const scrollStep = 1;
-  const scrollInterval = 30;
+  // Reduce animation work on mobile for better performance
+  const isMobileDevice = useIsMobile();
+  const scrollStep = isMobileDevice ? 0.5 : 1;
+  const scrollInterval = isMobileDevice ? 60 : 30;
 
   useEffect(() => {
-    const detectLocationAndSetAreas = async () => {
+    // Simplified and optimized location detection with fallback
+  const detectLocationAndSetAreas = async () => {
+      // Set initial cities immediately to prevent UI waiting
+      const initialCities = getAllCities();
+      setDisplayLocations(initialCities);
+      
       try {
         const location = await getUserLocation();
         if (location.lat && location.lon) {
@@ -45,35 +52,29 @@ const CitySlider = () => {
             const detectedCity = nearest.city.name;
             setNearestCity(detectedCity);
             
-            // Get areas for the nearest city
+            // Get areas for the nearest city - limit to top 3 for performance
             let cityAreasList = localAreasData
               .filter(area => area.parentCity.toLowerCase() === detectedCity.toLowerCase())
-              .map(area => area.name);
+              .map(area => area.name)
+              .slice(0, 3); // Limit to top 3 areas for better performance
             
             if (cityAreasList.length > 0) {
               setNearbyAreas(cityAreasList);
               
-              // Combine nearest city, its areas, and other cities for display
-              const allLocations = [detectedCity, ...cityAreasList];
-              const otherCities = getAllCities().filter(city => 
-                city.toLowerCase() !== detectedCity.toLowerCase()
-              );
+              // Create more efficient display list - limit other cities for performance
+              const otherCities = getAllCities()
+                .filter(city => city.toLowerCase() !== detectedCity.toLowerCase())
+                .slice(0, 6); // Limit additional cities for better performance
               
-              // Create final display list without duplicates
-              const uniqueLocations = [...new Set([...allLocations, ...otherCities])];
+              // Create final display list with priorities
+              const uniqueLocations = [...new Set([detectedCity, ...cityAreasList, ...otherCities])];
               setDisplayLocations(uniqueLocations);
-            } else {
-              setDisplayLocations(getAllCities());
             }
-          } else {
-            setDisplayLocations(getAllCities());
           }
-        } else {
-          setDisplayLocations(getAllCities());
         }
       } catch (error) {
         console.error("Error detecting location:", error);
-        setDisplayLocations(getAllCities());
+        // We already set initial cities, so no need to do anything here
       }
     };
     
@@ -81,18 +82,29 @@ const CitySlider = () => {
   }, []);
 
   useEffect(() => {
+    // Skip auto-scroll initialization on mobile for better performance
+    if (isMobile) {
+      return;
+    }
+    
     const startAutoScroll = () => {
       if (sliderRef.current) {
         const interval = setInterval(() => {
           const slider = sliderRef.current;
           if (slider) {
-            // Check if we've reached the end
+            // Optimize scrolling behavior
             if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 5)) {
-              // If we're at the end, reset to beginning with smooth animation
-              slider.scrollTo({ left: 0, behavior: 'smooth' });
+              // Use reduced animation on mobile for reset
+              slider.scrollTo({ 
+                left: 0, 
+                behavior: isMobile ? 'auto' : 'smooth' 
+              });
             } else {
-              // Otherwise continue smooth scrolling with very small increments
-              slider.scrollBy({ left: scrollStep, behavior: 'auto' });
+              // Use more efficient scrolling with reduced work
+              slider.scrollBy({ 
+                left: scrollStep, 
+                behavior: 'auto' 
+              });
             }
           }
         }, scrollInterval);
@@ -100,17 +112,27 @@ const CitySlider = () => {
       }
     };
 
-    // Start auto-scroll when locations are loaded
-    if (displayLocations.length > 0) {
-      startAutoScroll();
+    // Start auto-scroll only if not on mobile and locations are loaded
+    if (displayLocations.length > 0 && !isMobile) {
+      // Add slight delay before starting scroll to improve initial load performance
+      const timer = setTimeout(() => {
+        startAutoScroll();
+      }, 1000);
+      
+      return () => {
+        clearTimeout(timer);
+        if (autoScrollInterval) {
+          clearInterval(autoScrollInterval);
+        }
+      };
     }
-
+    
     return () => {
       if (autoScrollInterval) {
         clearInterval(autoScrollInterval);
       }
     };
-  }, [displayLocations]);
+  }, [displayLocations, isMobile, scrollInterval, scrollStep]);
 
   const scroll = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
@@ -144,26 +166,33 @@ const CitySlider = () => {
     ? scrollPosition < sliderRef.current.scrollWidth - sliderRef.current.clientWidth - 10
     : true;
 
-  // Helper function to highlight nearest city and areas
+  // Helper function to highlight nearest city and areas with enhanced contrast for mobile
   const getItemStyles = (location: string) => {
     const isNearestCity = location === nearestCity;
     const isNearbyArea = nearbyAreas.includes(location);
     
+    // Base styles with enhanced mobile visibility
     let className = "flex items-center whitespace-nowrap border border-border rounded-full px-3 py-1.5 transition-colors";
     
     if (isNearestCity) {
-      className += " bg-primary text-primary-foreground hover:bg-primary/90";
+      // Enhanced contrast for nearest city on mobile
+      className += " bg-primary text-white font-medium hover:bg-primary/90";
     } else if (isNearbyArea) {
-      className += " bg-primary/20 hover:bg-primary/30";
+      // Improved visibility for nearby areas
+      className += " bg-primary/30 text-white hover:bg-primary/40";
     } else {
+      // Better contrast for regular items
       className += " bg-card hover:bg-primary/10";
     }
+    
+    // Add slight shadow for better mobile visibility
+    className += " shadow-sm";
     
     return className;
   };
 
   return (
-    <div className="relative">
+    <div className="relative will-change-transform" style={{ contain: "content" }}>
       {!isMobile && (
         <>
           <Button
@@ -205,7 +234,8 @@ const CitySlider = () => {
           scrollbarWidth: "none", 
           msOverflowStyle: "none",
           scrollBehavior: "smooth",
-          WebkitOverflowScrolling: "touch"
+          WebkitOverflowScrolling: "touch",
+          willChange: "scroll-position", // Performance optimization for scroll
         }}
         onMouseEnter={() => {
           if (autoScrollInterval) {
@@ -214,7 +244,7 @@ const CitySlider = () => {
           }
         }}
         onMouseLeave={() => {
-          if (!autoScrollInterval && sliderRef.current) {
+          if (!autoScrollInterval && sliderRef.current && !isMobile) {
             const interval = setInterval(() => {
               const slider = sliderRef.current;
               if (slider) {
@@ -235,7 +265,8 @@ const CitySlider = () => {
           }
         }}
         onTouchEnd={() => {
-          if (!autoScrollInterval && sliderRef.current) {
+          // Only restart autoscroll on non-mobile or if explicitly requested
+          if (!isMobile && !autoScrollInterval && sliderRef.current) {
             setTimeout(() => {
               const interval = setInterval(() => {
                 const slider = sliderRef.current;

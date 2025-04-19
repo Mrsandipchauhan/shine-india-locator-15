@@ -48,6 +48,7 @@
 }
 
 @layer utilities {
+  /* Improved scrollbar hiding with hardware acceleration for mobile */
   .no-scrollbar::-webkit-scrollbar {
       display: none;
   }
@@ -55,6 +56,9 @@
   .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+      overscroll-behavior-x: none; /* Prevent overscroll effects */
+      transform: translateZ(0); /* Force hardware acceleration */
   }
   
   .premium-shadow {
