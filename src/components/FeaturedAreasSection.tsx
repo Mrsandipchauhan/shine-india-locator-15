@@ -1,14 +1,12 @@
 
-import { Link } from "react-router-dom";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { MapPin, ArrowRight, Navigation, MapPinOff, Car } from "lucide-react";
-import localAreasData from "@/data/localAreasData";
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
-import { serviceProvidersByCity } from "@/data/serviceProviders";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import localAreasData from "@/data/localAreasData";
+import { LocationDetectionStatus } from "./areas/LocationDetectionStatus";
+import { AreaCard } from "./areas/AreaCard";
 
 const FeaturedAreasSection = () => {
   const [nearbyArea, setNearbyArea] = useState<any>(null);
@@ -16,7 +14,6 @@ const FeaturedAreasSection = () => {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [nearbyAreas, setNearbyAreas] = useState<any[]>([]);
 
-  // Use useMemo to avoid recalculating on every render
   const featuredAreas = useMemo(() => {
     const areas = [];
     const parentCities = new Set();
@@ -35,7 +32,6 @@ const FeaturedAreasSection = () => {
         if (!areas.includes(area)) {
           areas.push(area);
         }
-        
         if (areas.length >= 6) break;
       }
     }
@@ -59,7 +55,6 @@ const FeaturedAreasSection = () => {
           
           if (mainArea) {
             setNearbyArea(mainArea);
-            
             const additionalAreas = localAreasData.filter(area => 
               area.id !== mainArea.id && 
               (area.parentCity.toLowerCase() === nearest.city.name.toLowerCase() || 
@@ -68,7 +63,6 @@ const FeaturedAreasSection = () => {
             ).slice(0, 3);
             
             setNearbyAreas(additionalAreas);
-            
             toast.success(`Found services near ${nearest.city.name}!`, {
               description: "We've highlighted services available in your area."
             });
@@ -92,18 +86,13 @@ const FeaturedAreasSection = () => {
   };
   
   useEffect(() => {
-    // Delay location detection to improve initial page load
     const timer = setTimeout(() => {
       detectLocation();
     }, 1500);
     
     return () => clearTimeout(timer);
   }, []);
-  
-  const handleRetryLocation = () => {
-    detectLocation();
-  };
-  
+
   return (
     <section className="py-12 md:py-16 bg-card">
       <div className="container mx-auto px-4">
@@ -113,98 +102,23 @@ const FeaturedAreasSection = () => {
             Find premium car detailing services in these popular areas or search for your location to discover services near you.
           </p>
           
-          {isLoading ? (
-            <div className="mt-6 flex items-center justify-center">
-              <div className="animate-spin mr-2">
-                <Car className="w-5 h-5 text-primary" />
-              </div>
-              <p>Detecting your location...</p>
-            </div>
-          ) : locationError ? (
-            <div className="mt-6 flex flex-col items-center justify-center">
-              <div className="flex items-center text-yellow-600 mb-2">
-                <MapPinOff className="w-5 h-5 mr-2" />
-                <p>{locationError}</p>
-              </div>
-              <Button variant="outline" size="sm" onClick={handleRetryLocation} className="mt-2">
-                Retry Detection
-              </Button>
-            </div>
-          ) : nearbyArea && (
-            <div className="mt-6">
-              <div className="flex items-center justify-center space-x-2">
-                <div className="bg-primary/10 p-2 rounded-full">
-                  <Navigation className="w-5 h-5 text-primary" />
-                </div>
-                <p className="text-primary">
-                  Services available near you in{" "}
-                  <Link to={`/area/${nearbyArea.id}`} className="font-semibold hover:underline">
-                    {nearbyArea.name}
-                  </Link>
-                </p>
-              </div>
-              
-              {nearbyAreas.length > 0 && (
-                <div className="mt-4">
-                  <p className="text-sm text-muted-foreground mb-2">Other nearby service areas:</p>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {nearbyAreas.map(area => (
-                      <Link 
-                        key={area.id} 
-                        to={`/area/${area.id}`}
-                        className="px-3 py-1 bg-background rounded-full text-sm hover:bg-primary/10 transition-colors flex items-center"
-                      >
-                        <MapPin className="w-3 h-3 mr-1 text-primary" />
-                        {area.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+          <LocationDetectionStatus 
+            isLoading={isLoading}
+            locationError={locationError}
+            nearbyArea={nearbyArea}
+            nearbyAreas={nearbyAreas}
+            onRetryDetection={detectLocation}
+          />
         </div>
         
-        {/* Use CSS-based solution that's more efficient than ScrollArea on mobile */}
         <div className="mb-4 overflow-x-auto pb-6 no-scrollbar">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-w-[768px] md:min-w-0">
             {featuredAreas.map((area) => (
-              <Card 
+              <AreaCard 
                 key={area.id} 
-                className={`bg-background hover:shadow-md transition-shadow overflow-hidden ${
-                  nearbyArea && area.id === nearbyArea.id ? 'ring-2 ring-primary shadow-lg' : ''
-                }`}
-              >
-                <div className="h-40 bg-cover bg-center relative" style={{ 
-                  backgroundImage: `url('https://source.unsplash.com/featured/?${area.name},car&auto=format&w=500')`,
-                }}>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
-                    <div className="absolute bottom-0 left-0 p-4">
-                      <div className="flex items-center text-white">
-                        <MapPin size={16} className="text-primary mr-2" />
-                        <h3 className="font-semibold">{area.name}</h3>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                    {area.content.introduction.substring(0, 100)}...
-                  </p>
-                  
-                  {serviceProvidersByCity[area.parentCity.toLowerCase()] && (
-                    <p className="text-xs text-primary mb-3">
-                      {serviceProvidersByCity[area.parentCity.toLowerCase()].length} service providers available
-                    </p>
-                  )}
-                  
-                  <Link to={`/area/${area.id}`}>
-                    <Button className="w-full bg-primary hover:bg-primary/90 flex items-center justify-center">
-                      View Services <ArrowRight size={16} className="ml-2" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+                area={area} 
+                isNearby={nearbyArea && area.id === nearbyArea.id}
+              />
             ))}
           </div>
         </div>
