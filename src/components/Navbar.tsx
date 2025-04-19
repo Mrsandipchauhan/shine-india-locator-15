@@ -1,15 +1,9 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronDown, Home, Shield, Star, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -57,18 +51,12 @@ const Navbar = () => {
               </div>
             </Link>
             
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <Link 
-                    to="/services" 
-                    className={`px-3 py-2 text-sm font-medium ${isActive('/services') ? 'text-primary' : 'text-white/90'}`}
-                  >
-                    Services
-                  </Link>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+            <Link 
+              to="/services" 
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${isActive('/services') ? 'text-primary bg-primary/5' : 'text-white/90 hover:text-primary hover:bg-white/5'}`}
+            >
+              Services
+            </Link>
             
             <Link 
               to="/locations" 
@@ -124,25 +112,9 @@ const Navbar = () => {
               <span>Home</span>
             </Link>
             
-            <div className="space-y-2">
-              <div className="font-medium px-4 py-2 text-white/80">Services</div>
-              <Link to="/services/exterior-detailing" className="flex items-center space-x-2 px-6 py-3 rounded-lg text-white/70 hover:text-primary hover:bg-primary/5 transition-colors" onClick={() => setIsMenuOpen(false)}>
-                <Shield size={16} />
-                <span>Exterior Detailing</span>
-              </Link>
-              <Link to="/services/ceramic-coating" className="flex items-center space-x-2 px-6 py-3 rounded-lg text-white/70 hover:text-primary hover:bg-primary/5 transition-colors" onClick={() => setIsMenuOpen(false)}>
-                <Shield size={16} />
-                <span>Ceramic Coating</span>
-              </Link>
-              <Link to="/services/interior-detailing" className="flex items-center space-x-2 px-6 py-3 rounded-lg text-white/70 hover:text-primary hover:bg-primary/5 transition-colors" onClick={() => setIsMenuOpen(false)}>
-                <Star size={16} />
-                <span>Interior Detailing</span>
-              </Link>
-              <Link to="/services/paint-protection" className="flex items-center space-x-2 px-6 py-3 rounded-lg text-white/70 hover:text-primary hover:bg-primary/5 transition-colors" onClick={() => setIsMenuOpen(false)}>
-                <Settings size={16} />
-                <span>Paint Protection</span>
-              </Link>
-            </div>
+            <Link to="/services" className="flex items-center space-x-2 px-4 py-3 rounded-lg text-white hover:bg-primary/5 transition-colors" onClick={() => setIsMenuOpen(false)}>
+              <span>Services</span>
+            </Link>
             
             <Link to="/locations" className="flex items-center space-x-2 px-4 py-3 rounded-lg text-white hover:bg-primary/5 transition-colors" onClick={() => setIsMenuOpen(false)}>
               <span>Locations</span>

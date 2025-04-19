@@ -6,6 +6,7 @@ import { ServiceProvider } from "@/data/serviceProviders";
 import BeforeAfterSlider from "./BeforeAfterSlider";
 import { Card } from "./ui/card";
 import LocationBeforeAfterCarousel from "./services/LocationBeforeAfterCarousel";
+import PricingPackages from "./PricingPackages";
 
 interface LocationContentSectionProps {
   cityName: string;
@@ -80,6 +81,8 @@ const LocationContentSection = ({ cityName, content, providers }: LocationConten
         </p>
         <LocationBeforeAfterCarousel images={images} />
       </Card>
+      
+      <PricingPackages />
       
       <LocalServiceProviders 
         city={cityName} 
