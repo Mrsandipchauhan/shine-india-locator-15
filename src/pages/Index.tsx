@@ -1,13 +1,13 @@
+
 import { useEffect } from "react";
 import PageUtilities from "@/components/PageUtilities";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServicesSection from "@/components/ServicesSection";
-import CitySelector from "@/components/CitySelector";
+import CitySlider from "@/components/CitySlider";
 import TestimonialsSlider from "@/components/TestimonialsSlider";
 import CTASection from "@/components/CTASection";
-import CitySlider from "@/components/CitySlider";
 import WorkProcessSection from "@/components/WorkProcessSection";
 import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 import DetailingPackages from "@/components/home/DetailingPackages";
@@ -38,13 +38,13 @@ const Index = () => {
         <div className="space-y-8 md:space-y-0 w-full overflow-hidden">
           <ServicesSection />
           <DetailingPackages />
+          <FeaturedAreasSection /> {/* Moved this section up */}
           <QuickServiceEstimator />
           <WorkProcessSection />
           <WhyChooseUsSection />
           <CarCareTips />
           <TestimonialsSlider />
           <SEOContent />
-          <FeaturedAreasSection />
           <BookWithConfidence />
           <CTASection />
         </div>
