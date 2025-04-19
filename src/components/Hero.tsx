@@ -2,12 +2,38 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useState, lazy, Suspense } from "react";
+import { useState, lazy, Suspense, useEffect } from "react";
+import { getUserLocation, findNearestCity } from "@/services/locationService";
 
 const BookingForm = lazy(() => import("./BookingForm"));
 
 const Hero = () => {
   const [showBooking, setShowBooking] = useState(false);
+  const [locationText, setLocationText] = useState("#1 Premium Detailing Service in India");
+  
+  useEffect(() => {
+    const detectLocation = async () => {
+      try {
+        const location = await getUserLocation();
+        if (location.lat && location.lon) {
+          const nearest = findNearestCity(location.lat, location.lon);
+          if (nearest?.city) {
+            setLocationText(`#1 Premium Car Detailing Service in ${nearest.city.name}`);
+          }
+        }
+      } catch (error) {
+        console.error("Location detection failed:", error);
+        // Keep the default text if location access is denied
+      }
+    };
+    
+    // Delay location detection to ensure smooth page load
+    const timer = setTimeout(() => {
+      detectLocation();
+    }, 1000);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   return (
     <div className="relative overflow-hidden min-h-screen flex items-center pt-16 md:pt-0">
@@ -39,8 +65,8 @@ const Hero = () => {
 
       <div className="container mx-auto px-4 sm:px-6 relative z-20">
         <div className="max-w-4xl animate-fade-in">
-          <div className="inline-block px-4 py-1 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm text-primary font-medium text-xs sm:text-sm mb-4 sm:mb-6">
-            #1 Premium Detailing Service in India
+          <div className="inline-block px-4 py-1 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm text-primary font-medium text-xs sm:text-sm mb-4 sm:mb-6 animate-fade-in hover:bg-primary/10 transition-colors">
+            {locationText}
           </div>
           
           <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-display font-bold leading-tight mb-4 sm:mb-6">
