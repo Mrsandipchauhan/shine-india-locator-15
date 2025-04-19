@@ -27,7 +27,6 @@ const LocationDetection = () => {
   }, [hasPrompted, isDetecting]);
 
   const detectUserLocation = async () => {
-    // Only show the prompt if we should (based on the 3-day rule)
     if (!shouldShowLocationPrompt()) {
       return;
     }
@@ -36,53 +35,56 @@ const LocationDetection = () => {
     
     try {
       const location = await getUserLocation();
+      // getUserLocation now always returns a result with fallback
+      const nearest = location.city ? 
+        { city: { name: location.city, id: location.city.toLowerCase() } } : 
+        findNearestCity(location.lat, location.lon);
       
-      if (location.lat && location.lon) {
-        // If the location already has a city property, use that
-        if (location.city) {
-          setUserCity(location.city);
-          setIsDetecting(false);
-          return;
-        }
+      if (nearest?.city) {
+        setUserCity(nearest.city.name);
         
-        const nearest = findNearestCity(location.lat, location.lon);
-        
-        if (nearest?.city) {
-          setUserCity(nearest.city.name);
-          
-          // Add a small delay before showing the toast to prevent UI overlap
-          setTimeout(() => {
-            toast.info(`We detected you're near ${nearest.city.name}`, {
-              description: `Would you like to view car detailing services in ${nearest.city.name}?`,
-              action: {
-                label: "View Services",
-                onClick: () => {
-                  saveUserCityPreference(nearest.city.id);
-                  window.location.href = `/locations/${nearest.city.id}`;
-                }
-              },
-              onDismiss: () => {
-                // Mark that we've shown the prompt even if they dismiss it
-                markLocationPromptShown();
-              },
-              duration: 8000,
-              cancel: {
-                label: "Don't show again",
-                onClick: () => {
-                  markLocationPromptShown();
-                }
+        setTimeout(() => {
+          toast.info(`Showing services near ${nearest.city.name}`, {
+            description: `Would you like to view car detailing services in ${nearest.city.name}?`,
+            action: {
+              label: "View Services",
+              onClick: () => {
+                saveUserCityPreference(nearest.city.id);
+                window.location.href = `/locations/${nearest.city.id}`;
               }
-            });
-          }, 1000);
-          
-          // Mark that we've prompted in this session
-          setHasPrompted(true);
-        }
+            },
+            onDismiss: () => {
+              markLocationPromptShown();
+            },
+            duration: 8000,
+            cancel: {
+              label: "Don't show again",
+              onClick: () => {
+                markLocationPromptShown();
+              }
+            }
+          });
+        }, 1000);
+        
+        setHasPrompted(true);
       }
     } catch (error) {
       console.error("Error detecting location:", error);
-      // Mark that we've shown the prompt even if there was an error
+      // On error, default to Mumbai
+      const defaultCity = topCities[1]; // Mumbai
+      setUserCity(defaultCity.name);
       markLocationPromptShown();
+      
+      toast.info(`Welcome to ShineDetailers`, {
+        description: "Browse our services across major cities in India",
+        action: {
+          label: "View Services",
+          onClick: () => {
+            window.location.href = `/locations/${defaultCity.id}`;
+          }
+        },
+        duration: 8000
+      });
     } finally {
       setIsDetecting(false);
     }

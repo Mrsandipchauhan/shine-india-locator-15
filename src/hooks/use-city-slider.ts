@@ -1,13 +1,23 @@
 
 import { useState, useEffect } from "react";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
+import citiesData from "@/data/citiesData";
 import localAreasData from "@/data/localAreasData";
 
-// Helper function moved outside for better performance
+// Helper function to get all unique cities and areas
 const getAllCities = () => {
-  const uniqueCities = new Set<string>();
-  localAreasData.forEach(area => uniqueCities.add(area.parentCity));
-  return Array.from(uniqueCities);
+  const uniqueLocations = new Set<string>();
+  
+  // Add all parent cities
+  localAreasData.forEach(area => {
+    uniqueLocations.add(area.parentCity);
+    uniqueLocations.add(area.name);
+  });
+  
+  // Add any cities from citiesData that might not be parents
+  citiesData.forEach(city => uniqueLocations.add(city.name));
+  
+  return Array.from(uniqueLocations);
 };
 
 export const useCitySlider = () => {
@@ -16,41 +26,57 @@ export const useCitySlider = () => {
   const [nearbyAreas, setNearbyAreas] = useState<string[]>([]);
 
   useEffect(() => {
-    const detectLocationAndSetAreas = async () => {
-      // Set initial cities immediately
-      const initialCities = getAllCities();
-      setDisplayLocations(initialCities);
-      
+    const updateLocations = async () => {
+      // Always show all available locations first
+      const allLocations = getAllCities();
+      const allAreas = localAreasData.map(area => area.name);
+      setDisplayLocations([...allLocations, ...allAreas]);
+
       try {
         const location = await getUserLocation();
-        if (location.lat && location.lon) {
-          const nearest = findNearestCity(location.lat, location.lon);
-          if (nearest?.city) {
-            const detectedCity = nearest.city.name;
-            setNearestCity(detectedCity);
-            
-            // Get areas for the nearest city - limit to top 3
-            const cityAreasList = localAreasData
-              .filter(area => area.parentCity.toLowerCase() === detectedCity.toLowerCase())
-              .map(area => area.name)
-              .slice(0, 3);
-            
-            if (cityAreasList.length > 0) {
-              setNearbyAreas(cityAreasList);
-              const otherCities = getAllCities()
-                .filter(city => city.toLowerCase() !== detectedCity.toLowerCase())
-                .slice(0, 6);
-              
-              setDisplayLocations([detectedCity, ...cityAreasList, ...otherCities]);
-            }
-          }
+        const nearest = findNearestCity(location.lat, location.lon);
+        
+        if (nearest?.city) {
+          const detectedCity = nearest.city.name;
+          setNearestCity(detectedCity);
+          
+          // Get ALL areas for the detected city
+          const cityAreasList = localAreasData
+            .filter(area => area.parentCity.toLowerCase() === detectedCity.toLowerCase())
+            .map(area => area.name);
+          
+          setNearbyAreas(cityAreasList);
+          
+          // Prioritize nearest city and its areas in the display order
+          const otherLocations = [...allLocations, ...allAreas].filter(
+            loc => loc.toLowerCase() !== detectedCity.toLowerCase() && 
+                  !cityAreasList.includes(loc)
+          );
+          
+          setDisplayLocations([
+            detectedCity,
+            ...cityAreasList,
+            ...otherLocations
+          ]);
         }
       } catch (error) {
         console.error("Error detecting location:", error);
+        // On error, keep showing all locations but use Mumbai as default nearest
+        setNearestCity("Mumbai");
+        const mumbaiAreas = localAreasData
+          .filter(area => area.parentCity.toLowerCase() === "mumbai")
+          .map(area => area.name);
+        setNearbyAreas(mumbaiAreas);
       }
     };
     
-    detectLocationAndSetAreas();
+    // Initial update
+    updateLocations();
+    
+    // Set up periodic updates every 5 minutes
+    const intervalId = setInterval(updateLocations, 5 * 60 * 1000);
+    
+    return () => clearInterval(intervalId);
   }, []);
 
   return {

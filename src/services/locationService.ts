@@ -23,26 +23,68 @@ const majorCities: City[] = [
   { id: "ahmedabad", name: "Ahmedabad", lat: 23.0225, lon: 72.5714 }
 ];
 
-// Get user's location using browser geolocation
+// Default cities to show if location access is denied
+export const DEFAULT_CITIES = majorCities.slice(0, 5);
+
+// Get user's location using browser geolocation with fallback
 export const getUserLocation = (): Promise<Location> => {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error('Geolocation is not supported'));
-      return;
+  return new Promise((resolve) => {
+    // First check if we have a stored preference
+    const storedCity = getUserCityPreference();
+    if (storedCity) {
+      const city = majorCities.find(c => c.id === storedCity);
+      if (city) {
+        return resolve({
+          lat: city.lat,
+          lon: city.lon,
+          city: city.name
+        });
+      }
     }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        resolve({
-          lat: position.coords.latitude,
-          lon: position.coords.longitude
-        });
-      },
-      (error) => {
-        reject(error);
-      },
-      { timeout: 10000 }
-    );
+    // Set a timeout for the geolocation request
+    const timeoutId = setTimeout(() => {
+      // Fallback to default city (Mumbai)
+      const defaultCity = majorCities[1]; // Mumbai
+      resolve({
+        lat: defaultCity.lat,
+        lon: defaultCity.lon,
+        city: defaultCity.name
+      });
+    }, 5000);
+
+    // Try to get current location
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          clearTimeout(timeoutId);
+          resolve({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude
+          });
+        },
+        () => {
+          clearTimeout(timeoutId);
+          // Fallback to default city (Mumbai)
+          const defaultCity = majorCities[1];
+          resolve({
+            lat: defaultCity.lat,
+            lon: defaultCity.lon,
+            city: defaultCity.name
+          });
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    } else {
+      clearTimeout(timeoutId);
+      // Fallback to default city if geolocation is not supported
+      const defaultCity = majorCities[1];
+      resolve({
+        lat: defaultCity.lat,
+        lon: defaultCity.lon,
+        city: defaultCity.name
+      });
+    }
   });
 };
 
