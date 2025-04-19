@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useLocation, useParams } from "react-router-dom";
 import { BookingFormInputs } from "./booking/BookingFormInputs";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
@@ -60,7 +59,6 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
         .join(' ');
     }
     
-    // Update form data with selected service from props
     setFormData(prev => ({
       ...prev,
       city: prev.city || cityFromUrl || selectedCity,
@@ -124,14 +122,13 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
       }
     );
     
-    // Reset form
     setFormData({
       name: "",
       phone: "",
       email: "",
       carType: "",
       serviceType: selectedService,
-      city: formData.city, // Keep detected city
+      city: formData.city,
       date: "",
       time: ""
     });
@@ -141,12 +138,6 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
   
   return (
     <Card className="border border-border bg-card shadow-lg">
-      <DialogHeader className="px-6 pt-6">
-        <DialogTitle className="text-2xl font-bold text-center">{formTitle}</DialogTitle>
-        <DialogDescription className="text-center text-muted-foreground">
-          {formDescription}
-        </DialogDescription>
-      </DialogHeader>
       <ScrollArea className="h-[calc(100vh-200px)] md:h-auto max-h-[600px]">
         <CardContent className="pt-6">
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -178,3 +169,4 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
 };
 
 export default BookingForm;
+
