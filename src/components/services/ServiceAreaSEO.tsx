@@ -1,13 +1,13 @@
-
 import { useEffect } from 'react';
 import { serviceAreaContent } from '@/data/serviceAreaContent';
 
 interface ServiceAreaSEOProps {
   areaId: string;
   serviceId: string;
+  country?: string;
 }
 
-const ServiceAreaSEO = ({ areaId, serviceId }: ServiceAreaSEOProps) => {
+const ServiceAreaSEO = ({ areaId, serviceId, country }: ServiceAreaSEOProps) => {
   useEffect(() => {
     const content = serviceAreaContent[areaId]?.[serviceId];
     if (!content) return;

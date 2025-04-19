@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import SEOMetadata from "@/components/SEOMetadata";
 import MainLayout from "@/layouts/MainLayout";
@@ -17,6 +16,7 @@ interface ServiceAreaProps {
   serviceTitle: string;
   beforeImage: string;
   afterImage: string;
+  country?: string;
 }
 
 const ServiceArea = ({ 
@@ -25,7 +25,8 @@ const ServiceArea = ({
   cityName, 
   serviceTitle,
   beforeImage,
-  afterImage
+  afterImage,
+  country
 }: ServiceAreaProps) => {
   return (
     <MainLayout>

@@ -1,4 +1,3 @@
-
 import { MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -16,11 +15,19 @@ const locations: Location[] = [
     cities: [
       {
         name: "New York",
-        areas: ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"]
+        areas: [
+          "Manhattan", "Brooklyn", "Queens", "Long Island", "Staten Island",
+          "Westchester", "Nassau County", "Suffolk County", "White Plains",
+          "New Rochelle", "Yonkers", "Mount Vernon", "Scarsdale", "Great Neck", "Port Washington"
+        ]
       },
       {
         name: "Los Angeles",
-        areas: ["Hollywood", "Beverly Hills", "Santa Monica", "Venice", "Downtown"]
+        areas: [
+          "Beverly Hills", "Santa Monica", "West Hollywood", "Malibu", "Pasadena",
+          "Glendale", "Newport Beach", "Irvine", "Manhattan Beach", "Calabasas",
+          "Marina Del Rey", "Pacific Palisades", "Brentwood", "Hollywood Hills", "Sherman Oaks"
+        ]
       }
     ]
   },
@@ -29,11 +36,19 @@ const locations: Location[] = [
     cities: [
       {
         name: "London",
-        areas: ["Westminster", "Camden", "Greenwich", "Kensington", "Hackney"]
+        areas: [
+          "Kensington", "Chelsea", "Mayfair", "Knightsbridge", "Westminster",
+          "Richmond", "Hampstead", "St John's Wood", "Notting Hill", "Canary Wharf",
+          "Belgravia", "Greenwich", "Islington", "Fulham", "Wimbledon"
+        ]
       },
       {
         name: "Manchester",
-        areas: ["City Centre", "Salford", "Trafford", "Stockport", "Bolton"]
+        areas: [
+          "City Centre", "Didsbury", "Chorlton", "Altrincham", "Sale",
+          "Prestwich", "Worsley", "Hale", "Wilmslow", "Cheadle",
+          "Stockport", "Bolton", "Bury", "Rochdale", "Oldham"
+        ]
       }
     ]
   },
@@ -42,11 +57,19 @@ const locations: Location[] = [
     cities: [
       {
         name: "Toronto",
-        areas: ["Downtown", "North York", "Scarborough", "Etobicoke", "York"]
+        areas: [
+          "Yorkville", "Forest Hill", "Rosedale", "The Bridle Path", "Lawrence Park",
+          "Leaside", "The Beaches", "King West", "Summerhill", "Bayview Village",
+          "High Park", "Bloor West Village", "Etobicoke", "North York", "Markham"
+        ]
       },
       {
         name: "Vancouver",
-        areas: ["Downtown", "Kitsilano", "Gastown", "Yaletown", "West End"]
+        areas: [
+          "West Vancouver", "North Vancouver", "Yaletown", "Kitsilano", "Point Grey",
+          "Shaughnessy", "Kerrisdale", "UBC", "Coal Harbour", "Gastown",
+          "Olympic Village", "Mount Pleasant", "Richmond", "Burnaby", "Surrey"
+        ]
       }
     ]
   },
@@ -55,11 +78,19 @@ const locations: Location[] = [
     cities: [
       {
         name: "Sydney",
-        areas: ["CBD", "North Sydney", "Bondi", "Manly", "Parramatta"]
+        areas: [
+          "Double Bay", "Vaucluse", "Mosman", "Rose Bay", "Woollahra",
+          "Bellevue Hill", "Paddington", "Balmain", "Coogee", "Bondi",
+          "North Sydney", "Chatswood", "Manly", "Parramatta", "Lane Cove"
+        ]
       },
       {
         name: "Melbourne",
-        areas: ["CBD", "St Kilda", "South Yarra", "Richmond", "Brunswick"]
+        areas: [
+          "Toorak", "South Yarra", "Brighton", "Albert Park", "Hawthorn",
+          "Kew", "Malvern", "Armadale", "Port Melbourne", "St Kilda",
+          "Richmond", "Brunswick", "Carlton", "Docklands", "Williamstown"
+        ]
       }
     ]
   }
