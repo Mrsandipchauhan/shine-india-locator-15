@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
@@ -6,12 +7,14 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 import localAreasData from "@/data/localAreasData";
 
-const defaultCities = [
-  "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", 
-  "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow",
-  "Chandigarh", "Coimbatore", "Nagpur", "Surat", "Indore",
-  "Bhopal", "Patna", "Vadodara", "Guwahati", "Kochi"
-];
+// Get unique cities from localAreasData
+const getAllCities = () => {
+  const uniqueCities = new Set<string>();
+  localAreasData.forEach(area => {
+    uniqueCities.add(area.parentCity);
+  });
+  return Array.from(uniqueCities);
+};
 
 const cityAreas: { [key: string]: string[] } = {};
 localAreasData.forEach(area => {
@@ -29,8 +32,8 @@ const CitySlider = () => {
   const [nearbyAreas, setNearbyAreas] = useState<string[]>([]);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const scrollStep = 1; // Smaller step for smoother scrolling
-  const scrollInterval = 30; // More frequent updates for smoother animation
+  const scrollStep = 1;
+  const scrollInterval = 30;
 
   useEffect(() => {
     const detectLocationAndSetAreas = async () => {
@@ -52,7 +55,7 @@ const CitySlider = () => {
               
               // Combine nearest city, its areas, and other cities for display
               const allLocations = [detectedCity, ...cityAreasList];
-              const otherCities = defaultCities.filter(city => 
+              const otherCities = getAllCities().filter(city => 
                 city.toLowerCase() !== detectedCity.toLowerCase()
               );
               
@@ -60,17 +63,17 @@ const CitySlider = () => {
               const uniqueLocations = [...new Set([...allLocations, ...otherCities])];
               setDisplayLocations(uniqueLocations);
             } else {
-              setDisplayLocations(defaultCities);
+              setDisplayLocations(getAllCities());
             }
           } else {
-            setDisplayLocations(defaultCities);
+            setDisplayLocations(getAllCities());
           }
         } else {
-          setDisplayLocations(defaultCities);
+          setDisplayLocations(getAllCities());
         }
       } catch (error) {
         console.error("Error detecting location:", error);
-        setDisplayLocations(defaultCities);
+        setDisplayLocations(getAllCities());
       }
     };
     
@@ -245,7 +248,7 @@ const CitySlider = () => {
                 }
               }, scrollInterval);
               setAutoScrollInterval(interval);
-            }, 2000); // Delay resuming auto-scroll after touch
+            }, 2000);
           }
         }}
       >
