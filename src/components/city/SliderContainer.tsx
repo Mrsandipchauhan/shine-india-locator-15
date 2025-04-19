@@ -22,6 +22,7 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
     >
       <div
         ref={sliderRef}
+        className="transition-all duration-300 ease-linear"
         onMouseEnter={() => {
           if (autoScrollInterval) {
             clearInterval(autoScrollInterval);
@@ -32,12 +33,21 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
           if (!autoScrollInterval && !isMobile) {
             const interval = setInterval(() => {
               if (!sliderRef.current) return;
-              if (sliderRef.current.scrollLeft >= (sliderRef.current.scrollWidth - sliderRef.current.clientWidth - 5)) {
+              
+              const maxScroll = sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
+              const currentScroll = sliderRef.current.scrollLeft;
+              
+              // If near the end, smoothly reset to start
+              if (currentScroll >= maxScroll - 2) {
                 sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
               } else {
-                sliderRef.current.scrollBy({ left: 1, behavior: 'auto' });
+                // Slower, smoother scroll
+                sliderRef.current.scrollBy({ 
+                  left: 0.5, 
+                  behavior: 'auto' 
+                });
               }
-            }, 30);
+            }, 50); // Increased interval for smoother motion
             setAutoScrollInterval(interval);
           }
         }}
