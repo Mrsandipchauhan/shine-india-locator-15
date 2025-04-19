@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 import localAreasData from "@/data/localAreasData";
 
@@ -28,7 +27,6 @@ const NearbyAreasSlider = () => {
           const nearest = findNearestCity(location.lat, location.lon);
           
           if (nearest?.city) {
-            // Get areas from the same city and nearby cities
             const nearbyAreasList = localAreasData
               .filter(area => {
                 const distance = calculateDistance(
@@ -37,7 +35,7 @@ const NearbyAreasSlider = () => {
                   area.coordinates.lat,
                   area.coordinates.lng
                 );
-                return distance <= 15; // Show areas within 15km radius
+                return distance <= 15;
               })
               .map(area => ({
                 id: area.id,
@@ -50,7 +48,7 @@ const NearbyAreasSlider = () => {
                 )
               }))
               .sort((a, b) => a.distance - b.distance)
-              .slice(0, 10); // Show top 10 nearest areas
+              .slice(0, 10);
 
             setNearbyAreas(nearbyAreasList);
           }
@@ -67,7 +65,7 @@ const NearbyAreasSlider = () => {
   }, []);
 
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-    const R = 6371; // Earth's radius in kilometers
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a = 
@@ -105,16 +103,16 @@ const NearbyAreasSlider = () => {
 
   return (
     <div className="py-4">
-      <div className="flex items-center gap-2 mb-4 px-4">
+      <div className="flex items-center gap-2 mb-4">
         <MapPin className="h-4 w-4 text-primary" />
         <span className="text-sm font-medium">Nearby Service Areas</span>
       </div>
-      <div className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar">
+      <div className="flex overflow-x-auto whitespace-nowrap py-2 scrollbar-hide no-scrollbar gap-2">
         {nearbyAreas.map((area) => (
           <Link
             key={area.id}
             to={`/area/${area.id}`}
-            className="flex items-center whitespace-nowrap bg-card hover:bg-primary/10 border border-border rounded-full px-3 py-1.5 transition-colors"
+            className="inline-flex items-center bg-card hover:bg-primary/10 border border-border rounded-full px-3 py-1.5 transition-colors shrink-0"
           >
             <MapPin size={14} className="text-primary mr-1.5" />
             <span className="text-sm font-medium">{area.name}</span>

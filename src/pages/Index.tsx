@@ -7,7 +7,6 @@ import ServicesSection from "@/components/ServicesSection";
 import CitySelector from "@/components/CitySelector";
 import TestimonialsSlider from "@/components/TestimonialsSlider";
 import CTASection from "@/components/CTASection";
-import CitySlider from "@/components/CitySlider";
 import WorkProcessSection from "@/components/WorkProcessSection";
 import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 import DetailingPackages from "@/components/home/DetailingPackages";
@@ -34,9 +33,6 @@ const Index = () => {
         <div className="py-4 md:py-6 bg-background border-b border-border/10">
           <div className="container mx-auto px-4">
             <NearbyAreasSlider />
-            <div className="mt-4">
-              <CitySlider />
-            </div>
           </div>
         </div>
         <div className="space-y-8 md:space-y-0">
