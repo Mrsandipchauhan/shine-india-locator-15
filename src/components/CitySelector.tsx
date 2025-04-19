@@ -47,11 +47,10 @@ const CitySelector = () => {
     <section className="py-16 bg-card">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Premium Car Detailing Services Across India</h2>
+          <h2 className="text-3xl font-bold mb-4">India's Most Trusted Car Detailing Service Near You</h2>
           <p className="text-muted-foreground max-w-3xl mx-auto">
-            ShineDetailers provides comprehensive car detailing services in all major cities across India.
-            Our certified professionals use premium products and techniques to restore and protect your vehicle.
-            Find your nearest location below.
+            Looking for the best car detailing near you? ShineDetailers delivers premium car care with certified experts and top-grade products. 
+            From exterior detailing to ceramic coating, we're your one-stop solution for professional car care services.
           </p>
         </div>
         
@@ -61,7 +60,7 @@ const CitySelector = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={18} />
             <Input
               type="text"
-              placeholder="Search your city..."
+              placeholder="Find car detailing services in your city..."
               className="pl-10 pr-4 py-6 text-foreground bg-background/50"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
