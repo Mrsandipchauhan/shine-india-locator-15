@@ -1,6 +1,3 @@
-
-// Adjust navbar container for better spacing and stacking on small screen
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, ChevronDown, Home, Shield, Star, Settings } from "lucide-react";
@@ -63,57 +60,12 @@ const Navbar = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className={`px-3 py-2 text-sm font-medium ${isActive('/services') ? 'text-primary' : 'text-white/90'}`}>
+                  <Link 
+                    to="/services" 
+                    className={`px-3 py-2 text-sm font-medium ${isActive('/services') ? 'text-primary' : 'text-white/90'}`}
+                  >
                     Services
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid grid-cols-2 gap-4 p-6 w-[600px] bg-card/95 backdrop-blur-xl border border-border/30 rounded-xl">
-                      <Link to="/services/exterior-detailing" className="group block space-y-2 p-4 rounded-lg hover:bg-primary/5">
-                        <div className="flex items-start">
-                          <div className="mt-0.5 mr-3 bg-primary/10 p-2 rounded-lg text-primary">
-                            <Shield size={18} />
-                          </div>
-                          <div>
-                            <h3 className="text-sm font-medium group-hover:text-primary">Exterior Detailing</h3>
-                            <p className="text-xs text-muted-foreground">Complete exterior restoration and protection</p>
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to="/services/ceramic-coating" className="group block space-y-2 p-4 rounded-lg hover:bg-primary/5">
-                        <div className="flex items-start">
-                          <div className="mt-0.5 mr-3 bg-primary/10 p-2 rounded-lg text-primary">
-                            <Shield size={18} />
-                          </div>
-                          <div>
-                            <h3 className="text-sm font-medium group-hover:text-primary">Ceramic Coating</h3>
-                            <p className="text-xs text-muted-foreground">Long-lasting nano-ceramic protection</p>
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to="/services/interior-detailing" className="group block space-y-2 p-4 rounded-lg hover:bg-primary/5">
-                        <div className="flex items-start">
-                          <div className="mt-0.5 mr-3 bg-primary/10 p-2 rounded-lg text-primary">
-                            <Star size={18} />
-                          </div>
-                          <div>
-                            <h3 className="text-sm font-medium group-hover:text-primary">Interior Detailing</h3>
-                            <p className="text-xs text-muted-foreground">Deep interior cleaning and protection</p>
-                          </div>
-                        </div>
-                      </Link>
-                      <Link to="/services/paint-protection" className="group block space-y-2 p-4 rounded-lg hover:bg-primary/5">
-                        <div className="flex items-start">
-                          <div className="mt-0.5 mr-3 bg-primary/10 p-2 rounded-lg text-primary">
-                            <Settings size={18} />
-                          </div>
-                          <div>
-                            <h3 className="text-sm font-medium group-hover:text-primary">Paint Protection</h3>
-                            <p className="text-xs text-muted-foreground">Premium PPF installation</p>
-                          </div>
-                        </div>
-                      </Link>
-                    </div>
-                  </NavigationMenuContent>
+                  </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>

@@ -1,6 +1,3 @@
-
-// Improved spacing on container and the service header linked with mega menu, added mb-8 and my-[60px] consistent spacing
-
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -13,6 +10,7 @@ import ServicesList from "@/components/services/ServicesList";
 import ServicesPackages from "@/components/services/ServicesPackages";
 import ServiceProcess from "@/components/services/ServiceProcess";
 import ServicesSEO from "@/components/services/ServicesSEO";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const Services = () => {
@@ -54,32 +52,30 @@ const Services = () => {
       <Navbar />
 
       <div className="container mx-auto px-4 mb-8 my-[60px] max-w-5xl">
-        <div itemScope itemType="https://schema.org/Service">
-          <meta itemProp="name" content="Car Detailing Services" />
-          <meta itemProp="description" content="Professional car detailing services including exterior and interior detailing, ceramic coating, paint protection, and specialty services." />
-          <div itemProp="provider" itemScope itemType="https://schema.org/LocalBusiness">
-            <meta itemProp="name" content="ShineDetailers" />
-          </div>
-        </div>
-        
         <div className="text-center mb-12">
           <Badge variant="outline" className="mb-2">Premium Services</Badge>
-          <Link 
-            to="/services" 
+          <h1 
             className="text-4xl md:text-5xl font-bold mb-4 cursor-pointer hover:text-primary transition-colors inline-block"
-            aria-label="Go to Services"
           >
             Professional Car Detailing Services
-          </Link>
+          </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Comprehensive care solutions for your vehicle, delivered by certified technicians using premium products.
           </p>
         </div>
 
-        <ServicesList 
-          services={services} 
-          onBookService={handleBookService}
-        />
+        <section className="mb-16">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-semibold">Our Services</h2>
+            <Button variant="outline">
+              <Link to="/services">View All Services</Link>
+            </Button>
+          </div>
+          <ServicesList 
+            services={services} 
+            onBookService={handleBookService}
+          />
+        </section>
 
         <ServicesPackages 
           packages={servicePackages}
