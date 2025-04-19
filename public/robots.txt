@@ -4,9 +4,11 @@
 
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
@@ -17,21 +19,33 @@ Allow: /
 User-agent: *
 Allow: /
 
-# Disallow admin areas
+# Disallow admin and system areas
 Disallow: /admin
 Disallow: /wp-admin
 Disallow: /login
 Disallow: /wp-login.php
+Disallow: /backend
+Disallow: /cms
 
-# Disallow certain file types that are not needed for search indexing
+# Disallow certain file types
 Disallow: /*.json$
 Disallow: /*.xml$
 Disallow: /*.txt$
 Disallow: /*.js$
 Disallow: /*.css$
-
-# Optimize crawl budget by disallowing query parameters
+Disallow: /*.map$
+Disallow: /*.php$
 Disallow: /*?*
 
-# Sitemap location
+# Optimize crawl budget
+Disallow: /*?utm_*
+Disallow: /*?ref=*
+Disallow: /*?source=*
+
+# Allow important files
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# Sitemaps
 Sitemap: https://shinedetailers.in/sitemap.xml
+

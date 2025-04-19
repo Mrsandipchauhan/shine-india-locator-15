@@ -1,5 +1,6 @@
 
-import { useEffect } from "react";
+import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
 import PageUtilities from "@/components/PageUtilities";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
@@ -16,42 +17,68 @@ import BookWithConfidence from "@/components/home/BookWithConfidence";
 import FeaturedAreasSection from "@/components/FeaturedAreasSection";
 import QuickServiceEstimator from "@/components/home/QuickServiceEstimator";
 import SEOContent from "@/components/home/SEOContent";
+import LocalBusinessSchema from "@/components/SEO/LocalBusinessSchema";
+import PerformanceMonitor from "@/components/SEO/PerformanceMonitor";
+import { ImageOptimizer } from "@/components/ImageOptimizer";
+import { H1, H2 } from "@/components/SEO/HeadingStructure";
 
 const Index = () => {
-  useEffect(() => {
-    document.title = "ShineDetailers - Premium Car Detailing Services Across India";
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", "Professional car detailing services across 20+ cities in India. Exterior detailing, ceramic coating, interior cleaning, and paint protection with certified technicians.");
-    }
-  }, []);
+  const location = useLocation();
+  const canonicalUrl = `https://shinedetailers.in${location.pathname}`;
 
-  return <div className="flex flex-col min-h-screen w-full overflow-hidden">
-      <Navbar />
-      <main className="flex-1 w-full overflow-hidden">
-        <Hero />
-        <div className="py-4 md:py-6 bg-background border-b border-border/10 w-full overflow-hidden">
-          <div className="container mx-auto w-full overflow-hidden">
-            <CitySlider />
+  return (
+    <>
+      <Helmet>
+        <title>ShineDetailers - Premium Car Detailing Services Across India</title>
+        <meta name="description" content="Professional car detailing services across India. Expert exterior detailing, ceramic coating, interior cleaning, and paint protection services with certified technicians." />
+        <link rel="canonical" href={canonicalUrl} />
+        
+        {/* Additional meta tags for social sharing */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="ShineDetailers - Premium Car Detailing Services" />
+        <meta property="og:description" content="Professional car detailing services across India with certified technicians." />
+        <meta property="og:url" content={canonicalUrl} />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="ShineDetailers - Premium Car Detailing" />
+        <meta name="twitter:description" content="Professional car detailing services across India." />
+      </Helmet>
+
+      <div className="flex flex-col min-h-screen">
+        <PerformanceMonitor />
+        <LocalBusinessSchema />
+        
+        <Navbar />
+        
+        <main className="flex-1">
+          <Hero />
+          <div className="py-4 md:py-6 bg-background">
+            <div className="container mx-auto">
+              <CitySlider />
+            </div>
           </div>
-        </div>
-        <div className="space-y-8 md:space-y-0 w-full overflow-hidden">
-          <ServicesSection />
-          <DetailingPackages />
-          <FeaturedAreasSection /> {/* Moved this section up */}
-          <QuickServiceEstimator />
-          <WorkProcessSection />
-          <WhyChooseUsSection />
-          <CarCareTips />
-          <TestimonialsSlider />
-          <SEOContent />
-          <BookWithConfidence />
-          <CTASection />
-        </div>
-      </main>
-      <Footer />
-      <PageUtilities />
-    </div>;
+          
+          <div className="space-y-8 md:space-y-12">
+            <ServicesSection />
+            <DetailingPackages />
+            <FeaturedAreasSection />
+            <QuickServiceEstimator />
+            <WorkProcessSection />
+            <WhyChooseUsSection />
+            <CarCareTips />
+            <TestimonialsSlider />
+            <SEOContent />
+            <BookWithConfidence />
+            <CTASection />
+          </div>
+        </main>
+        
+        <Footer />
+        <PageUtilities />
+      </div>
+    </>
+  );
 };
 
 export default Index;
