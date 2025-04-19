@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import PageUtilities from "@/components/PageUtilities";
 import Hero from "@/components/Hero";
@@ -7,6 +8,7 @@ import ServicesSection from "@/components/ServicesSection";
 import CitySelector from "@/components/CitySelector";
 import TestimonialsSlider from "@/components/TestimonialsSlider";
 import CTASection from "@/components/CTASection";
+import CitySlider from "@/components/CitySlider";
 import WorkProcessSection from "@/components/WorkProcessSection";
 import WhyChooseUsSection from "@/components/WhyChooseUsSection";
 import DetailingPackages from "@/components/home/DetailingPackages";
@@ -16,6 +18,7 @@ import FeaturedAreasSection from "@/components/FeaturedAreasSection";
 import QuickServiceEstimator from "@/components/home/QuickServiceEstimator";
 
 const Index = () => {
+  // Set page title and description for SEO
   useEffect(() => {
     document.title = "ShineDetailers - Premium Car Detailing Services Across India";
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -29,6 +32,11 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero />
+        <div className="py-4 md:py-6 bg-background border-b border-border/10">
+          <div className="container mx-auto px-4">
+            <CitySlider />
+          </div>
+        </div>
         <div className="space-y-8 md:space-y-0">
           <ServicesSection />
           <QuickServiceEstimator />
