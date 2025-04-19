@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import PageUtilities from "@/components/PageUtilities";
 import Hero from "@/components/Hero";
@@ -16,7 +15,6 @@ import CarCareTips from "@/components/home/CarCareTips";
 import BookWithConfidence from "@/components/home/BookWithConfidence";
 import FeaturedAreasSection from "@/components/FeaturedAreasSection";
 import QuickServiceEstimator from "@/components/home/QuickServiceEstimator";
-
 const Index = () => {
   // Set page title and description for SEO
   useEffect(() => {
@@ -26,9 +24,7 @@ const Index = () => {
       metaDesc.setAttribute("content", "Professional car detailing services across 20+ cities in India. Exterior detailing, ceramic coating, interior cleaning, and paint protection with certified technicians.");
     }
   }, []);
-
-  return (
-    <div className="flex flex-col min-h-screen w-full overflow-hidden">
+  return <div className="flex flex-col min-h-screen w-full overflow-hidden">
       <Navbar />
       <main className="flex-1 w-full overflow-hidden">
         <Hero />
@@ -46,17 +42,13 @@ const Index = () => {
           <CarCareTips />
           <TestimonialsSlider />
           <FeaturedAreasSection />
-          <div className="pt-6 md:pt-10 overflow-hidden">
-            <CitySelector />
-          </div>
+          
           <BookWithConfidence />
           <CTASection />
         </div>
       </main>
       <Footer />
       <PageUtilities />
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
