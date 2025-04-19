@@ -15,8 +15,9 @@ import CarCareTips from "@/components/home/CarCareTips";
 import BookWithConfidence from "@/components/home/BookWithConfidence";
 import FeaturedAreasSection from "@/components/FeaturedAreasSection";
 import QuickServiceEstimator from "@/components/home/QuickServiceEstimator";
+import SEOContent from "@/components/home/SEOContent";
+
 const Index = () => {
-  // Set page title and description for SEO
   useEffect(() => {
     document.title = "ShineDetailers - Premium Car Detailing Services Across India";
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -24,6 +25,7 @@ const Index = () => {
       metaDesc.setAttribute("content", "Professional car detailing services across 20+ cities in India. Exterior detailing, ceramic coating, interior cleaning, and paint protection with certified technicians.");
     }
   }, []);
+
   return <div className="flex flex-col min-h-screen w-full overflow-hidden">
       <Navbar />
       <main className="flex-1 w-full overflow-hidden">
@@ -41,8 +43,8 @@ const Index = () => {
           <WhyChooseUsSection />
           <CarCareTips />
           <TestimonialsSlider />
+          <SEOContent />
           <FeaturedAreasSection />
-          
           <BookWithConfidence />
           <CTASection />
         </div>
@@ -51,4 +53,5 @@ const Index = () => {
       <PageUtilities />
     </div>;
 };
+
 export default Index;
