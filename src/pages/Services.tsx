@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -54,7 +53,7 @@ const Services = () => {
       <Navbar />
 
       <div 
-        className="container mx-auto px-4 mb-8 mx-0 my-[60px]" 
+        className="container mx-auto px-4 mb-8 mx-0 my-[60px] max-w-5xl" 
       >
         <div itemScope itemType="https://schema.org/Service">
           <meta itemProp="name" content="Car Detailing Services" />
