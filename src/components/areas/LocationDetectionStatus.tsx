@@ -1,5 +1,5 @@
 
-import { Car, MapPinOff } from 'lucide-react';
+import { Car, MapPin, MapPinOff, Navigation } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
