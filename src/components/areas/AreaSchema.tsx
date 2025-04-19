@@ -1,16 +1,8 @@
 
+import { LocalArea } from "@/data/types";
+
 interface AreaSchemaProps {
-  area: {
-    name: string;
-    parentCity: string;
-    phoneNumber: string;
-    address: string;
-    description: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-  };
+  area: LocalArea;
 }
 
 const AreaSchema = ({ area }: AreaSchemaProps) => {
@@ -19,11 +11,13 @@ const AreaSchema = ({ area }: AreaSchemaProps) => {
     "@type": "AutoRepair",
     "name": `ShineDetailers Car Detailing - ${area.name}`,
     "description": area.description,
+    "image": `https://source.unsplash.com/featured/?${area.name},car&auto=format&w=500`,
     "address": {
       "@type": "PostalAddress",
       "streetAddress": area.address,
       "addressLocality": area.name,
-      "addressRegion": area.parentCity
+      "addressRegion": area.parentCity,
+      "addressCountry": "IN"
     },
     "geo": {
       "@type": "GeoCoordinates",
@@ -40,6 +34,23 @@ const AreaSchema = ({ area }: AreaSchemaProps) => {
         "longitude": area.coordinates.lng
       },
       "geoRadius": "10000"
+    },
+    "areaServed": area.content.serviceAreas.map(serviceArea => ({
+      "@type": "City",
+      "name": serviceArea
+    })),
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "opens": "09:00",
+      "closes": "18:00"
     }
   };
 
