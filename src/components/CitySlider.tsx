@@ -5,47 +5,53 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 
-// Top cities in India by car ownership
-const majorCities = [
+// Default cities to show if location is not detected
+const defaultCities = [
   "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", 
-  "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow",
-  "Chandigarh", "Coimbatore", "Nagpur", "Surat", "Indore"
+  "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow"
 ];
+
+// Areas mapped to major cities
+const cityAreas: { [key: string]: string[] } = {
+  "Ahmedabad": ["Satellite", "Bopal", "Thaltej", "Vastrapur", "Bodakdev", "Prahlad Nagar", "SG Highway", "Maninagar"],
+  "Mumbai": ["Andheri", "Bandra", "Juhu", "Powai", "Worli", "Malad", "Goregaon", "Thane"],
+  "Delhi": ["Connaught Place", "Karol Bagh", "Dwarka", "Rohini", "Vasant Kunj", "Saket", "Greater Kailash"],
+  "Bangalore": ["Koramangala", "Indiranagar", "Whitefield", "JP Nagar", "HSR Layout", "Marathahalli"],
+  // Add more cities and their areas as needed
+};
 
 const CitySlider = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [sortedCities, setSortedCities] = useState<string[]>([]);
+  const [displayLocations, setDisplayLocations] = useState<string[]>([]);
   const [autoScrollInterval, setAutoScrollInterval] = useState<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  // Detect user location and sort cities
+  // Detect user location and set areas
   useEffect(() => {
-    const detectLocationAndSortCities = async () => {
+    const detectLocationAndSetAreas = async () => {
       try {
         const location = await getUserLocation();
         if (location.lat && location.lon) {
           const nearest = findNearestCity(location.lat, location.lon);
           if (nearest?.city) {
-            // Get 5 nearest cities based on distance
             const nearestCity = nearest.city.name;
-            const sorted = [...majorCities]
-              .sort((a, b) => {
-                if (a === nearestCity) return -1;
-                if (b === nearestCity) return 1;
-                return 0;
-              })
-              .slice(0, 5); // Only show 5 nearest cities
-            setSortedCities(sorted);
+            // Get areas for the nearest city
+            const nearbyAreas = cityAreas[nearestCity] || [];
+            if (nearbyAreas.length > 0) {
+              setDisplayLocations(nearbyAreas);
+            } else {
+              setDisplayLocations(defaultCities);
+            }
           }
         }
       } catch (error) {
         console.error("Error detecting location:", error);
-        setSortedCities(majorCities.slice(0, 5));
+        setDisplayLocations(defaultCities);
       }
     };
     
-    detectLocationAndSortCities();
+    detectLocationAndSetAreas();
   }, []);
 
   // Auto-scroll functionality
@@ -61,7 +67,7 @@ const CitySlider = () => {
               slider.scrollBy({ left: 100, behavior: 'smooth' });
             }
           }
-        }, 2000); // Faster interval
+        }, 3000);
         setAutoScrollInterval(interval);
       }
     };
@@ -73,7 +79,7 @@ const CitySlider = () => {
         clearInterval(autoScrollInterval);
       }
     };
-  }, [sortedCities]);
+  }, [displayLocations]);
 
   const scroll = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
@@ -145,7 +151,6 @@ const CitySlider = () => {
       <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-[1]" />
       <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-[1]" />
       
-      {/* Slider */}
       <div
         ref={sliderRef}
         className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar"
@@ -171,19 +176,19 @@ const CitySlider = () => {
                   slider.scrollBy({ left: 100, behavior: 'smooth' });
                 }
               }
-            }, 2000);
+            }, 3000);
             setAutoScrollInterval(interval);
           }
         }}
       >
-        {sortedCities.map((city) => (
+        {displayLocations.map((location) => (
           <Link
-            key={city}
-            to={`/locations/${city.toLowerCase()}`}
+            key={location}
+            to={`/locations/${location.toLowerCase()}`}
             className="flex items-center whitespace-nowrap bg-card hover:bg-primary/10 border border-border rounded-full px-3 py-1.5 transition-colors"
           >
             <MapPin size={14} className="text-primary mr-1.5" />
-            <span className="text-sm">{city}</span>
+            <span className="text-sm">{location}</span>
           </Link>
         ))}
       </div>
