@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -7,13 +6,11 @@ import { getUserLocation, findNearestCity } from "@/services/locationService";
 import localAreasData from "@/data/localAreasData";
 import { LocationDetectionStatus } from "./areas/LocationDetectionStatus";
 import { AreaCard } from "./areas/AreaCard";
-
 const FeaturedAreasSection = () => {
   const [nearbyArea, setNearbyArea] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [nearbyAreas, setNearbyAreas] = useState<any[]>([]);
-
   const featuredAreas = useMemo(() => {
     const areas = [];
     const parentCities = new Set();
@@ -34,7 +31,6 @@ const FeaturedAreasSection = () => {
     }
     return areas.slice(0, 6);
   }, []);
-
   const detectLocation = async () => {
     try {
       setIsLoading(true);
@@ -69,40 +65,25 @@ const FeaturedAreasSection = () => {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     const timer = setTimeout(() => {
       detectLocation();
     }, 1500);
     return () => clearTimeout(timer);
   }, []);
-
   return <section className="py-12 md:py-16 bg-card">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Popular Detailing Locations</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Find premium car detailing services in these popular areas or search for your location to discover services near you.
-          </p>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Best Car Detailing Services Near You</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">Search for your location to discover services near you.</p>
           
           <LocationDetectionStatus isLoading={isLoading} locationError={locationError} nearbyArea={nearbyArea} nearbyAreas={nearbyAreas} onRetryDetection={detectLocation} />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredAreas.map((area) => (
-            <AreaCard key={area.id} area={area} />
-          ))}
-        </div>
         
-        <div className="mt-10 text-center">
-          <Link to="/locations">
-            <Button variant="outline" size="lg">
-              View All Locations
-            </Button>
-          </Link>
-        </div>
+        
+        
       </div>
     </section>;
 };
-
 export default FeaturedAreasSection;
