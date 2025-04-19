@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -70,6 +69,10 @@
     animation: fade-in 0.8s ease-out forwards;
   }
   
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
   .glass {
     @apply bg-white/5 backdrop-blur-sm border border-white/10;
   }
@@ -104,6 +107,18 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
   }
 }
 
