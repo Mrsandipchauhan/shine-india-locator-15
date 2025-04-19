@@ -25,8 +25,12 @@ const CitySlider = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [displayLocations, setDisplayLocations] = useState<string[]>([]);
   const [autoScrollInterval, setAutoScrollInterval] = useState<NodeJS.Timeout | null>(null);
+  const [nearestCity, setNearestCity] = useState<string>("");
+  const [nearbyAreas, setNearbyAreas] = useState<string[]>([]);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const scrollStep = 1; // Smaller step for smoother scrolling
+  const scrollInterval = 30; // More frequent updates for smoother animation
 
   useEffect(() => {
     const detectLocationAndSetAreas = async () => {
@@ -35,18 +39,26 @@ const CitySlider = () => {
         if (location.lat && location.lon) {
           const nearest = findNearestCity(location.lat, location.lon);
           if (nearest?.city) {
-            const nearestCity = nearest.city.name;
-            let nearbyAreas = localAreasData
-              .filter(area => area.parentCity.toLowerCase() === nearestCity.toLowerCase())
+            const detectedCity = nearest.city.name;
+            setNearestCity(detectedCity);
+            
+            // Get areas for the nearest city
+            let cityAreasList = localAreasData
+              .filter(area => area.parentCity.toLowerCase() === detectedCity.toLowerCase())
               .map(area => area.name);
             
-            if (nearbyAreas.length > 0) {
-              nearbyAreas = [nearestCity, ...nearbyAreas];
+            if (cityAreasList.length > 0) {
+              setNearbyAreas(cityAreasList);
+              
+              // Combine nearest city, its areas, and other cities for display
+              const allLocations = [detectedCity, ...cityAreasList];
               const otherCities = defaultCities.filter(city => 
-                city.toLowerCase() !== nearestCity.toLowerCase()
+                city.toLowerCase() !== detectedCity.toLowerCase()
               );
-              nearbyAreas = [...new Set([...nearbyAreas, ...otherCities])];
-              setDisplayLocations(nearbyAreas);
+              
+              // Create final display list without duplicates
+              const uniqueLocations = [...new Set([...allLocations, ...otherCities])];
+              setDisplayLocations(uniqueLocations);
             } else {
               setDisplayLocations(defaultCities);
             }
@@ -71,18 +83,24 @@ const CitySlider = () => {
         const interval = setInterval(() => {
           const slider = sliderRef.current;
           if (slider) {
-            if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
+            // Check if we've reached the end
+            if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 5)) {
+              // If we're at the end, reset to beginning with smooth animation
               slider.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-              slider.scrollBy({ left: 2, behavior: 'auto' });
+              // Otherwise continue smooth scrolling with very small increments
+              slider.scrollBy({ left: scrollStep, behavior: 'auto' });
             }
           }
-        }, 50);
+        }, scrollInterval);
         setAutoScrollInterval(interval);
       }
     };
 
-    startAutoScroll();
+    // Start auto-scroll when locations are loaded
+    if (displayLocations.length > 0) {
+      startAutoScroll();
+    }
 
     return () => {
       if (autoScrollInterval) {
@@ -123,6 +141,24 @@ const CitySlider = () => {
     ? scrollPosition < sliderRef.current.scrollWidth - sliderRef.current.clientWidth - 10
     : true;
 
+  // Helper function to highlight nearest city and areas
+  const getItemStyles = (location: string) => {
+    const isNearestCity = location === nearestCity;
+    const isNearbyArea = nearbyAreas.includes(location);
+    
+    let className = "flex items-center whitespace-nowrap border border-border rounded-full px-3 py-1.5 transition-colors";
+    
+    if (isNearestCity) {
+      className += " bg-primary text-primary-foreground hover:bg-primary/90";
+    } else if (isNearbyArea) {
+      className += " bg-primary/20 hover:bg-primary/30";
+    } else {
+      className += " bg-card hover:bg-primary/10";
+    }
+    
+    return className;
+  };
+
   return (
     <div className="relative">
       {!isMobile && (
@@ -153,6 +189,10 @@ const CitySlider = () => {
         </>
       )}
       
+      {/* Add subtle gradient overlays for better UX */}
+      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-[1]"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-[1]"></div>
+      
       <div
         ref={sliderRef}
         className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar"
@@ -173,14 +213,37 @@ const CitySlider = () => {
             const interval = setInterval(() => {
               const slider = sliderRef.current;
               if (slider) {
-                if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
+                if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 5)) {
                   slider.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
-                  slider.scrollBy({ left: 2, behavior: 'auto' });
+                  slider.scrollBy({ left: scrollStep, behavior: 'auto' });
                 }
               }
-            }, 50);
+            }, scrollInterval);
             setAutoScrollInterval(interval);
+          }
+        }}
+        onTouchStart={() => {
+          if (autoScrollInterval) {
+            clearInterval(autoScrollInterval);
+            setAutoScrollInterval(null);
+          }
+        }}
+        onTouchEnd={() => {
+          if (!autoScrollInterval && sliderRef.current) {
+            setTimeout(() => {
+              const interval = setInterval(() => {
+                const slider = sliderRef.current;
+                if (slider) {
+                  if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 5)) {
+                    slider.scrollTo({ left: 0, behavior: 'smooth' });
+                  } else {
+                    slider.scrollBy({ left: scrollStep, behavior: 'auto' });
+                  }
+                }
+              }, scrollInterval);
+              setAutoScrollInterval(interval);
+            }, 2000); // Delay resuming auto-scroll after touch
           }
         }}
       >
@@ -188,13 +251,24 @@ const CitySlider = () => {
           <Link
             key={location}
             to={`/locations/${location.toLowerCase()}`}
-            className="flex items-center whitespace-nowrap bg-card hover:bg-primary/10 border border-border rounded-full px-3 py-1.5 transition-colors"
+            className={getItemStyles(location)}
           >
-            <MapPin size={14} className="text-primary mr-1.5" />
-            <span className="text-sm">{location}</span>
+            <MapPin size={14} className={location === nearestCity ? "text-primary-foreground mr-1.5" : "text-primary mr-1.5"} />
+            <span className="text-sm">
+              {location}
+              {location === nearestCity && <span className="ml-1 text-xs">(nearest)</span>}
+            </span>
           </Link>
         ))}
       </div>
+      
+      {nearestCity && nearbyAreas.length > 0 && (
+        <div className="mt-2 px-4 text-xs text-muted-foreground">
+          <span>
+            {nearbyAreas.length} areas near {nearestCity} 
+          </span>
+        </div>
+      )}
     </div>
   );
 };
