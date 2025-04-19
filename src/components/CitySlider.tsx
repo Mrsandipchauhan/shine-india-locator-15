@@ -6,7 +6,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 import localAreasData from "@/data/localAreasData";
 
-// Expanded list of default cities
 const defaultCities = [
   "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", 
   "Kolkata", "Pune", "Ahmedabad", "Jaipur", "Lucknow",
@@ -14,7 +13,6 @@ const defaultCities = [
   "Bhopal", "Patna", "Vadodara", "Guwahati", "Kochi"
 ];
 
-// Create areas mapping from localAreasData
 const cityAreas: { [key: string]: string[] } = {};
 localAreasData.forEach(area => {
   if (!cityAreas[area.parentCity]) {
@@ -30,7 +28,6 @@ const CitySlider = () => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
-  // Detect user location and set areas
   useEffect(() => {
     const detectLocationAndSetAreas = async () => {
       try {
@@ -39,16 +36,12 @@ const CitySlider = () => {
           const nearest = findNearestCity(location.lat, location.lon);
           if (nearest?.city) {
             const nearestCity = nearest.city.name;
-            // Get areas for the nearest city and surrounding cities
             let nearbyAreas = localAreasData
               .filter(area => area.parentCity.toLowerCase() === nearestCity.toLowerCase())
               .map(area => area.name);
             
-            // If we have nearby areas, add them first, then add other major cities
             if (nearbyAreas.length > 0) {
-              // Add the nearest city first
               nearbyAreas = [nearestCity, ...nearbyAreas];
-              // Add other major cities until we have a good number of locations
               const otherCities = defaultCities.filter(city => 
                 city.toLowerCase() !== nearestCity.toLowerCase()
               );
@@ -72,7 +65,6 @@ const CitySlider = () => {
     detectLocationAndSetAreas();
   }, []);
 
-  // Auto-scroll functionality
   useEffect(() => {
     const startAutoScroll = () => {
       if (sliderRef.current) {
@@ -82,10 +74,10 @@ const CitySlider = () => {
             if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
               slider.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-              slider.scrollBy({ left: 100, behavior: 'smooth' });
+              slider.scrollBy({ left: 2, behavior: 'auto' });
             }
           }
-        }, 3000);
+        }, 50);
         setAutoScrollInterval(interval);
       }
     };
@@ -105,15 +97,13 @@ const CitySlider = () => {
     const scrollAmount = direction === "left" ? -200 : 200;
     sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     
-    // Update scroll position after scrolling
     setTimeout(() => {
       if (sliderRef.current) {
         setScrollPosition(sliderRef.current.scrollLeft);
       }
     }, 300);
   };
-  
-  // Update scroll position when scrolling manually
+
   useEffect(() => {
     const handleScroll = () => {
       if (sliderRef.current) {
@@ -127,16 +117,14 @@ const CitySlider = () => {
       return () => slider.removeEventListener("scroll", handleScroll);
     }
   }, []);
-  
-  // Check if we can scroll further
+
   const canScrollLeft = scrollPosition > 0;
   const canScrollRight = sliderRef.current 
     ? scrollPosition < sliderRef.current.scrollWidth - sliderRef.current.clientWidth - 10
     : true;
-  
+
   return (
     <div className="relative">
-      {/* Scroll buttons for desktop */}
       {!isMobile && (
         <>
           <Button
@@ -165,17 +153,14 @@ const CitySlider = () => {
         </>
       )}
       
-      {/* Gradient overlays */}
-      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-background to-transparent z-[1]" />
-      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-[1]" />
-      
       <div
         ref={sliderRef}
         className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar"
         style={{ 
           scrollbarWidth: "none", 
           msOverflowStyle: "none",
-          scrollBehavior: "smooth"
+          scrollBehavior: "smooth",
+          WebkitOverflowScrolling: "touch"
         }}
         onMouseEnter={() => {
           if (autoScrollInterval) {
@@ -191,10 +176,10 @@ const CitySlider = () => {
                 if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
                   slider.scrollTo({ left: 0, behavior: 'smooth' });
                 } else {
-                  slider.scrollBy({ left: 100, behavior: 'smooth' });
+                  slider.scrollBy({ left: 2, behavior: 'auto' });
                 }
               }
-            }, 3000);
+            }, 50);
             setAutoScrollInterval(interval);
           }
         }}
