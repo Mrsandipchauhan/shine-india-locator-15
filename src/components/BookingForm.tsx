@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useLocation, useParams } from "react-router-dom";
 import { BookingFormInputs } from "./booking/BookingFormInputs";
+import { getUserLocation, findNearestCity } from "@/services/locationService";
 
 interface BookingFormProps {
   selectedCity?: string;
@@ -16,10 +17,7 @@ interface BookingFormProps {
 const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = false }: BookingFormProps) => {
   const location = useLocation();
   const params = useParams();
-  const [detectedCity, setDetectedCity] = useState("");
-  const [detectedService, setDetectedService] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
+  const [isDetectingLocation, setIsDetectingLocation] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -31,10 +29,15 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
     time: ""
   });
   
-  const formTitle = isQuoteForm ? "Get Your Custom Quote" : "Book Your Premium Service";
+  const formTitle = isQuoteForm 
+    ? "Get Your Personalized Quote" 
+    : selectedService 
+      ? `Book ${selectedService}` 
+      : "Book Your Premium Service";
+
   const formDescription = isQuoteForm 
-    ? "Tell us about your requirements and we'll provide a personalized quote" 
-    : "Schedule your detailing service with our expert team";
+    ? "Fill in your details below and we'll send you a custom quote within 24 hours" 
+    : "Schedule your detailing service with our expert team - takes only 2 minutes!";
 
   useEffect(() => {
     let cityFromUrl = "";
@@ -56,15 +59,40 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
         .join(' ');
     }
     
-    setDetectedCity(cityFromUrl);
-    setDetectedService(serviceFromUrl);
-    
     setFormData(prev => ({
       ...prev,
       city: prev.city || cityFromUrl || selectedCity,
       serviceType: prev.serviceType || serviceFromUrl || selectedService
     }));
+    
+    if (!formData.city) {
+      detectUserLocation();
+    }
   }, [location, params, selectedCity, selectedService]);
+
+  const detectUserLocation = async () => {
+    if (isDetectingLocation) return;
+    
+    setIsDetectingLocation(true);
+    try {
+      const location = await getUserLocation();
+      const nearest = location.city ? 
+        { city: { name: location.city, id: location.city.toLowerCase() } } : 
+        findNearestCity(location.lat, location.lon);
+      
+      if (nearest?.city) {
+        setFormData(prev => ({
+          ...prev,
+          city: nearest.city.name
+        }));
+        toast.success(`Location detected: ${nearest.city.name}`);
+      }
+    } catch (error) {
+      console.error("Error detecting location:", error);
+    } finally {
+      setIsDetectingLocation(false);
+    }
+  };
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -79,38 +107,32 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
     e.preventDefault();
     
     if (!formData.name || !formData.phone || !formData.email) {
-      toast.error("Please fill in all required fields");
+      toast.error("कृपया सभी आवश्यक फ़ील्ड भरें", {
+        description: "नाम, फ़ोन नंबर और ईमेल आवश्यक हैं"
+      });
       return;
     }
     
-    setIsSubmitting(true);
-    
-    setTimeout(() => {
-      if (isQuoteForm) {
-        toast.success("Quote request received!", {
-          description: `Thank you ${formData.name}, we'll send your custom quote shortly.`,
-          duration: 5000
-        });
-      } else {
-        toast.success("Booking request submitted!", {
-          description: `Thank you ${formData.name}, your ${formData.serviceType || "detailing"} appointment has been requested.`,
-          duration: 5000
-        });
+    toast.success(
+      isQuoteForm ? "कोटेशन अनुरोध प्राप्त हुआ!" : "बुकिंग अनुरोध सफल!",
+      {
+        description: isQuoteForm
+          ? `धन्यवाद ${formData.name}, हम जल्द ही आपका कस्टम कोटेशन भेजेंगे`
+          : `धन्यवाद ${formData.name}, आपकी ${formData.serviceType || "डिटेलिंग"} अपॉइंटमेंट का अनुरोध प्राप्त हो गया है`
       }
-      
-      setFormData({
-        name: "",
-        phone: "",
-        email: "",
-        carType: "",
-        serviceType: detectedService || selectedService,
-        city: detectedCity || selectedCity,
-        date: "",
-        time: ""
-      });
-      
-      setIsSubmitting(false);
-    }, 1500);
+    );
+    
+    // Reset form
+    setFormData({
+      name: "",
+      phone: "",
+      email: "",
+      carType: "",
+      serviceType: selectedService,
+      city: formData.city, // Keep detected city
+      date: "",
+      time: ""
+    });
   };
   
   const today = new Date().toISOString().split('T')[0];
@@ -136,16 +158,15 @@ const BookingForm = ({ selectedCity = "", selectedService = "", isQuoteForm = fa
             
             <Button 
               type="submit" 
-              className="w-full bg-primary hover:bg-primary/90 mt-4 sticky bottom-0"
-              disabled={isSubmitting}
+              className="w-full bg-primary hover:bg-primary/90 mt-4"
             >
-              {isSubmitting ? "Submitting..." : isQuoteForm ? "Request Quote" : "Book Appointment"}
+              {isQuoteForm ? "मुफ्त कोटेशन पाएं" : "अपॉइंटमेंट बुक करें"}
             </Button>
             
             <p className="text-xs text-muted-foreground text-center mt-2">
               {isQuoteForm 
-                ? "Our team will contact you with a custom quote within 24 hours." 
-                : "Our representative will contact you to confirm your appointment details."}
+                ? "हमारी टीम 24 घंटों के भीतर आपसे संपर्क करेगी" 
+                : "हमारा प्रतिनिधि आपकी अपॉइंटमेंट की पुष्टि के लिए संपर्क करेगा"}
             </p>
           </form>
         </CardContent>
