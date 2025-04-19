@@ -463,4 +463,17 @@ const localAreasData: LocalArea[] = [
     content: {
       introduction: "ShineDetailers provides exceptional car detailing services in Mansarovar, Jaipur. As one of Jaipur's largest planned residential areas with numerous commercial spaces and educational institutions, Mansarovar has a growing concentration of premium vehicles requiring professional care.",
       localChallenges: "Mansarovar vehicles face challenges from desert dust, extreme temperature variations, and seasonal rain damage. Our tailored detailing solutions address these specific environmental factors.",
-      specialTips: "For Mansarovar residents, we recommend quarterly full detailing with bi-monthly express maintenance services. Our interior fabric protection
+      specialTips: "For Mansarovar residents, we recommend quarterly full detailing with bi-monthly express maintenance services. Our interior fabric protection treatments are highly recommended for preserving your vehicle's cabin against dust and UV damage prevalent in this area.",
+      serviceAreas: ["Mansarovar Extension", "Shipra Path", "Pratap Nagar", "Sector 9", "Triveni Nagar"],
+      nearbyLocations: ["Malviya Nagar", "Pratap Nagar", "Sanganer", "Vaishali Nagar", "Jaipur Airport"]
+    },
+    coordinates: {
+      lat: 26.8541,
+      lng: 75.7558
+    },
+    phoneNumber: "+91 9876543231",
+    address: "Shop 45, Elements Mall, Ajmer Road, Mansarovar, Jaipur - 302020"
+  }
+];
+
+export default localAreasData;
