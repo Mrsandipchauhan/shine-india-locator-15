@@ -12,7 +12,7 @@ const Hero = () => {
   const [showBooking, setShowBooking] = useState(false);
   
   return (
-    <div className="relative overflow-hidden min-h-screen flex items-center">
+    <div className="relative overflow-hidden min-h-screen flex items-center pt-16 md:pt-0">
       {/* Static background color first for better perceived performance */}
       <div className="absolute inset-0 bg-background z-0"></div>
       
@@ -76,7 +76,7 @@ const Hero = () => {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="glass hover:bg-white/10 backdrop-blur-sm px-8 py-6 text-lg font-medium rounded-xl border-white/10 group"
+                className="glass hover:bg-white/10 backdrop-blur-sm px-8 py-6 text-lg font-medium rounded-xl border-white/10 group w-full sm:w-auto"
               >
                 Find Nearest Location 
                 <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />

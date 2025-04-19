@@ -32,7 +32,7 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
+    <nav className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-background/90 backdrop-blur-md shadow-md' : 'bg-transparent'}`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between flex-wrap">
           <Link to="/" className="flex items-center space-x-2 z-10">
@@ -140,7 +140,7 @@ const Navbar = () => {
               </div>
               <a href="tel:+918001234567" className="text-sm font-medium hover:text-primary transition-colors">+91 800-123-4567</a>
             </div>
-            <Link to="/services">
+            <Link to="/contact">
               <Button className="bg-primary hover:bg-primary/90 text-sm font-medium px-5 py-2 rounded-lg">Book Now</Button>
             </Link>
           </div>
@@ -203,7 +203,7 @@ const Navbar = () => {
               <a href="tel:+918001234567" className="text-sm hover:text-primary transition-colors">+91 800-123-4567</a>
             </div>
             
-            <Link to="/services" className="block px-4" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/contact" className="block px-4" onClick={() => setIsMenuOpen(false)}>
               <Button className="w-full bg-primary hover:bg-primary/90 py-6">Book Now</Button>
             </Link>
           </div>
