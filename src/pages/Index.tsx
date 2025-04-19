@@ -14,7 +14,6 @@ import CarCareTips from "@/components/home/CarCareTips";
 import BookWithConfidence from "@/components/home/BookWithConfidence";
 import FeaturedAreasSection from "@/components/FeaturedAreasSection";
 import QuickServiceEstimator from "@/components/home/QuickServiceEstimator";
-import NearbyAreasSlider from "@/components/areas/NearbyAreasSlider";
 
 const Index = () => {
   useEffect(() => {
@@ -30,11 +29,6 @@ const Index = () => {
       <Navbar />
       <main>
         <Hero />
-        <div className="py-4 md:py-6 bg-background border-b border-border/10">
-          <div className="container mx-auto px-4">
-            <NearbyAreasSlider />
-          </div>
-        </div>
         <div className="space-y-8 md:space-y-0">
           <ServicesSection />
           <QuickServiceEstimator />
