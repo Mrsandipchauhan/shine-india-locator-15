@@ -1,15 +1,44 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Layout } from "@/components/ui/layout";
 import { MapPin, Search, Home, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEO/SEOHead";
 
 const NotFound = () => {
+  // SEO enhanced 404 page with structured data
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://shinedetailers.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Page Not Found",
+          "item": "https://shinedetailers.in/404"
+        }
+      ]
+    }
+  ];
+  
   return (
     <>
+      <SEOHead 
+        title="404 - Page Not Found | ShineDetailers"
+        description="We're sorry, but the page you're looking for doesn't exist or has been moved. Browse our car detailing services or find a location near you."
+        canonicalUrl="/404"
+        structuredData={structuredData}
+      />
+      
       <Navbar />
       <div className="container mx-auto px-4 py-16 min-h-[calc(100vh-200px)]">
         <Card className="max-w-3xl mx-auto border border-border">
@@ -25,7 +54,7 @@ const NotFound = () => {
               Please check the URL or try one of the options below.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <Link to="/" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
                 <Home size={24} className="text-primary mb-2" />
                 <span className="font-medium">Return Home</span>
@@ -34,6 +63,11 @@ const NotFound = () => {
               <Link to="/locations" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
                 <MapPin size={24} className="text-primary mb-2" />
                 <span className="font-medium">Find Locations</span>
+              </Link>
+              
+              <Link to="/services" className="flex flex-col items-center p-4 rounded-lg hover:bg-muted transition-colors">
+                <Search size={24} className="text-primary mb-2" />
+                <span className="font-medium">Browse Services</span>
               </Link>
             </div>
             

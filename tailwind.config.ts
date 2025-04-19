@@ -1,5 +1,6 @@
 
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 export default {
   darkMode: ["class"],
@@ -107,7 +108,88 @@ export default {
         sans: ['Inter', 'sans-serif'],
         display: ['Montserrat', 'sans-serif'],
       },
+      // Add Typography for SEO-friendly text styling
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '72ch',
+            color: 'hsl(var(--foreground))',
+            a: {
+              color: 'hsl(var(--primary))',
+              '&:hover': {
+                color: 'hsl(var(--primary) / 0.8)',
+              },
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    // Add typography plugin for SEO-friendly content
+    require('@tailwindcss/typography'),
+    // Custom plugin for SEO and performance optimizations
+    plugin(function({ addUtilities }) {
+      // SEO-friendly link styles that clearly indicate clickable items
+      addUtilities({
+        '.link-hover': {
+          'position': 'relative',
+          'transition': 'color 0.2s ease',
+          '&::after': {
+            'content': '""',
+            'position': 'absolute',
+            'bottom': '-2px',
+            'left': '0',
+            'width': '0',
+            'height': '1px',
+            'transition': 'width 0.3s ease',
+            'backgroundColor': 'currentColor',
+          },
+          '&:hover::after': {
+            'width': '100%',
+          },
+        },
+        '.glass': {
+          'backgroundColor': 'rgba(255, 255, 255, 0.1)',
+          'backdropFilter': 'blur(5px)',
+          'border': '1px solid rgba(255, 255, 255, 0.05)',
+        },
+        '.text-gradient': {
+          'background': 'linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)))',
+          '-webkit-background-clip': 'text',
+          'background-clip': 'text',
+          'color': 'transparent',
+          'display': 'inline-block',
+        },
+        // Utility for eliminating layout shifts (CLS improvement)
+        '.preserve-dimensions': {
+          'contain': 'size layout'
+        },
+        // Optimize for mobile performance
+        '.mobile-perf': {
+          'willChange': 'auto',
+          'backfaceVisibility': 'hidden',
+        },
+        // SEO-friendly focus states for accessibility
+        '.focus-visible-ring': {
+          '&:focus-visible': {
+            'outline': 'none',
+            'ringColor': 'hsl(var(--primary) / 0.5)',
+            'ringWidth': '2px',
+            'ringOffset': '2px',
+            'ringOffsetColor': 'hsl(var(--background))',
+          },
+        },
+        // No scrollbar utility
+        '.no-scrollbar': {
+          '-ms-overflow-style': 'none',
+          'scrollbarWidth': 'none',
+          '&::-webkit-scrollbar': {
+            'display': 'none'
+          }
+        }
+      })
+    }),
+  ],
 } satisfies Config;

@@ -1,3 +1,7 @@
+
+# Robots.txt for ShineDetailers.in
+# Updated: 2025-04-19
+
 User-agent: Googlebot
 Allow: /
 
@@ -12,3 +16,22 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Disallow admin areas
+Disallow: /admin
+Disallow: /wp-admin
+Disallow: /login
+Disallow: /wp-login.php
+
+# Disallow certain file types that are not needed for search indexing
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.txt$
+Disallow: /*.js$
+Disallow: /*.css$
+
+# Optimize crawl budget by disallowing query parameters
+Disallow: /*?*
+
+# Sitemap location
+Sitemap: https://shinedetailers.in/sitemap.xml

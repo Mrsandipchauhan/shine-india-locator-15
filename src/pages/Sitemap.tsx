@@ -9,13 +9,15 @@ import {
   Wrench,
   Star,
   CircleCheck,
-  PhoneCall
+  PhoneCall,
+  ExternalLink
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import citiesData from "@/data/citiesData";
 import localAreasData from "@/data/localAreasData";
 import { Card } from "@/components/ui/card";
+import SEOHead from "@/components/SEO/SEOHead";
 
 const regions = {
   north: ["Delhi", "Chandigarh", "Lucknow", "Jaipur"],
@@ -58,8 +60,37 @@ const getAreaIdByName = (areaName: string): string => {
 };
 
 const Sitemap = () => {
+  // SEO enhanced sitemap with structured data
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://shinedetailers.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Sitemap",
+          "item": "https://shinedetailers.in/sitemap"
+        }
+      ]
+    }
+  ];
+  
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead 
+        title="Sitemap | ShineDetailers - Premium Car Detailing Services Across India"
+        description="Navigate our comprehensive car detailing services and locations across India. Find professional auto detailing services in more than 30 cities including Delhi, Mumbai, Bangalore, and Hyderabad."
+        canonicalUrl="/sitemap"
+        structuredData={structuredData}
+      />
+      
       <Navbar />
       
       <main className="container mx-auto px-4 py-8">
@@ -216,6 +247,27 @@ const Sitemap = () => {
                   </Link>
                 </Card>
               ))}
+          </div>
+        </div>
+      <div className="mt-8 mb-12 bg-muted p-4 rounded-lg text-center">
+          <p className="text-sm text-muted-foreground">
+            Looking for our XML sitemap for search engines? 
+            <a 
+              href="/sitemap.xml" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline ml-1 inline-flex items-center"
+            >
+              View XML Sitemap <ExternalLink className="ml-1 h-3 w-3" />
+            </a>
+          </p>
+          <div className="mt-4">
+            <Link 
+              to="/"
+              className="text-primary hover:underline inline-flex items-center text-sm"
+            >
+              ← Back to Home
+            </Link>
           </div>
         </div>
       </main>
