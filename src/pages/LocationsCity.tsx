@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import LocationHeader from "@/components/LocationHeader";
 import LocationContentSection from "@/components/LocationContentSection";
+import SidebarContent from "@/components/SidebarContent";
 import { worldwideLocations } from "@/data/globalLocationsData";
 import { serviceProvidersByCity } from "@/data/serviceProviders";
 import { getCityData } from "@/utils/locationUtils";
@@ -75,6 +76,7 @@ const LocationsCity = () => {
             content={contentForSection}
             providers={providers}
           />
+          <SidebarContent cityName={displayCityName} />
         </div>
         
         {/* Adding Pricing Packages component */}
