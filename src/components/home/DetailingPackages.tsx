@@ -15,7 +15,7 @@ const DetailingPackages = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8">
-          <Card className="border-border hover:border-primary transition-all relative">
+          <Card className="border-border hover:border-primary transition-all group relative">
             <div className="absolute top-0 right-0 bg-muted text-foreground px-3 py-1 text-sm font-medium rounded-bl-lg">
               Popular
             </div>
@@ -47,12 +47,18 @@ const DetailingPackages = () => {
               </ul>
               
               <Link to="/services">
-                <Button className="w-full">Select Package</Button>
+                <Button 
+                  className="w-full transition-all duration-300 ease-in-out 
+                    transform hover:scale-[1.02] hover:shadow-lg 
+                    active:scale-[0.98] group-hover:bg-primary/10"
+                >
+                  Select Package
+                </Button>
               </Link>
             </CardContent>
           </Card>
           
-          <Card className="border-primary shadow-lg relative">
+          <Card className="border-primary hover:border-primary transition-all group relative shadow-sm">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary text-white px-4 py-1 text-sm font-bold rounded-full">
               Best Value
             </div>
@@ -88,12 +94,19 @@ const DetailingPackages = () => {
               </ul>
               
               <Link to="/services">
-                <Button className="w-full bg-primary hover:bg-primary/90">Select Package</Button>
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 
+                    transition-all duration-300 ease-in-out 
+                    transform hover:scale-[1.02] hover:shadow-lg 
+                    active:scale-[0.98]"
+                >
+                  Select Package
+                </Button>
               </Link>
             </CardContent>
           </Card>
           
-          <Card className="border-primary hover:border-primary transition-all">
+          <Card className="border-primary hover:border-primary transition-all group relative">
             <CardContent className="p-6">
               <h3 className="text-xl font-bold mb-2">Ultimate Package</h3>
               <div className="text-3xl font-bold mb-6">₹19,999 <span className="text-sm font-normal text-muted-foreground">onwards</span></div>
@@ -126,7 +139,14 @@ const DetailingPackages = () => {
               </ul>
               
               <Link to="/services">
-                <Button className="w-full bg-primary hover:bg-primary/90">Select Package</Button>
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 
+                    transition-all duration-300 ease-in-out 
+                    transform hover:scale-[1.02] hover:shadow-lg 
+                    active:scale-[0.98]"
+                >
+                  Select Package
+                </Button>
               </Link>
             </CardContent>
           </Card>
@@ -138,7 +158,14 @@ const DetailingPackages = () => {
             We can create customized detailing solutions tailored to your specific vehicle needs and budget.
           </p>
           <Link to="/contact">
-            <Button variant="outline">Contact Us for Custom Quote</Button>
+            <Button 
+              variant="outline" 
+              className="transition-all duration-300 ease-in-out 
+                transform hover:scale-[1.02] hover:shadow-lg 
+                active:scale-[0.98]"
+            >
+              Contact Us for Custom Quote
+            </Button>
           </Link>
         </div>
       </div>
