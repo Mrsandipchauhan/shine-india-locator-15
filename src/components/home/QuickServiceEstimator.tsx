@@ -125,15 +125,19 @@ const popularLocationsByCountry = {
 // Set fallback locations
 const fallbackLocations = popularLocationsByCountry["India"];
 
+// Define the type for service IDs to fix the TypeScript error
+type ServiceId = "basic-wash" | "premium-detailing" | "ceramic-coating" | "interior-detailing" | 
+                "paint-correction" | "full-restoration" | "headlight-restoration" | "engine-detailing";
+
 const QuickServiceEstimator = () => {
   const [carType, setCarType] = useState("");
-  const [serviceType, setServiceType] = useState("");
+  const [serviceType, setServiceType] = useState<ServiceId | "">("");
   const [location, setLocation] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [estimatedPrice, setEstimatedPrice] = useState<number | null>(null);
-  const [additionalServices, setAdditionalServices] = useState<string[]>([]);
+  const [additionalServices, setAdditionalServices] = useState<ServiceId[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [userCity, setUserCity] = useState("");
   
@@ -264,7 +268,7 @@ const QuickServiceEstimator = () => {
     setShowLocationDropdown(false);
   };
   
-  const toggleAdditionalService = (serviceId: string) => {
+  const toggleAdditionalService = (serviceId: ServiceId) => {
     setAdditionalServices(prev => 
       prev.includes(serviceId) 
         ? prev.filter(id => id !== serviceId)
@@ -282,13 +286,13 @@ const QuickServiceEstimator = () => {
     const pricing = getCountryPricing();
     const basePriceObj = pricing.basePrice;
     
-    if (selectedCar && basePriceObj && basePriceObj[serviceType as keyof typeof basePriceObj]) {
-      // Calculate base price
-      const basePrice = basePriceObj[serviceType as keyof basePriceObj] * selectedCar.priceMultiplier;
+    if (selectedCar && basePriceObj && serviceType) {
+      // Calculate base price - Fixed the TypeScript error here
+      const basePrice = basePriceObj[serviceType] * selectedCar.priceMultiplier;
       
-      // Add price for additional services
+      // Add price for additional services - Fixed the TypeScript error here
       const additionalPrice = additionalServices.reduce((total, service) => {
-        return total + (basePriceObj[service as keyof typeof basePriceObj] * 0.4); // 40% of base price for add-ons
+        return total + (basePriceObj[service] * 0.4); // 40% of base price for add-ons
       }, 0);
       
       // Apply location-specific adjustment (optional)
@@ -365,7 +369,7 @@ const QuickServiceEstimator = () => {
                     <Car size={16} className="mr-2 text-primary" />
                     Primary Service
                   </label>
-                  <Select value={serviceType} onValueChange={setServiceType}>
+                  <Select value={serviceType} onValueChange={value => setServiceType(value as ServiceId)}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select service" />
                     </SelectTrigger>
@@ -445,14 +449,14 @@ const QuickServiceEstimator = () => {
                       .map(service => (
                         <div
                           key={service.id}
-                          onClick={() => toggleAdditionalService(service.id)}
+                          onClick={() => toggleAdditionalService(service.id as ServiceId)}
                           className={`px-3 py-2 text-xs rounded-lg cursor-pointer transition-colors flex items-center border ${
-                            additionalServices.includes(service.id)
+                            additionalServices.includes(service.id as ServiceId)
                               ? 'bg-primary/10 border-primary/30 text-primary'
                               : 'border-border bg-card/80 hover:bg-accent/30'
                           }`}
                         >
-                          <div className={`w-3 h-3 rounded mr-2 ${additionalServices.includes(service.id) ? 'bg-primary' : 'bg-muted'}`}></div>
+                          <div className={`w-3 h-3 rounded mr-2 ${additionalServices.includes(service.id as ServiceId) ? 'bg-primary' : 'bg-muted'}`}></div>
                           {service.name}
                         </div>
                       ))}
