@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import PageUtilities from "@/components/PageUtilities";
 import Hero from "@/components/Hero";
@@ -16,9 +15,9 @@ import CarCareTips from "@/components/home/CarCareTips";
 import BookWithConfidence from "@/components/home/BookWithConfidence";
 import FeaturedAreasSection from "@/components/FeaturedAreasSection";
 import QuickServiceEstimator from "@/components/home/QuickServiceEstimator";
+import NearbyAreasSlider from "@/components/areas/NearbyAreasSlider";
 
 const Index = () => {
-  // Set page title and description for SEO
   useEffect(() => {
     document.title = "ShineDetailers - Premium Car Detailing Services Across India";
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -34,7 +33,10 @@ const Index = () => {
         <Hero />
         <div className="py-4 md:py-6 bg-background border-b border-border/10">
           <div className="container mx-auto px-4">
-            <CitySlider />
+            <NearbyAreasSlider />
+            <div className="mt-4">
+              <CitySlider />
+            </div>
           </div>
         </div>
         <div className="space-y-8 md:space-y-0">
