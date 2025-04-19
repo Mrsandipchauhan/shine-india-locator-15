@@ -473,6 +473,89 @@ const localAreasData: LocalArea[] = [
     },
     phoneNumber: "+91 9876543231",
     address: "Shop 45, Elements Mall, Ajmer Road, Mansarovar, Jaipur - 302020"
+  },
+  // Additional Areas for Ahmedabad
+  {
+    id: "bopal",
+    name: "Bopal",
+    parentCity: "ahmedabad",
+    title: "Car Detailing Services in Bopal - ShineDetailers",
+    description: "Professional car detailing services in Bopal, Ahmedabad. Our expert technicians provide premium exterior & interior detailing, ceramic coating & PPF. Book now!",
+    content: {
+      introduction: "ShineDetailers delivers premium car detailing services in Bopal, Ahmedabad. As a rapidly developing residential area with modern societies and commercial complexes, Bopal has a growing number of premium vehicles requiring specialized care.",
+      localChallenges: "Bopal vehicles face challenges from construction dust, extreme heat exposure, and seasonal dust storms. Our specialized detailing processes address these specific environmental factors.",
+      specialTips: "For Bopal residents, we recommend quarterly full detailing with monthly maintenance services. Our ceramic coating with dust-resistant properties is particularly effective for vehicles parked in open areas.",
+      serviceAreas: ["South Bopal", "Bopal Gam", "Ghuma", "Shilaj", "SP Ring Road"],
+      nearbyLocations: ["South Bopal", "Ghuma", "Ambli", "SG Highway", "Satellite"]
+    },
+    coordinates: {
+      lat: 23.0343,
+      lng: 72.4721
+    },
+    phoneNumber: "+91 9876543232",
+    address: "Shop 15, Crown Plaza, South Bopal, Ahmedabad - 380058"
+  },
+  {
+    id: "cg-road",
+    name: "CG Road",
+    parentCity: "ahmedabad",
+    title: "Car Detailing Services in CG Road - ShineDetailers",
+    description: "Professional car detailing services in CG Road, Ahmedabad. Our expert technicians provide premium exterior & interior detailing, ceramic coating & PPF. Book now!",
+    content: {
+      introduction: "ShineDetailers provides exceptional car detailing services in CG Road, Ahmedabad. As a prime commercial hub with numerous corporate offices and high-end retail spaces, CG Road sees a high concentration of luxury vehicles requiring professional care.",
+      localChallenges: "CG Road vehicles face challenges from urban pollution, heavy traffic exposure, and intense heat. Our tailored detailing solutions address these specific environmental factors.",
+      specialTips: "For CG Road customers, we recommend bi-monthly detailing with weekly express washes. Our paint protection services are essential for preserving your vehicle's finish in this high-traffic area.",
+      serviceAreas: ["Navrangpura", "Law Garden", "Paldi", "Ellis Bridge", "Stadium"],
+      nearbyLocations: ["Navrangpura", "Law Garden", "Stadium", "Lal Darwaja", "Paldi"]
+    },
+    coordinates: {
+      lat: 23.0225,
+      lng: 72.5714
+    },
+    phoneNumber: "+91 9876543233",
+    address: "Shop 3, CG Square, CG Road, Ahmedabad - 380009"
+  },
+  // Mumbai Additional Areas
+  {
+    id: "bandra",
+    name: "Bandra",
+    parentCity: "mumbai",
+    title: "Car Detailing Services in Bandra - ShineDetailers",
+    description: "Professional car detailing services in Bandra, Mumbai. Our expert technicians provide premium exterior & interior detailing, ceramic coating & PPF. Book now!",
+    content: {
+      introduction: "ShineDetailers offers luxury car detailing services in Bandra, Mumbai. Known as the 'Queen of Suburbs' with its affluent residents and celebrity homes, Bandra has one of the highest concentrations of premium vehicles requiring specialized care.",
+      localChallenges: "Bandra vehicles face challenges from coastal humidity, heavy monsoon exposure, and urban pollution. Our specialized treatments are designed to combat these specific environmental factors.",
+      specialTips: "For Bandra residents, we recommend monthly anti-corrosion treatments with weekly maintenance washes. Our premium ceramic coating services are particularly popular among luxury car owners in this area.",
+      serviceAreas: ["Bandra West", "Bandra East", "BKC", "Carter Road", "Pali Hill"],
+      nearbyLocations: ["Khar", "Santacruz", "Juhu", "Kurla", "BKC"]
+    },
+    coordinates: {
+      lat: 19.0596,
+      lng: 72.8295
+    },
+    phoneNumber: "+91 9876543234",
+    address: "Shop 8, Linking Road, Bandra West, Mumbai - 400050"
+  },
+  // Bangalore Additional Areas
+  {
+    id: "sarjapur",
+    name: "Sarjapur",
+    parentCity: "bangalore",
+    title: "Car Detailing Services in Sarjapur - ShineDetailers",
+    description: "Professional car detailing services in Sarjapur, Bangalore. Our expert technicians provide premium exterior & interior detailing, ceramic coating & PPF. Book now!",
+    content: {
+      introduction: "ShineDetailers delivers premium car detailing services in Sarjapur, Bangalore. As a rapidly developing tech corridor with luxury apartments and villa communities, Sarjapur has a growing concentration of high-end vehicles requiring specialized care.",
+      localChallenges: "Sarjapur vehicles face challenges from construction dust, unpaved roads, and seasonal changes. Our specialized detailing processes address these specific environmental factors.",
+      specialTips: "For Sarjapur residents, we recommend quarterly full detailing with monthly dust protection treatments. Our ceramic coating services are essential for preserving your vehicle's finish in this developing area.",
+      serviceAreas: ["Sarjapur Road", "Dommasandra", "Attibele", "Carmelaram", "Rainbow Drive"],
+      nearbyLocations: ["HSR Layout", "Bellandur", "Electronic City", "Whitefield", "Marathahalli"]
+    },
+    coordinates: {
+      lat: 12.8579,
+      lng: 77.7833
+    },
+    phoneNumber: "+91 9876543235",
+    address: "No. 67, Rainbow Drive, Sarjapur Road, Bangalore - 562125"
   }
 ];
 
