@@ -23,9 +23,12 @@ export const LocationItem = ({ location, isNearestCity, isNearbyArea }: Location
     return className;
   };
 
+  // Standardize the location route
+  const locationPath = `/locations/${encodeURIComponent(location.toLowerCase())}`;
+
   return (
     <Link
-      to={`/locations/${location.toLowerCase()}`}
+      to={locationPath}
       className={getItemStyles()}
     >
       <MapPin 
