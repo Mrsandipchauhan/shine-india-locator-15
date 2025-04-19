@@ -10,12 +10,14 @@ import {
   Star,
   CircleCheck,
   PhoneCall,
-  ExternalLink
+  ExternalLink,
+  Globe
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import citiesData from "@/data/citiesData";
 import localAreasData from "@/data/localAreasData";
+import { worldwideLocations } from "@/data/globalLocationsData";
 import { Card } from "@/components/ui/card";
 import SEOHead from "@/components/SEO/SEOHead";
 
@@ -100,7 +102,7 @@ const Sitemap = () => {
             Site Map
           </h1>
           <p className="text-muted-foreground">
-            Find premium car detailing services across all our locations in India
+            Find premium car detailing services across all our global locations
           </p>
         </div>
 
@@ -163,7 +165,67 @@ const Sitemap = () => {
         </div>
 
         <div className="mb-12">
-          <h2 className="text-xl font-semibold mb-4">Top Cities</h2>
+          <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+            <Globe className="text-primary" size={24} />
+            Global Service Locations
+          </h2>
+          
+          {Object.entries(worldwideLocations).map(([continent, countries]) => (
+            <div key={continent} className="mb-10">
+              <h3 className="text-xl font-semibold mb-4">{continent}</h3>
+              <div className="grid gap-6">
+                {Object.entries(countries).map(([country, cities]) => (
+                  <Card key={country} className="p-6">
+                    <h4 className="text-lg font-medium mb-4 flex items-center gap-2">
+                      <MapPin className="text-primary" size={18} />
+                      {country}
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {cities.map((city) => (
+                        <div key={city} className="space-y-2">
+                          <Link
+                            to={`/locations/${country.toLowerCase()}/${city.toLowerCase()}`}
+                            className="flex items-center gap-2 font-medium hover:text-primary transition-colors"
+                          >
+                            <Building size={16} />
+                            {city}
+                          </Link>
+                          {localAreasData
+                            .filter(area => 
+                              area.parentCity.toLowerCase() === city.toLowerCase()
+                            )
+                            .slice(0, 5)
+                            .map(area => (
+                              <Link
+                                key={area.id}
+                                to={`/area/${area.id}`}
+                                className="block pl-6 text-sm text-muted-foreground hover:text-primary transition-colors"
+                              >
+                                {area.name}
+                              </Link>
+                            ))}
+                          {localAreasData.filter(area => 
+                            area.parentCity.toLowerCase() === city.toLowerCase()
+                          ).length > 5 && (
+                            <Link
+                              to={`/locations/${country.toLowerCase()}/${city.toLowerCase()}`}
+                              className="block pl-6 text-sm text-primary hover:underline"
+                            >
+                              View all areas...
+                            </Link>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mb-12">
+          <h2 className="text-xl font-semibold mb-4">Detailed Coverage: India</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {Object.entries(popularAreas).map(([city, areas]) => (
               <div key={city} className="bg-card p-6 rounded-lg">
@@ -190,39 +252,6 @@ const Sitemap = () => {
               </div>
             ))}
           </div>
-        </div>
-
-        <div className="mb-12">
-          <h2 className="text-xl font-semibold mb-4">All Locations by Region</h2>
-          {Object.entries({'north': ['Delhi', 'Chandigarh', 'Lucknow', 'Jaipur'], 'south': ['Bangalore', 'Hyderabad', 'Chennai', 'Coimbatore', 'Kochi'], 'west': ['Mumbai', 'Pune', 'Ahmedabad', 'Surat', 'Vadodara'], 'east': ['Kolkata', 'Patna', 'Guwahati'], 'central': ['Indore', 'Bhopal', 'Nagpur'],}).map(([region, cities]) => (
-            <div key={region} className="mb-8">
-              <h3 className="text-lg font-medium mb-4 capitalize flex items-center gap-2">
-                <MapPin className="text-primary" size={18} />
-                {region} India
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {cities.map((city) => {
-                  const cityData = citiesData.find(c => c.name.toLowerCase() === city.toLowerCase());
-                  const cityId = cityData ? cityData.id : city.toLowerCase();
-
-                  return (
-                    <Card key={city} className="p-4 hover:bg-accent transition-colors">
-                      <Link
-                        to={`/locations/${cityId}`}
-                        className="flex items-center justify-between"
-                      >
-                        <div className="flex items-center gap-2">
-                          <Building className="text-primary" size={16} />
-                          {city}
-                        </div>
-                        <ChevronRight size={16} />
-                      </Link>
-                    </Card>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
         </div>
         
         <div className="mt-12">
