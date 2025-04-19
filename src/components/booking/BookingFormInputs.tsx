@@ -1,4 +1,3 @@
-
 import { User, Phone, Mail, Car, Calendar, Clock } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -19,13 +18,15 @@ interface BookingFormInputsProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSelectChange: (name: string, value: string) => void;
   today: string;
+  isQuoteForm?: boolean;
 }
 
 export const BookingFormInputs = ({
   formData,
   handleChange,
   handleSelectChange,
-  today
+  today,
+  isQuoteForm = false
 }: BookingFormInputsProps) => {
   return (
     <div className="space-y-4">
@@ -99,7 +100,7 @@ export const BookingFormInputs = ({
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="serviceType">Service Type*</Label>
+          <Label htmlFor="serviceType">Desired Service*</Label>
           <Select
             name="serviceType"
             value={formData.serviceType}
@@ -111,7 +112,9 @@ export const BookingFormInputs = ({
             </SelectTrigger>
             <SelectContent>
               {services.map((service) => (
-                <SelectItem key={service.id} value={service.title}>{service.title}</SelectItem>
+                <SelectItem key={service.id} value={service.title}>
+                  {service.title}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -131,40 +134,42 @@ export const BookingFormInputs = ({
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="date" className="flex items-center space-x-2">
-            <Calendar className="w-4 h-4 text-primary" />
-            <span>Preferred Date*</span>
-          </Label>
-          <Input
-            id="date"
-            name="date"
-            type="date"
-            min={today}
-            value={formData.date}
-            onChange={handleChange}
-            required
-            className="bg-background"
-          />
+      {!isQuoteForm && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="date" className="flex items-center space-x-2">
+              <Calendar className="w-4 h-4 text-primary" />
+              <span>Preferred Date*</span>
+            </Label>
+            <Input
+              id="date"
+              name="date"
+              type="date"
+              min={today}
+              value={formData.date}
+              onChange={handleChange}
+              required
+              className="bg-background"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="time" className="flex items-center space-x-2">
+              <Clock className="w-4 h-4 text-primary" />
+              <span>Preferred Time*</span>
+            </Label>
+            <Input
+              id="time"
+              name="time"
+              type="time"
+              value={formData.time}
+              onChange={handleChange}
+              required
+              className="bg-background"
+            />
+          </div>
         </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="time" className="flex items-center space-x-2">
-            <Clock className="w-4 h-4 text-primary" />
-            <span>Preferred Time*</span>
-          </Label>
-          <Input
-            id="time"
-            name="time"
-            type="time"
-            value={formData.time}
-            onChange={handleChange}
-            required
-            className="bg-background"
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

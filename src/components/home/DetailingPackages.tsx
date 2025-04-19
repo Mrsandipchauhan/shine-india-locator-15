@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -116,7 +115,7 @@ const DetailingPackages = () => {
                 }`}
                 onClick={() => handlePackageSelect(pkg.title)}
               >
-                Select Package
+                {pkg.title === selectedPackage ? 'Selected Package' : 'Select Package'}
               </Button>
             </Card>
           ))}
