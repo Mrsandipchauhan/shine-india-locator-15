@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
@@ -17,7 +16,6 @@ const majorCities = [
 const CitySlider = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [sortedCities, setSortedCities] = useState(majorCities);
-  const [autoScrollInterval, setAutoScrollInterval] = useState<NodeJS.Timeout | null>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
@@ -45,33 +43,6 @@ const CitySlider = () => {
     };
     
     detectLocationAndSortCities();
-  }, []);
-
-  // Auto-scroll functionality
-  useEffect(() => {
-    const startAutoScroll = () => {
-      if (sliderRef.current) {
-        const interval = setInterval(() => {
-          const slider = sliderRef.current;
-          if (slider) {
-            if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
-              slider.scrollTo({ left: 0, behavior: 'smooth' });
-            } else {
-              slider.scrollBy({ left: 200, behavior: 'smooth' });
-            }
-          }
-        }, 3000);
-        setAutoScrollInterval(interval);
-      }
-    };
-
-    startAutoScroll();
-
-    return () => {
-      if (autoScrollInterval) {
-        clearInterval(autoScrollInterval);
-      }
-    };
   }, []);
   
   const scroll = (direction: "left" | "right") => {
@@ -148,32 +119,7 @@ const CitySlider = () => {
       <div
         ref={sliderRef}
         className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar"
-        style={{ 
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          scrollBehavior: "smooth"
-        }}
-        onMouseEnter={() => {
-          if (autoScrollInterval) {
-            clearInterval(autoScrollInterval);
-            setAutoScrollInterval(null);
-          }
-        }}
-        onMouseLeave={() => {
-          if (!autoScrollInterval && sliderRef.current) {
-            const interval = setInterval(() => {
-              const slider = sliderRef.current;
-              if (slider) {
-                if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth)) {
-                  slider.scrollTo({ left: 0, behavior: 'smooth' });
-                } else {
-                  slider.scrollBy({ left: 200, behavior: 'smooth' });
-                }
-              }
-            }, 3000);
-            setAutoScrollInterval(interval);
-          }
-        }}
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {sortedCities.map((city) => (
           <Link
