@@ -24,7 +24,7 @@ const AreaScroller = ({ cityName }: AreaScrollerProps) => {
   );
 
   return (
-    <div className="relative w-full py-4">
+    <div className="relative w-full py-4 overflow-hidden">
       <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
         <Button
           variant="ghost"
@@ -38,11 +38,11 @@ const AreaScroller = ({ cityName }: AreaScrollerProps) => {
       
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-4 no-scrollbar"
-        style={{ scrollBehavior: "smooth" }}
+        className="flex overflow-x-auto scrollbar-hide py-2 px-8 space-x-4 no-scrollbar touch-pan-y"
+        style={{ touchAction: "pan-y", scrollBehavior: "smooth" }}
       >
         {cityAreas.map((area) => (
-          <div key={area.id} className="flex-shrink-0 w-[300px]">
+          <div key={area.id} className="flex-shrink-0 w-[300px] max-w-[80vw]">
             <AreaCard area={area} />
           </div>
         ))}

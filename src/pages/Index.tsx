@@ -28,16 +28,16 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
+    <div className="flex flex-col min-h-screen w-full overflow-hidden">
       <Navbar />
-      <main className="flex-1 w-full overflow-x-hidden">
+      <main className="flex-1 w-full overflow-hidden">
         <Hero />
-        <div className="py-4 md:py-6 bg-background border-b border-border/10 w-full">
-          <div className="container mx-auto px-4 w-full">
+        <div className="py-4 md:py-6 bg-background border-b border-border/10 w-full overflow-hidden">
+          <div className="container mx-auto w-full overflow-hidden">
             <CitySlider />
           </div>
         </div>
-        <div className="space-y-8 md:space-y-0 w-full">
+        <div className="space-y-8 md:space-y-0 w-full overflow-hidden">
           <ServicesSection />
           <QuickServiceEstimator />
           <WorkProcessSection />
@@ -46,7 +46,7 @@ const Index = () => {
           <CarCareTips />
           <TestimonialsSlider />
           <FeaturedAreasSection />
-          <div className="pt-6 md:pt-10">
+          <div className="pt-6 md:pt-10 overflow-hidden">
             <CitySelector />
           </div>
           <BookWithConfidence />

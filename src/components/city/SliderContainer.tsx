@@ -59,12 +59,12 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
 
   return (
     <div 
-      className="relative w-full overflow-hidden will-change-transform" 
-      style={{ contain: "content" }}
+      className="relative w-full overflow-hidden" 
+      style={{ touchAction: "pan-y" }}
     >
       <div
         ref={sliderRef}
-        className="transition-all duration-300 ease-linear w-full"
+        className="transition-all duration-300 ease-linear w-full max-w-full touch-pan-y"
         onMouseEnter={() => {
           if (autoScrollInterval) {
             clearInterval(autoScrollInterval);
@@ -90,7 +90,7 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
                   behavior: 'auto' 
                 });
               }
-            }, 25); // Faster interval for smoother scrolling
+            }, 25);
             
             setAutoScrollInterval(interval);
           }

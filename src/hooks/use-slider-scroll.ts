@@ -25,7 +25,7 @@ export const useSliderScroll = ({ onScroll }: UseSliderScrollProps = {}) => {
 
     const currentSlider = sliderRef.current;
     if (currentSlider) {
-      currentSlider.addEventListener('scroll', handleScroll);
+      currentSlider.addEventListener('scroll', handleScroll, { passive: true });
     }
 
     return () => {

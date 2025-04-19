@@ -43,7 +43,7 @@ const CitySlider = ({ locations, onLocationSelect }: CitySliderProps) => {
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full overflow-hidden">
       <AnimatePresence>
         {!isMobile && canScrollLeft && (
           <motion.div
@@ -66,7 +66,8 @@ const CitySlider = ({ locations, onLocationSelect }: CitySliderProps) => {
 
       <div
         ref={scrollContainerRef}
-        className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar snap-x snap-mandatory"
+        className="flex overflow-x-auto scrollbar-hide py-2 px-8 space-x-2 no-scrollbar snap-x snap-mandatory touch-pan-y"
+        style={{ touchAction: "pan-y" }}
         onScroll={checkScrollButtons}
       >
         {locations.map((location) => (
