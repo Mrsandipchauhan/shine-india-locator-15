@@ -24,7 +24,7 @@ const CitySlider = () => {
       <div className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar">
         {displayLocations.map((location, index) => (
           <LocationItem
-            key={`${location}-${index}`}
+            key={`location-${location}-${index}`}
             location={location}
             isNearestCity={location === nearestCity}
             isNearbyArea={nearbyAreas.includes(location)}

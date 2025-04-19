@@ -12,39 +12,50 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
   const { 
     sliderRef, 
     autoScrollInterval,
-    setAutoScrollInterval
+    setAutoScrollInterval,
+    scrollPosition
   } = useSliderScroll();
 
-  // Ensure scrolling restarts when component remounts
+  // Implement auto-scrolling
   useEffect(() => {
+    // Don't auto-scroll on mobile
     if (isMobile) return;
+    
+    // Clear any existing interval
+    if (autoScrollInterval) {
+      clearInterval(autoScrollInterval);
+    }
     
     // Start auto-scrolling after a delay
     const startScrollTimer = setTimeout(() => {
-      if (!autoScrollInterval && !isMobile) {
-        const interval = setInterval(() => {
-          if (!sliderRef.current) return;
-          
-          const maxScroll = sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
-          const currentScroll = sliderRef.current.scrollLeft;
-          
-          // If near the end, smoothly reset to start
-          if (currentScroll >= maxScroll - 2) {
-            sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            // Slower, smoother scroll
-            sliderRef.current.scrollBy({ 
-              left: 0.5, 
-              behavior: 'auto' 
-            });
-          }
-        }, 50);
-        setAutoScrollInterval(interval);
-      }
+      const interval = setInterval(() => {
+        if (!sliderRef.current) return;
+        
+        const maxScroll = sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
+        const currentScroll = sliderRef.current.scrollLeft;
+        
+        // If near the end, smoothly reset to start
+        if (currentScroll >= maxScroll - 5) {
+          sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          // Controlled incremental scroll for smoother animation
+          sliderRef.current.scrollBy({ 
+            left: 1, 
+            behavior: 'auto' 
+          });
+        }
+      }, 25); // Faster interval for smoother scrolling
+      
+      setAutoScrollInterval(interval);
     }, 1500);
     
-    return () => clearTimeout(startScrollTimer);
-  }, [isMobile, autoScrollInterval, setAutoScrollInterval, sliderRef]);
+    return () => {
+      clearTimeout(startScrollTimer);
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+      }
+    };
+  }, [isMobile, sliderRef, setAutoScrollInterval]);
 
   return (
     <div 
@@ -61,7 +72,8 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
           }
         }}
         onMouseLeave={() => {
-          if (!autoScrollInterval && !isMobile) {
+          if (!isMobile) {
+            // Restart auto-scrolling when mouse leaves
             const interval = setInterval(() => {
               if (!sliderRef.current) return;
               
@@ -69,16 +81,17 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
               const currentScroll = sliderRef.current.scrollLeft;
               
               // If near the end, smoothly reset to start
-              if (currentScroll >= maxScroll - 2) {
+              if (currentScroll >= maxScroll - 5) {
                 sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
               } else {
-                // Slower, smoother scroll
+                // Controlled incremental scroll for smoother animation
                 sliderRef.current.scrollBy({ 
-                  left: 0.5, 
+                  left: 1, 
                   behavior: 'auto' 
                 });
               }
-            }, 50); // Increased interval for smoother motion
+            }, 25); // Faster interval for smoother scrolling
+            
             setAutoScrollInterval(interval);
           }
         }}

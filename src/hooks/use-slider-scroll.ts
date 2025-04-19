@@ -35,19 +35,7 @@ export const useSliderScroll = ({ onScroll }: UseSliderScrollProps = {}) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (isMobile) {
-      // Clear interval if exists for mobile devices
-      if (autoScrollInterval) {
-        clearInterval(autoScrollInterval);
-        setAutoScrollInterval(null);
-      }
-      return;
-    }
-
-    // Auto-scroll is handled by SliderContainer component
-  }, [isMobile, autoScrollInterval]);
-
+  // Make sure scroll position is updated after manual scroll
   const scroll = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
     const scrollAmount = direction === "left" ? -200 : 200;
@@ -80,6 +68,7 @@ export const useSliderScroll = ({ onScroll }: UseSliderScrollProps = {}) => {
     autoScrollInterval,
     setAutoScrollInterval,
     scrollInterval,
-    scrollStep
+    scrollStep,
+    scrollPosition
   };
 };
