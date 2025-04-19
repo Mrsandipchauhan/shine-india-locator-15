@@ -1,7 +1,7 @@
 
 import { useSliderScroll } from "@/hooks/use-slider-scroll";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 interface SliderContainerProps {
   children: ReactNode;
@@ -14,6 +14,37 @@ export const SliderContainer = ({ children }: SliderContainerProps) => {
     autoScrollInterval,
     setAutoScrollInterval
   } = useSliderScroll();
+
+  // Ensure scrolling restarts when component remounts
+  useEffect(() => {
+    if (isMobile) return;
+    
+    // Start auto-scrolling after a delay
+    const startScrollTimer = setTimeout(() => {
+      if (!autoScrollInterval && !isMobile) {
+        const interval = setInterval(() => {
+          if (!sliderRef.current) return;
+          
+          const maxScroll = sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
+          const currentScroll = sliderRef.current.scrollLeft;
+          
+          // If near the end, smoothly reset to start
+          if (currentScroll >= maxScroll - 2) {
+            sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            // Slower, smoother scroll
+            sliderRef.current.scrollBy({ 
+              left: 0.5, 
+              behavior: 'auto' 
+            });
+          }
+        }, 50);
+        setAutoScrollInterval(interval);
+      }
+    }, 1500);
+    
+    return () => clearTimeout(startScrollTimer);
+  }, [isMobile, autoScrollInterval, setAutoScrollInterval, sliderRef]);
 
   return (
     <div 

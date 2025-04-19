@@ -1,23 +1,35 @@
-
 import { useState, useEffect } from "react";
 import { getUserLocation, findNearestCity } from "@/services/locationService";
 import citiesData from "@/data/citiesData";
 import localAreasData from "@/data/localAreasData";
 
-// Helper function to get all unique cities and areas
+// Helper function to get all unique cities and areas with unique IDs
 const getAllCities = () => {
-  const uniqueLocations = new Set<string>();
+  const uniqueLocations = new Map<string, string>();
   
   // Add all parent cities
   localAreasData.forEach(area => {
-    uniqueLocations.add(area.parentCity);
-    uniqueLocations.add(area.name);
+    const parentCityKey = area.parentCity.toLowerCase();
+    const areaKey = area.name.toLowerCase();
+    
+    if (!uniqueLocations.has(parentCityKey)) {
+      uniqueLocations.set(parentCityKey, area.parentCity);
+    }
+    
+    if (!uniqueLocations.has(areaKey)) {
+      uniqueLocations.set(areaKey, area.name);
+    }
   });
   
   // Add any cities from citiesData that might not be parents
-  citiesData.forEach(city => uniqueLocations.add(city.name));
+  citiesData.forEach(city => {
+    const cityKey = city.name.toLowerCase();
+    if (!uniqueLocations.has(cityKey)) {
+      uniqueLocations.set(cityKey, city.name);
+    }
+  });
   
-  return Array.from(uniqueLocations);
+  return Array.from(uniqueLocations.values());
 };
 
 export const useCitySlider = () => {
@@ -30,7 +42,7 @@ export const useCitySlider = () => {
       // Always show all available locations first
       const allLocations = getAllCities();
       const allAreas = localAreasData.map(area => area.name);
-      setDisplayLocations([...allLocations, ...allAreas]);
+      setDisplayLocations([...allLocations]);
 
       try {
         const location = await getUserLocation();
@@ -48,7 +60,7 @@ export const useCitySlider = () => {
           setNearbyAreas(cityAreasList);
           
           // Prioritize nearest city and its areas in the display order
-          const otherLocations = [...allLocations, ...allAreas].filter(
+          const otherLocations = allLocations.filter(
             loc => loc.toLowerCase() !== detectedCity.toLowerCase() && 
                   !cityAreasList.includes(loc)
           );

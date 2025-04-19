@@ -15,36 +15,55 @@ export const useSliderScroll = ({ onScroll }: UseSliderScrollProps = {}) => {
   const scrollStep = isMobile ? 0.5 : 1;
   const scrollInterval = isMobile ? 60 : 30;
 
+  // Track scroll position changes
   useEffect(() => {
-    if (isMobile) return;
-
-    const startAutoScroll = () => {
-      const interval = setInterval(() => {
-        if (!sliderRef.current) return;
-        
-        if (sliderRef.current.scrollLeft >= (sliderRef.current.scrollWidth - sliderRef.current.clientWidth - 5)) {
-          sliderRef.current.scrollTo({ left: 0, behavior: isMobile ? 'auto' : 'smooth' });
-        } else {
-          sliderRef.current.scrollBy({ left: scrollStep, behavior: 'auto' });
-        }
-      }, scrollInterval);
-      setAutoScrollInterval(interval);
+    const handleScroll = () => {
+      if (sliderRef.current) {
+        setScrollPosition(sliderRef.current.scrollLeft);
+      }
     };
 
-    const timer = setTimeout(startAutoScroll, 1000);
+    const currentSlider = sliderRef.current;
+    if (currentSlider) {
+      currentSlider.addEventListener('scroll', handleScroll);
+    }
+
     return () => {
-      clearTimeout(timer);
-      if (autoScrollInterval) clearInterval(autoScrollInterval);
+      if (currentSlider) {
+        currentSlider.removeEventListener('scroll', handleScroll);
+      }
     };
-  }, [isMobile, scrollInterval, scrollStep]);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      // Clear interval if exists for mobile devices
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        setAutoScrollInterval(null);
+      }
+      return;
+    }
+
+    // Auto-scroll is handled by SliderContainer component
+  }, [isMobile, autoScrollInterval]);
 
   const scroll = (direction: "left" | "right") => {
     if (!sliderRef.current) return;
     const scrollAmount = direction === "left" ? -200 : 200;
     sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    
+    // Manually update scroll position after animation
     setTimeout(() => {
       if (sliderRef.current) setScrollPosition(sliderRef.current.scrollLeft);
     }, 300);
+    
+    // Pause auto-scroll when manually scrolling
+    if (autoScrollInterval) {
+      clearInterval(autoScrollInterval);
+      setAutoScrollInterval(null);
+    }
+    
     onScroll?.();
   };
 

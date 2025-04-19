@@ -22,9 +22,9 @@ const CitySlider = () => {
       <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-[1]" />
       
       <div className="flex overflow-x-auto scrollbar-hide py-2 px-4 space-x-2 no-scrollbar">
-        {displayLocations.map((location) => (
+        {displayLocations.map((location, index) => (
           <LocationItem
-            key={location}
+            key={`${location}-${index}`}
             location={location}
             isNearestCity={location === nearestCity}
             isNearbyArea={nearbyAreas.includes(location)}
