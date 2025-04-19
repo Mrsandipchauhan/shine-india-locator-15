@@ -1,5 +1,6 @@
 
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 interface ServiceProcessProps {
   title: string;
@@ -13,9 +14,24 @@ const ServiceProcess = ({ title, steps }: ServiceProcessProps) => {
         <div>
           <Badge variant="outline" className="mb-2">Our Process</Badge>
           <h2 className="text-3xl font-bold mb-4">How Our {title} Works</h2>
-          <p className="text-lg text-muted-foreground mb-8">
+          <p className="text-lg text-muted-foreground mb-4">
             We follow a systematic approach to ensure exceptional results for every vehicle we service.
           </p>
+          
+          <div className="mb-8">
+            <h3 className="text-sm font-medium mb-2">Available in Popular Areas:</h3>
+            <div className="flex flex-wrap gap-2">
+              {["south-delhi", "mumbai-andheri", "bangalore-whitefield", "chennai-adyar"].map((areaId) => (
+                <Link 
+                  key={areaId} 
+                  to={`/area/${areaId}/${title.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                >
+                  {areaId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                </Link>
+              ))}
+            </div>
+          </div>
           
           <div className="space-y-8">
             {steps.map((step, index) => (

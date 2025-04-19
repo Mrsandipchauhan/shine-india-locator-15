@@ -1,5 +1,95 @@
 
 export const serviceFAQs = {
+  "paint-correction": [
+    {
+      question: "What is paint correction?",
+      answer: "Paint correction is a specialized process that removes surface imperfections like swirl marks, scratches, and oxidation to restore your car's paint to a like-new condition."
+    },
+    {
+      question: "How long does paint correction take?",
+      answer: "A full paint correction typically takes 1-2 days depending on the vehicle's size and condition."
+    },
+    {
+      question: "Is paint correction safe for my car?",
+      answer: "Yes, when performed by our certified technicians using professional equipment and measuring paint thickness throughout the process."
+    },
+    {
+      question: "How long do results last?",
+      answer: "With proper care and maintenance, paint correction results can last several years. We recommend applying a protective coating afterward."
+    }
+  ],
+  "glass-treatment": [
+    {
+      question: "What are the benefits of glass treatment?",
+      answer: "Glass treatment improves visibility in rain, makes cleaning easier, and provides UV protection for your vehicle's interior."
+    },
+    {
+      question: "How long does the treatment last?",
+      answer: "Our professional glass treatment typically lasts 6-12 months depending on environmental conditions and usage."
+    },
+    {
+      question: "Does it work in heavy rain?",
+      answer: "Yes, the hydrophobic coating causes water to bead and roll off quickly, significantly improving visibility in rain."
+    },
+    {
+      question: "Can it be applied to all vehicle glass?",
+      answer: "Yes, the treatment can be applied to all exterior glass surfaces including windshield, windows, and mirrors."
+    }
+  ],
+  "wheel-rim-detailing": [
+    {
+      question: "What's included in wheel and rim detailing?",
+      answer: "The service includes deep cleaning, brake dust removal, protection coating application, and tire dressing for a complete wheel makeover."
+    },
+    {
+      question: "Is the process safe for all wheel types?",
+      answer: "Yes, we use specialized products that are safe for all wheel finishes including painted, chrome, and alloy wheels."
+    },
+    {
+      question: "How often should I get wheel detailing?",
+      answer: "We recommend professional wheel detailing every 3-4 months to maintain protection and appearance."
+    },
+    {
+      question: "Can you remove brake dust stains?",
+      answer: "Yes, our professional-grade products and techniques can remove most brake dust stains and prevent future buildup."
+    }
+  ],
+  "leather-treatment": [
+    {
+      question: "What does leather treatment include?",
+      answer: "Our leather treatment includes deep cleaning, conditioning, UV protection, and the application of a protective coating."
+    },
+    {
+      question: "Can you fix leather damage?",
+      answer: "Minor damage can often be repaired, but severe damage may require specialized leather repair services."
+    },
+    {
+      question: "How often should leather be treated?",
+      answer: "We recommend professional leather treatment every 6 months to maintain its condition and prevent damage."
+    },
+    {
+      question: "Will the treatment change leather color?",
+      answer: "No, our treatments are designed to maintain the original color while enhancing the leather's natural appearance."
+    }
+  ],
+  "express-detailing": [
+    {
+      question: "How long does express detailing take?",
+      answer: "Our express detailing service typically takes 1-2 hours to complete."
+    },
+    {
+      question: "What's included in express detailing?",
+      answer: "The service includes exterior wash, interior vacuum, dashboard cleaning, tire dressing, and glass cleaning."
+    },
+    {
+      question: "Is it as thorough as full detailing?",
+      answer: "Express detailing focuses on essential cleaning needs but isn't as comprehensive as our full detailing services."
+    },
+    {
+      question: "How often should I get express detailing?",
+      answer: "Express detailing is great for monthly maintenance between full detailing services."
+    }
+  ],
   "exterior-detailing": [
     {
       question: "How long does exterior detailing take?",

@@ -85,11 +85,24 @@ const AreaListingSection = () => {
                           <p className="text-xs text-muted-foreground mb-3">
                             {area.content.introduction.substring(0, 120)}...
                           </p>
-                          <Link to={`/area/${area.id}`}>
-                            <Button variant="link" className="p-0 h-auto text-primary font-medium flex items-center">
-                              View Services <ArrowRight size={14} className="ml-1" />
-                            </Button>
-                          </Link>
+                          <div className="space-y-2">
+                            <Link to={`/area/${area.id}`}>
+                              <Button variant="link" className="p-0 h-auto text-primary font-medium flex items-center">
+                                View All Services <ArrowRight size={14} className="ml-1" />
+                              </Button>
+                            </Link>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {['exterior-detailing', 'interior-detailing', 'ceramic-coating'].map((serviceId) => (
+                                <Link 
+                                  key={serviceId} 
+                                  to={`/area/${area.id}/${serviceId}`}
+                                  className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                                >
+                                  {serviceId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
