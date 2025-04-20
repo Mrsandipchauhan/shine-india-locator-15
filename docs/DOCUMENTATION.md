@@ -6,36 +6,42 @@
 2. [Technology Stack](#2-technology-stack)
 3. [Project Structure](#3-project-structure)
 4. [Key Components](#4-key-components)
-5. [SEO Implementation](#5-seo-implementation)
-6. [Core Features](#6-core-features)
-7. [Performance Optimization](#7-performance-optimization)
-8. [Hooks & Utilities](#8-hooks--utilities)
-9. [State Management](#9-state-management)
-10. [Deployment Guide](#10-deployment-guide)
-11. [Contributing Guidelines](#11-contributing-guidelines)
+5. [Pages](#5-pages)
+6. [Features](#6-features)
+7. [SEO Implementation](#7-seo-implementation)
+8. [Performance Optimization](#8-performance-optimization)
+9. [Hooks & Utilities](#9-hooks--utilities)
+10. [State Management](#10-state-management)
+11. [Deployment Guide](#11-deployment-guide)
 12. [Testing](#12-testing)
 13. [Security](#13-security)
-14. [Contact & Support](#14-contact--support)
+14. [Contributing Guidelines](#14-contributing-guidelines)
 
 ## 1. Project Overview
 
 ### Purpose
-ShineDetailers is a premium car detailing service website that provides:
-- Location-based service discovery
-- Online booking system
-- Detailed service information
-- SEO-optimized content
-- Performance-driven web application
+ShineDetailers is a premium car detailing service website designed to:
+- Provide location-based service discovery
+- Enable online booking system
+- Display detailed service information
+- Implement SEO optimization
+- Offer real-time pricing based on location
+- Support multiple languages and currencies
+- Showcase before/after results
+- Handle customer reviews and ratings
 
-### Key Features
+### Core Features
 - Responsive design across all devices
-- Multiple city and area service coverage
-- Interactive service packages
-- Real-time location detection
-- Dynamic pricing based on location
-- Advanced SEO implementation
-- Performance monitoring
-- International service support
+- Location-based service discovery
+- Dynamic pricing system
+- Online booking platform
+- Service package customization
+- Multi-city coverage
+- Real-time availability checking
+- Customer dashboard
+- Review management
+- Image galleries
+- Service area mapping
 
 ## 2. Technology Stack
 
@@ -43,104 +49,150 @@ ShineDetailers is a premium car detailing service website that provides:
 - **Framework**: React 18.3.1
 - **Language**: TypeScript
 - **Build Tool**: Vite
-- **Styling**: Tailwind CSS
-- **UI Library**: shadcn/ui
-- **State Management**: @tanstack/react-query
+- **Styling**: 
+  - Tailwind CSS for utility-first styling
+  - shadcn/ui for component library
+- **State Management**: 
+  - @tanstack/react-query for server state
+  - React Context for local state
 - **Routing**: React Router DOM v6
-- **SEO**: react-helmet-async
-- **Toast Notifications**: sonner
+- **Form Handling**: react-hook-form
+- **Data Visualization**: recharts
+- **Notifications**: sonner toast
 - **Icons**: lucide-react
-- **Charts**: recharts
-- **Forms**: react-hook-form
+- **SEO**: react-helmet-async
+
+### Key Dependencies
+- @hookform/resolvers: Form validation
+- @radix-ui/* components: Accessible UI primitives
+- date-fns: Date manipulation
+- zod: Schema validation
+- next-themes: Theme management
+- vaul: Drawer components
 
 ## 3. Project Structure
 
 ### Directory Organization
 ```
 src/
-├── components/         # Reusable UI components
-│   ├── SEO/           # SEO-related components
-│   ├── areas/         # Area-specific components
-│   ├── booking/       # Booking-related components
-│   ├── city/          # City-related components
-│   ├── home/          # Homepage components
-│   ├── services/      # Service-related components
-│   └── ui/            # UI components (shadcn)
-├── layouts/           # Layout components
-├── pages/             # Page components
-├── hooks/             # Custom React hooks
-├── data/             # Static data and types
-├── services/         # API services
-└── utils/            # Utility functions
+├── components/          # Reusable UI components
+│   ├── SEO/            # SEO-related components
+│   ├── areas/          # Area-specific components
+│   ├── booking/        # Booking system components
+│   ├── city/           # City-related components
+│   ├── home/           # Homepage components
+│   ├── services/       # Service-related components
+│   └── ui/             # shadcn UI components
+├── hooks/              # Custom React hooks
+├── layouts/            # Layout components
+├── pages/              # Page components
+├── data/              # Static data and types
+├── services/          # API services
+└── utils/             # Utility functions
 ```
 
 ## 4. Key Components
 
 ### Core Components
-1. **Navigation**
-   - `Navbar.tsx`: Main navigation
+1. **Navigation System**
+   - `Navbar.tsx`: Main navigation bar
    - `Footer.tsx`: Site footer
    - `ScrollToTop.tsx`: Scroll management
+   - `LocationDetection.tsx`: User location detection
 
-2. **Service Components**
-   - `ServiceCard.tsx`: Service display
-   - `ServiceArea.tsx`: Area-specific services
-   - `ServiceBenefits.tsx`: Service features
-
-3. **Booking System**
+2. **Booking System**
    - `BookingForm.tsx`: Main booking interface
    - `BookingDialog.tsx`: Booking modal
-   - `BookingFormInputs.tsx`: Form fields
+   - `BookingFormInputs.tsx`: Form input fields
+   - Features:
+     - Service selection
+     - Date/time picking
+     - Location integration
+     - Price calculation
+     - Validation
+
+3. **Service Components**
+   - `ServiceCard.tsx`: Service display cards
+   - `ServiceArea.tsx`: Area-specific services
+   - `ServiceBenefits.tsx`: Service features
+   - `ServicesSEO.tsx`: SEO content
+   - Features:
+     - Dynamic pricing
+     - Service descriptions
+     - Image galleries
+     - Booking integration
 
 4. **Location Components**
-   - `LocationDetection.tsx`: Geolocation
-   - `CitySlider.tsx`: City selection
+   - `CitySlider.tsx`: City selection interface
    - `AreaListingSection.tsx`: Area listings
+   - `LocationContentSection.tsx`: Location content
+   - Features:
+     - Automatic location detection
+     - City/area navigation
+     - Service availability check
+     - Map integration
 
-## 5. SEO Implementation
+### UI Components
+1. **Form Elements**
+   - Input fields
+   - Select dropdowns
+   - Date pickers
+   - Time selectors
+   - Validation feedback
 
-### Components
-1. **Meta Tags Manager**
-   ```typescript
-   // MetaTags.tsx
-   interface MetaTagsProps {
-     title: string;
-     description: string;
-     canonicalUrl?: string;
-   }
-   ```
+2. **Layout Components**
+   - Grid systems
+   - Flex containers
+   - Responsive layouts
+   - Card components
 
-2. **Structured Data**
-   - LocalBusiness Schema
-   - Service Schema
-   - FAQ Schema
-   - Review Schema
+3. **Interactive Elements**
+   - Buttons
+   - Links
+   - Tooltips
+   - Modals
+   - Drawers
 
-### Performance Components
-1. **SEO Optimizer**
-   ```typescript
-   // SEOOptimizer.tsx
-   - Core Web Vitals monitoring
-   - Performance metrics tracking
-   - Resource optimization
-   ```
+## 5. Pages
 
-2. **Performance Monitor**
-   ```typescript
-   // PerformanceMonitor.tsx
-   - LCP tracking
-   - FID monitoring
-   - CLS optimization
-   ```
+### Homepage (Index.tsx)
+- Hero section with location detection
+- Service highlights
+- City selection
+- Testimonials
+- Call-to-action sections
+- SEO optimization
 
-## 6. Core Features
+### Services Page
+- Service listings
+- Pricing information
+- Package comparisons
+- Booking integration
+- Before/after galleries
+
+### Location Pages
+- City-specific content
+- Area coverage maps
+- Local pricing
+- Available services
+- Customer reviews
+
+### Booking Pages
+- Service selection
+- DateTime picker
+- Location selection
+- Price calculator
+- Contact form
+
+## 6. Features
 
 ### Location Detection
 ```typescript
 // LocationDetection.tsx
 - Automatic city detection
 - Nearest service area finding
-- Location-based routing
+- GPS integration
+- Fallback mechanisms
 ```
 
 ### Dynamic Pricing
@@ -149,68 +201,112 @@ src/
 - Country detection
 - Currency conversion
 - Price formatting
+- Location-based rates
 ```
 
 ### Booking System
 ```typescript
 // BookingForm.tsx
 - Service selection
-- Date/time picking
+- DateTime picking
 - Location integration
+- Price calculation
+- Validation
+- Confirmation system
 ```
 
-## 7. Performance Optimization
+### SEO Implementation
+```typescript
+// SEOManager.tsx
+- Meta tags
+- Schema markup
+- Canonical URLs
+- Sitemap generation
+- Robots.txt configuration
+```
+
+## 7. SEO Implementation
+
+### Components
+1. **Meta Tags Manager**
+   - Title management
+   - Description generation
+   - Open Graph tags
+   - Twitter cards
+
+2. **Schema Markup**
+   - LocalBusiness
+   - Service
+   - FAQ
+   - Review
+   - BreadcrumbList
+
+### Performance Components
+1. **SEO Optimizer**
+   - Core Web Vitals monitoring
+   - Performance metrics tracking
+   - Resource optimization
+
+2. **Content Strategy**
+   - Semantic HTML
+   - Structured data
+   - Content hierarchy
+   - Internal linking
+
+## 8. Performance Optimization
 
 ### Implemented Optimizations
 1. **Image Optimization**
    - Lazy loading
-   - WebP support
+   - WebP format
    - Responsive images
+   - Image compression
 
-2. **Code Splitting**
-   - Route-based splitting
-   - Component lazy loading
-   - Dynamic imports
+2. **Code Optimization**
+   - Code splitting
+   - Route-based chunking
+   - Tree shaking
+   - Bundle optimization
 
 3. **Resource Loading**
    - Critical CSS
    - Font optimization
    - Asset preloading
+   - Cache management
 
-## 8. Hooks & Utilities
+## 9. Hooks & Utilities
 
 ### Custom Hooks
 1. **Location Hooks**
-   ```typescript
-   useCountryDetection(): string
-   useCitySlider(): { cities: City[], nearest: City }
-   ```
+   - useCountryDetection
+   - useCitySlider
+   - useLocationDetection
 
 2. **Pricing Hooks**
-   ```typescript
-   useGlobalPricing(): {
-     currency: Currency,
-     convertPrice: (price: number) => number
-   }
-   ```
+   - useGlobalPricing
+   - useCurrencyConverter
+   - usePriceCalculator
 
 3. **SEO Hooks**
-   ```typescript
-   useSEO(): SEOProps
-   useSEOMetadata(): MetadataProps
-   ```
+   - useSEO
+   - useSEOMetadata
+   - useSchemaMarkup
 
-## 9. State Management
+## 10. State Management
 
 ### Query Management
-```typescript
-// React Query Implementation
 - Service queries
 - Location caching
 - Booking state
-```
+- User preferences
 
-## 10. Deployment Guide
+### Context Providers
+- Theme provider
+- Location provider
+- Pricing provider
+- Booking provider
+
+## 11. Deployment Guide
 
 ### Prerequisites
 - Node.js 18+
@@ -232,25 +328,19 @@ npm run dev
 npm run build
 ```
 
-## 11. Contributing Guidelines
-
-### Code Style
-- Follow TypeScript best practices
-- Use consistent formatting
-- Write descriptive commits
-
-### Pull Request Process
-1. Fork repository
-2. Create feature branch
-3. Update documentation
-4. Submit PR
-
 ## 12. Testing
 
 ### Testing Strategy
-- Unit tests for utilities
-- Integration tests for features
-- E2E tests for critical paths
+- Unit tests
+- Integration tests
+- E2E tests
+- Performance tests
+
+### Test Coverage
+- Components
+- Hooks
+- Utilities
+- API integration
 
 ## 13. Security
 
@@ -259,13 +349,22 @@ npm run build
 - XSS prevention
 - CORS configuration
 - Rate limiting
+- Data sanitization
 
-## 14. Contact & Support
+## 14. Contributing Guidelines
 
-### Technical Support
-- Email: tech@shinedetailers.in
-- Issues: GitHub repository
-- Documentation: Online docs
+### Code Style
+- TypeScript best practices
+- Component patterns
+- File organization
+- Documentation
+
+### Pull Request Process
+1. Fork repository
+2. Create feature branch
+3. Follow style guide
+4. Submit PR
 
 **Last Updated**: 2025-04-20
-**Version**: 1.0.0
+**Version**: 2.0.0
+
