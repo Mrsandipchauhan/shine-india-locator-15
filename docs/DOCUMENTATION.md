@@ -1,10 +1,26 @@
 
 # ShineDetailers Website Documentation
 
+## Table of Contents
+1. [Project Overview](#1-project-overview)
+2. [Technology Stack](#2-technology-stack)
+3. [Project Structure](#3-project-structure)
+4. [Key Components](#4-key-components)
+5. [SEO Implementation](#5-seo-implementation)
+6. [Core Features](#6-core-features)
+7. [Performance Optimization](#7-performance-optimization)
+8. [Hooks & Utilities](#8-hooks--utilities)
+9. [State Management](#9-state-management)
+10. [Deployment Guide](#10-deployment-guide)
+11. [Contributing Guidelines](#11-contributing-guidelines)
+12. [Testing](#12-testing)
+13. [Security](#13-security)
+14. [Contact & Support](#14-contact--support)
+
 ## 1. Project Overview
 
 ### Purpose
-ShineDetailers is a comprehensive car detailing service website designed to provide users with:
+ShineDetailers is a premium car detailing service website that provides:
 - Location-based service discovery
 - Online booking system
 - Detailed service information
@@ -12,12 +28,14 @@ ShineDetailers is a comprehensive car detailing service website designed to prov
 - Performance-driven web application
 
 ### Key Features
-- Responsive design
+- Responsive design across all devices
 - Multiple city and area service coverage
 - Interactive service packages
-- Admin dashboard
-- Performance monitoring
+- Real-time location detection
+- Dynamic pricing based on location
 - Advanced SEO implementation
+- Performance monitoring
+- International service support
 
 ## 2. Technology Stack
 
@@ -28,80 +46,171 @@ ShineDetailers is a comprehensive car detailing service website designed to prov
 - **Styling**: Tailwind CSS
 - **UI Library**: shadcn/ui
 - **State Management**: @tanstack/react-query
-- **Routing**: React Router DOM
-
-### Performance & SEO
-- Core Web Vitals optimization
-- Structured JSON-LD schemas
-- Meta tag management
-- Performance monitoring
+- **Routing**: React Router DOM v6
+- **SEO**: react-helmet-async
+- **Toast Notifications**: sonner
+- **Icons**: lucide-react
+- **Charts**: recharts
+- **Forms**: react-hook-form
 
 ## 3. Project Structure
 
+### Directory Organization
 ```
 src/
-├── components/     # Reusable UI components
-├── pages/          # Page-level components
-├── layouts/        # Layout components
-├── hooks/          # Custom React hooks
-├── data/           # Static data and types
-├── services/       # API service layers
-├── utils/          # Utility functions
-└── SEO/            # SEO-related components
+├── components/         # Reusable UI components
+│   ├── SEO/           # SEO-related components
+│   ├── areas/         # Area-specific components
+│   ├── booking/       # Booking-related components
+│   ├── city/          # City-related components
+│   ├── home/          # Homepage components
+│   ├── services/      # Service-related components
+│   └── ui/            # UI components (shadcn)
+├── layouts/           # Layout components
+├── pages/             # Page components
+├── hooks/             # Custom React hooks
+├── data/             # Static data and types
+├── services/         # API services
+└── utils/            # Utility functions
 ```
 
 ## 4. Key Components
 
-### Navigation Components
-- `Navbar.tsx`: Site-wide navigation
-- `Footer.tsx`: Footer with important links
-- `ScrollToTop.tsx`: Scroll restoration utility
+### Core Components
+1. **Navigation**
+   - `Navbar.tsx`: Main navigation
+   - `Footer.tsx`: Site footer
+   - `ScrollToTop.tsx`: Scroll management
 
-### Service Components
-- `ServiceCard.tsx`: Individual service representation
-- `ServiceArea.tsx`: Location-specific service details
-- `ServiceBenefits.tsx`: Service advantage display
+2. **Service Components**
+   - `ServiceCard.tsx`: Service display
+   - `ServiceArea.tsx`: Area-specific services
+   - `ServiceBenefits.tsx`: Service features
 
-### Booking Components
-- `BookingForm.tsx`: Service reservation interface
-- `BookingDialog.tsx`: Booking confirmation modal
+3. **Booking System**
+   - `BookingForm.tsx`: Main booking interface
+   - `BookingDialog.tsx`: Booking modal
+   - `BookingFormInputs.tsx`: Form fields
 
-### Location Components
-- `LocationDetection.tsx`: Geolocation services
-- `CitySelector.tsx`: City selection interface
-- `AreaListingSection.tsx`: Area-specific listings
+4. **Location Components**
+   - `LocationDetection.tsx`: Geolocation
+   - `CitySlider.tsx`: City selection
+   - `AreaListingSection.tsx`: Area listings
 
 ## 5. SEO Implementation
 
-### Technical SEO
-- Robots.txt configuration
-- XML Sitemap generation
-- Canonical URL management
-- Structured Data (JSON-LD)
-  - Local Business Schema
-  - Service Schema
-  - FAQ Schema
-  - Review Schema
+### Components
+1. **Meta Tags Manager**
+   ```typescript
+   // MetaTags.tsx
+   interface MetaTagsProps {
+     title: string;
+     description: string;
+     canonicalUrl?: string;
+   }
+   ```
 
-### Performance Optimization
-- Lazy image loading
-- Code splitting
-- Core Web Vitals tracking
-- Critical CSS inlining
+2. **Structured Data**
+   - LocalBusiness Schema
+   - Service Schema
+   - FAQ Schema
+   - Review Schema
 
-## 6. Hooks & Utilities
+### Performance Components
+1. **SEO Optimizer**
+   ```typescript
+   // SEOOptimizer.tsx
+   - Core Web Vitals monitoring
+   - Performance metrics tracking
+   - Resource optimization
+   ```
+
+2. **Performance Monitor**
+   ```typescript
+   // PerformanceMonitor.tsx
+   - LCP tracking
+   - FID monitoring
+   - CLS optimization
+   ```
+
+## 6. Core Features
+
+### Location Detection
+```typescript
+// LocationDetection.tsx
+- Automatic city detection
+- Nearest service area finding
+- Location-based routing
+```
+
+### Dynamic Pricing
+```typescript
+// use-global-pricing.ts
+- Country detection
+- Currency conversion
+- Price formatting
+```
+
+### Booking System
+```typescript
+// BookingForm.tsx
+- Service selection
+- Date/time picking
+- Location integration
+```
+
+## 7. Performance Optimization
+
+### Implemented Optimizations
+1. **Image Optimization**
+   - Lazy loading
+   - WebP support
+   - Responsive images
+
+2. **Code Splitting**
+   - Route-based splitting
+   - Component lazy loading
+   - Dynamic imports
+
+3. **Resource Loading**
+   - Critical CSS
+   - Font optimization
+   - Asset preloading
+
+## 8. Hooks & Utilities
 
 ### Custom Hooks
-- `use-seo.tsx`: SEO metadata management
-- `use-seo-metadata.tsx`: Advanced SEO configuration
-- `use-mobile.tsx`: Mobile device detection
-- `use-toast.ts`: Notification management
+1. **Location Hooks**
+   ```typescript
+   useCountryDetection(): string
+   useCitySlider(): { cities: City[], nearest: City }
+   ```
 
-### Utility Functions
-- `locationUtils.ts`: Geolocation helpers
-- `jsonLdValidator.ts`: Schema validation
+2. **Pricing Hooks**
+   ```typescript
+   useGlobalPricing(): {
+     currency: Currency,
+     convertPrice: (price: number) => number
+   }
+   ```
 
-## 7. Deployment Guide
+3. **SEO Hooks**
+   ```typescript
+   useSEO(): SEOProps
+   useSEOMetadata(): MetadataProps
+   ```
+
+## 9. State Management
+
+### Query Management
+```typescript
+// React Query Implementation
+- Service queries
+- Location caching
+- Booking state
+```
+
+## 10. Deployment Guide
 
 ### Prerequisites
 - Node.js 18+
@@ -116,46 +225,47 @@ git clone https://github.com/shinedetailers/website
 # Install dependencies
 npm install
 
-# Start development server
+# Development
 npm run dev
 
-# Build for production
+# Production build
 npm run build
 ```
 
-## 8. Environment Configuration
+## 11. Contributing Guidelines
 
-### Required Environment Variables
-- `VITE_GOOGLE_MAPS_API_KEY`
-- `VITE_LOCATION_SERVICE_URL`
-- `VITE_BOOKING_API_ENDPOINT`
+### Code Style
+- Follow TypeScript best practices
+- Use consistent formatting
+- Write descriptive commits
 
-## 9. Troubleshooting
-
-### Common Issues
-- Check TypeScript types
-- Verify API endpoint configurations
-- Monitor browser console for warnings
-
-## 10. Contributing Guidelines
-
-1. Fork the repository
+### Pull Request Process
+1. Fork repository
 2. Create feature branch
-3. Commit with clear messages
-4. Submit pull request
-5. Follow code style guidelines
+3. Update documentation
+4. Submit PR
 
-## 11. Performance Monitoring
+## 12. Testing
 
-- Lighthouse scoring
-- Google PageSpeed Insights
-- Core Web Vitals tracking
+### Testing Strategy
+- Unit tests for utilities
+- Integration tests for features
+- E2E tests for critical paths
 
-## 12. Contact & Support
+## 13. Security
 
-**Technical Support**:
+### Implemented Measures
+- Input validation
+- XSS prevention
+- CORS configuration
+- Rate limiting
+
+## 14. Contact & Support
+
+### Technical Support
 - Email: tech@shinedetailers.in
-- GitHub Issues: https://github.com/shinedetailers/website/issues
+- Issues: GitHub repository
+- Documentation: Online docs
 
 **Last Updated**: 2025-04-20
 **Version**: 1.0.0
